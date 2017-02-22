@@ -1,13 +1,15 @@
 package Controller;
 
-import Models.Weapon.Weapon;
+import Models.Weapon.Projectile;
 
 public class StandardProjectileController {
 	
-	Weapon weapon;
+	Projectile projectile;
 	
-	public StandardProjectileController(Weapon w){
-		weapon = w;
+	// Basically All this will do is update the Projectile correctly every frame.
+	// We could do that from the class itself???
+	public StandardProjectileController(Projectile p){
+		projectile = p;
 	}
 
 }

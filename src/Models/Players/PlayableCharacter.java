@@ -1,11 +1,14 @@
 package Models.Players;
 
+import Interfaces.Attackable;
 import Interfaces.Collideable;
+import Interfaces.Damageable;
+import Interfaces.Dodgeable;
 import Models.Bounds;
 import Models.Entity;
 import javafx.scene.image.Image;
 
-public class PlayableCharacter extends Entity {
+public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
 
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y);
@@ -18,6 +21,17 @@ public class PlayableCharacter extends Entity {
 
 	@Override
 	public Bounds getBounds() {
+		throw new UnsupportedOperationException("Not yet Implemented");
+	}
+	
+
+	@Override
+	public void dodge() {
+		throw new UnsupportedOperationException("Not yet Implemented");
+	}
+
+	@Override
+	public void takeDamage() {
 		throw new UnsupportedOperationException("Not yet Implemented");
 	}
 }
