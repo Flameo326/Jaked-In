@@ -3,6 +3,7 @@ package Controller;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import Interfaces.Collideable;
@@ -27,12 +28,12 @@ public class ArenaController implements Initializable {
 	private HumanController player1Controls;
 	private RandomAIController player2Controls;
 	private ArrayList<Collideable> colliders;
-	private HashMap<String, Boolean> input;
+	private HashSet<String> input;
 	// We need some thing to indicate Walls
 	
 	public ArenaController(){
 		colliders = new ArrayList<>();
-		input = new HashMap<>();
+		input = new HashSet<>();
 		
 		WritableImage img = new WritableImage(50, 50);
 		PixelWriter pw = img.getPixelWriter();
@@ -59,10 +60,12 @@ public class ArenaController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		g = myCanvas.getGraphicsContext2D();
+		// Neccesary
 		myCanvas.setFocusTraversable(true);
+		// KeyEvent to record input while playing
 		myCanvas.setOnKeyPressed((e) -> {
-			if(!input.containsKey(e.getText())){
-				input.put(e.getText(), true);
+			if(!input.contains(e.getText())){
+				input.add(e.getText());
 			}
 		});
 		myCanvas.setOnKeyReleased((e) -> {
@@ -71,16 +74,29 @@ public class ArenaController implements Initializable {
 		player1Controls = new HumanController(input, player1);
 		player2Controls = new RandomAIController(player2);
 		
+		// This entire thing will be our "Run" method. It gets called constantly and updates accordingly.
+		// We need to figure out a way for this class to communicate between The ArenaController and everything the player does.
+		// For example, If they create a new Projectile, it needs to be added to the colliders and things that must be
+		// -- graphicaly updated every Frame
 		new AnimationTimer(){
 			@Override
 			public void handle(long now) {
+				// Should we add Controllers to the Player classes? 
+				// This way all you do is call player update() Method instead of the correct Controller...
 				player1Controls.checkForInput();
 				player2Controls.checkForInput();
+				// Handles the graphical Rendering 
 				updateImage();
+				// System Information
 				System.out.println("Player 1 X: " + player1.getXPos() + " Y: " + player1.getYPos());
 				System.out.println("Player 2 X: " + player2.getXPos() + " Y: " + player2.getYPos());
 			}
 		}.start();
+		
+		// What if Entity had an abstract update() which determines how every Entity moves each Frame.
+		// But some methods would probably need different parameters...
+		// -- Human would need Input, Projectiles would need a direction.
+		// -- Would it be ok to just have them store data relevant to their update Method?
 	}
 
 }
