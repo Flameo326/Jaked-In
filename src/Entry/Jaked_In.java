@@ -1,6 +1,6 @@
 package Entry;
 
-import Controller.startController;
+import Controller.StartController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
