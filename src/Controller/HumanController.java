@@ -1,35 +1,35 @@
 package Controller;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import Models.Players.PlayableCharacter;
 
 public class HumanController {
 	
 	private PlayableCharacter player;
-	private ArrayList<String> inputs;
+	private HashMap<String, Boolean> inputs;
 	
-	public HumanController(ArrayList<String> input, PlayableCharacter person){
+	public HumanController(HashMap<String, Boolean> input, PlayableCharacter person){
 		inputs = input;
 		player = person;
 	}
 	
 	public void checkForInput(){
 		System.out.print("[");
-		for(String s : inputs){
+		for(String s : inputs.keySet()){
 			System.out.print(s + ", ");
 		}
 		System.out.println("]");
-		if(inputs.contains("w")){
+		if(inputs.containsKey("w")){
 			player.move(0, -1);
 		} 
-		if(inputs.contains("s")){
+		if(inputs.containsKey("s")){
 			player.move(0, 1);
 		}
-		if(inputs.contains("a")){
+		if(inputs.containsKey("a")){
 			player.move(-1, 0);
 		}
-		if(inputs.contains("d")){
+		if(inputs.containsKey("d")){
 			player.move(1,  0);
 		}
 	}
