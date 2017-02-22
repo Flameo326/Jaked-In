@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.startController">
    <top>
       <Label alignment="CENTER" text="JAK'd In" BorderPane.alignment="CENTER">
@@ -22,8 +21,8 @@
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="storyBtn" mnemonicParsing="false" text="Story" textAlignment="CENTER" />
-            <Button fx:id="arenaBtn" mnemonicParsing="false" text="Arena" textAlignment="CENTER" />
-            <Button fx:id="exitBtn" mnemonicParsing="false" text="Exit" textAlignment="CENTER" />
+            <Button fx:id="arenaBtn" mnemonicParsing="false" onAction="#arenaBtnAction" text="Arena" textAlignment="CENTER" />
+            <Button fx:id="exitBtn" mnemonicParsing="false" onAction="#exitBtnAction" text="Exit" textAlignment="CENTER" />
          </children>
       </HBox>
    </bottom>

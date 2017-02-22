@@ -1,27 +1,404 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.2">
-  <zoom_level>10</zoom_level>
+  <zoom_level>8</zoom_level>
   <element>
-    <id>UMLNote</id>
+    <id>UMLClass</id>
     <coordinates>
-      <x>2170</x>
-      <y>300</y>
-      <w>140</w>
-      <h>70</h>
+      <x>384</x>
+      <y>896</y>
+      <w>232</w>
+      <h>80</h>
     </coordinates>
-    <panel_attributes>Note..
-bg=blue</panel_attributes>
+    <panel_attributes>Weapon
+&lt;&lt;interface&gt;&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>560</x>
-      <y>350</y>
-      <w>210</w>
-      <h>70</h>
+      <x>840</x>
+      <y>872</y>
+      <w>232</w>
+      <h>80</h>
     </coordinates>
-    <panel_attributes>Stuff</panel_attributes>
+    <panel_attributes>Character
+&lt;&lt;abstract&gt;&gt;
+--
+- weapon : Weapon
+- maxHealth : int
+- currentHealth : int
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1456</x>
+      <y>840</y>
+      <w>232</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>Upgrade</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1560</x>
+      <y>680</y>
+      <w>232</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Collectable
+&lt;&lt;interface&gt;&gt;
+--
++ collect() : void?</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>264</x>
+      <y>1008</y>
+      <w>232</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Melee
+&lt;&lt;interface&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>512</x>
+      <y>1008</y>
+      <w>232</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Projectile
+&lt;&lt;interface&gt;&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>152</x>
+      <y>232</y>
+      <w>400</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Arena
+--
+- canvas : Canvas
+- players : ArrayList&lt;Player&gt;
+- colliders : ArrayList&lt;Collideable&gt;
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>776</x>
+      <y>976</y>
+      <w>104</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>HumanPlayer
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>888</x>
+      <y>976</y>
+      <w>136</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>ComputerPlayer</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1032</x>
+      <y>976</y>
+      <w>128</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>NetworkPlayer
+&lt;&lt;optional&gt;&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>856</x>
+      <y>944</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1160</x>
+      <y>872</y>
+      <w>232</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>NPC
+--
+
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>648</y>
+      <w>424</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Entity
+&lt;&lt;abstract&gt;&gt;
+--
+- img : Image
+ --&gt; Whetever is displayed for the visual
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>880</x>
+      <y>760</y>
+      <w>368</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;440.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>760</y>
+      <w>296</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;350.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>968</x>
+      <y>944</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1048</x>
+      <y>944</y>
+      <w>56</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1600</x>
+      <y>752</y>
+      <w>56</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>136</y>
+      <w>416</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>Story
+--
+- canvas : Canvas
+- levelSwitch : int
+ --&gt; All the variables for the levels we will have
+--
+- </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>400</x>
+      <y>560</y>
+      <w>240</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>Collideable
+&lt;&lt;interface&gt;&gt;
+--
++ getBounds() : Bounds
++ interesects(Collideable c) : boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>648</y>
+      <w>96</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1056</x>
+      <y>136</y>
+      <w>416</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>Level
+--
+- colliders : ArrayList&lt;Collideable&gt;
+- npcs : NPC[]
+--
++ Level()
+ --&gt; This would generate the map and NPC's?
++ placePlayer(x : int, y : int) : void
+ --&gt; Place player at point, can be single int for door</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>64</x>
+      <y>456</y>
+      <w>344</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>Bounds
+--
+- points : ArrayList&lt;Integer&gt;
+--
++ Bounds(... : int) 
++ intersects(Bounds b) : boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>760</y>
+      <w>104</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>608</x>
+      <y>968</y>
+      <w>56</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>472</x>
+      <y>968</y>
+      <w>80</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1096</x>
+      <y>696</y>
+      <w>408</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;490.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1224</x>
+      <y>656</y>
+      <w>232</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Interactable
+&lt;&lt;interface&gt;&gt;
+--
++interact() : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1296</x>
+      <y>728</y>
+      <w>40</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1400</x>
+      <y>728</y>
+      <w>120</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1480</x>
+      <y>384</y>
+      <w>384</w>
+      <h>256</h>
+    </coordinates>
+    <panel_attributes>Story is a wrapper class that controls the
+interaction between levels as the player moves
+between them
+
+Arena will handle the interaction of players and 
+colliders
+bg=blue</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
