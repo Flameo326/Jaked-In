@@ -8,12 +8,23 @@ import javafx.scene.image.Image;
 public abstract class Entity implements Collideable, Moveable{
 	
 	private Image img;
+	private int speed = 1;
 	private int xPos, yPos;
 	
 	public Entity(Image i, int x, int y){
 		setImage(i);
 		setXPos(x);
 		setYPos(y);
+	}
+	
+	@Override
+	public void move(int x, int y) {
+		setXPos(getXPos() + x * getSpeed());
+		setYPos(getYPos() + y * getSpeed());
+	}
+	
+	public void setSpeed(int val){
+		speed = val;
 	}
 	
 	public void setYPos(int val){
@@ -28,6 +39,10 @@ public abstract class Entity implements Collideable, Moveable{
 		if(i != null){
 			img = i;
 		}
+	}
+	
+	public int getSpeed(){
+		return speed;
 	}
 	
 	public int getXPos(){

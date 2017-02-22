@@ -4,17 +4,22 @@ import java.util.ArrayList;
 
 import Models.Players.PlayableCharacter;
 
-public class HumanMovementController {
+public class HumanController {
 	
 	private PlayableCharacter player;
 	private ArrayList<String> inputs;
 	
-	public HumanMovementController(ArrayList<String> input, PlayableCharacter person){
+	public HumanController(ArrayList<String> input, PlayableCharacter person){
 		inputs = input;
 		player = person;
 	}
 	
 	public void checkForInput(){
+		System.out.print("[");
+		for(String s : inputs){
+			System.out.print(s + ", ");
+		}
+		System.out.println("]");
 		if(inputs.contains("w")){
 			player.move(0, -1);
 		} 
