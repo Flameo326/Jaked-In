@@ -2,6 +2,7 @@ package Controller;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import Interfaces.Collideable;
@@ -26,12 +27,12 @@ public class ArenaController implements Initializable {
 	private HumanController player1Controls;
 	private RandomAIController player2Controls;
 	private ArrayList<Collideable> colliders;
-	private ArrayList<String> input;
+	private HashMap<String, Boolean> input;
 	// We need some thing to indicate Walls
 	
 	public ArenaController(){
 		colliders = new ArrayList<>();
-		input = new ArrayList<>();
+		input = new HashMap<>();
 		
 		WritableImage img = new WritableImage(50, 50);
 		PixelWriter pw = img.getPixelWriter();
@@ -60,8 +61,8 @@ public class ArenaController implements Initializable {
 		g = myCanvas.getGraphicsContext2D();
 		myCanvas.setFocusTraversable(true);
 		myCanvas.setOnKeyPressed((e) -> {
-			if(!input.contains(e.getText())){
-				input.add(e.getText());
+			if(!input.containsKey(e.getText())){
+				input.put(e.getText(), true);
 			}
 		});
 		myCanvas.setOnKeyReleased((e) -> {
@@ -83,3 +84,25 @@ public class ArenaController implements Initializable {
 	}
 
 }
+
+/*Our class needs to keep track of all the entities.
+ * Our class also needs to update everything that needs to be updated frequently.
+ * 
+ * ArrayList Walls 
+ *  -- Could be an array, would not need to be updated or checked but other things would need to check against it
+ * ArrayList Projectiles
+ *  -- All the moving objects in the field. These need to be updated and chacked against Walls and Players
+ * ArrayList Hitboxes
+ *  -- The Melee weapons?
+ *   -- What if we had some generic object that had an update method, we could call it for all objects and if they do something 
+ *   -- Then they do something, maybe they don't. This would work for projectiles, Walls, Players, ...nm
+ * Array[] Players
+ *  -- The players would need to get checked against everything
+ *  -- Should we add "Tags" to things to tell what they are
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * */
