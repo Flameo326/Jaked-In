@@ -24,10 +24,11 @@ public class StartController implements Initializable {
     private Button exitBtn;
     
     public void arenaBtnAction() throws IOException{
-    	StackPane root = FXMLLoader.load(getClass().getResource("/FXML/ArenaFXML.fxml"));
-    	Scene scene = new Scene(root);
-    	
     	Stage s = (Stage)arenaBtn.getScene().getWindow();
+    	
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/ArenaFXML.fxml"));
+    	StackPane root = loader.load();
+    	Scene scene = new Scene(root, s.getWidth(), s.getHeight());
     	s.setScene(scene);
     }
     

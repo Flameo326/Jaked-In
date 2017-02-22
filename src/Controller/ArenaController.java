@@ -2,7 +2,6 @@ package Controller;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
@@ -11,13 +10,18 @@ import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
 import javafx.animation.AnimationTimer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class ArenaController implements Initializable {
 	
@@ -29,7 +33,13 @@ public class ArenaController implements Initializable {
 	private RandomAIController player2Controls;
 	private ArrayList<Collideable> colliders;
 	private HashSet<String> input;
-	// We need some thing to indicate Walls
+	
+	// What if we had:
+	// - arrayList<Entity> walls or Entitys that don't need to be updated or tested for collision. Basically Don't Move
+	//  - The reason this should be seperate is because walls don't need to be updated or tested for collision against each other
+	// - arrayList<Entity> updateable Entities which do move and can collide. This can be Projectiles, HiitBoxes and Players
+	//  - 
+	// 
 	
 	public ArenaController(){
 		colliders = new ArrayList<>();
@@ -51,7 +61,7 @@ public class ArenaController implements Initializable {
 		player2 = new ComputerPlayer(img, 150, 150);
 	}
 	
-	public void updateImage(){
+	private void updateImage(){
 		g.clearRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
 		g.drawImage(player1.getImage(), player1.getXPos(), player1.getYPos());
 		g.drawImage(player2.getImage(), player2.getXPos(), player2.getYPos());
@@ -59,7 +69,31 @@ public class ArenaController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		// Resizes the Canvas to it's Stage Widht and Height...
+		myCanvas.sceneProperty().addListener(new ChangeListener<Scene>(){
+			@Override
+			public void changed(ObservableValue<? extends Scene> observable, Scene oldValue, Scene newValue) {
+				System.out.println(newValue);
+				if(newValue != null){
+					newValue.windowProperty().addListener(new ChangeListener<Window>(){
+						@Override
+						public void changed(ObservableValue<? extends Window> observable, Window oldValue,
+								Window newValue) {
+							System.out.println(newValue);
+							if(newValue != null){
+								myCanvas.widthProperty().bind(newValue.widthProperty());
+								myCanvas.heightProperty().bind(newValue.heightProperty());
+								
+								System.out.println(newValue.getWidth() + " " + newValue.getHeight());
+								System.out.println(myCanvas.getWidth() + " " + myCanvas.getHeight());
+							}
+						}
+					});
+				}
+			}
+		});
 		g = myCanvas.getGraphicsContext2D();
+		
 		// Neccesary
 		myCanvas.setFocusTraversable(true);
 		// KeyEvent to record input while playing
