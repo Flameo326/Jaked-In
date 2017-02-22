@@ -23,7 +23,8 @@ public class ArenaController implements Initializable {
 	private Canvas myCanvas;
 	private GraphicsContext g;
 	private PlayableCharacter player1, player2;
-	private HumanMovementController player1Controls;
+	private HumanController player1Controls;
+	private RandomAIController player2Controls;
 	private ArrayList<Collideable> colliders;
 	private ArrayList<String> input;
 	// We need some thing to indicate Walls
@@ -34,9 +35,13 @@ public class ArenaController implements Initializable {
 		
 		WritableImage img = new WritableImage(50, 50);
 		PixelWriter pw = img.getPixelWriter();
+		int lineWidth = 2;
 		for(int i = 0; i < img.getHeight(); i++){
 			for(int y = 0; y < img.getWidth(); y++){
-				pw.setColor(y, i, Color.RED);
+				if(i < lineWidth || y < lineWidth || i > img.getHeight()-lineWidth ||
+						y > img.getWidth()-lineWidth){
+					pw.setColor(y, i, Color.BLACK);
+				}
 			}
 		}
 		
@@ -62,19 +67,17 @@ public class ArenaController implements Initializable {
 		myCanvas.setOnKeyReleased((e) -> {
 			input.remove(e.getText());
 		});
-		player1Controls = new HumanMovementController(input, player1);
+		player1Controls = new HumanController(input, player1);
+		player2Controls = new RandomAIController(player2);
 		
 		new AnimationTimer(){
 			@Override
 			public void handle(long now) {
 				player1Controls.checkForInput();
+				player2Controls.checkForInput();
 				updateImage();
 				System.out.println("Player 1 X: " + player1.getXPos() + " Y: " + player1.getYPos());
-				System.out.print("[");
-				for(String s : input){
-					System.out.print(s + ", ");
-				}
-				System.out.println("]");
+				System.out.println("Player 2 X: " + player2.getXPos() + " Y: " + player2.getYPos());
 			}
 		}.start();
 	}

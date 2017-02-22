@@ -1,14 +1,17 @@
-package Models.Players;
+package Models.Weapon;
 
 import Interfaces.Collideable;
 import Models.Bounds;
 import Models.Entity;
 import javafx.scene.image.Image;
 
-public class PlayableCharacter extends Entity {
+public class Weapon extends Entity{
 
-	public PlayableCharacter(Image i, int x, int y) {
+	// What If this class had a direction that it moves in that way, there is no reason to pass in x and y values.
+	//  that can be in the Controller...
+	public Weapon(Image i, int x, int y) {
 		super(i, x, y);
+		setSpeed(5);
 	}
 
 	@Override
@@ -20,4 +23,5 @@ public class PlayableCharacter extends Entity {
 	public Bounds getBounds() {
 		throw new UnsupportedOperationException("Not yet Implemented");
 	}
+
 }
