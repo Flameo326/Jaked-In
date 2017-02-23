@@ -2,22 +2,21 @@ package Models.Weapon;
 
 import java.util.ArrayList;
 
+import Interfaces.Attackable;
 import Interfaces.Collideable;
 import Models.Bounds;
 import Models.Entity;
+import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 
-public class Projectile extends HitBox{
+public class ProjectileWeapon extends Weapon implements Attackable{
 	
-	private Entity entity;
+	private Entity ownedEntity;
 
-	public Projectile(Entity e, Image i) {
+	public ProjectileWeapon(Entity e, Image i){
 		super(i, e.getXPos(), e.getYPos());
-		entity = e;
-		// direction = e.getRotation()
-		// or something
-		setTag(entity.getTag() + ".Projectile");
-		
+		ownedEntity = e;
+		setSpeed(5);
 	}
 
 	@Override
@@ -30,10 +29,13 @@ public class Projectile extends HitBox{
 		throw new UnsupportedOperationException("Not yet Implemented");
 	}
 
-	// We can add a lifetime counter or something
 	@Override
 	public void update(ArrayList<Entity> entities) {
-		move(0, 1);
+		throw new UnsupportedOperationException("Not yet Implemented");
 	}
 
+	@Override
+	public HitBox attack() {
+		return new Projectile(ownedEntity, SpriteSheet.getBlock(5, 5));
+	}
 }

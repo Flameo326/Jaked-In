@@ -7,17 +7,11 @@ import Models.Bounds;
 import Models.Entity;
 import javafx.scene.image.Image;
 
-public class Projectile extends HitBox{
-	
-	private Entity entity;
+public class HitBox extends Entity{
 
-	public Projectile(Entity e, Image i) {
-		super(i, e.getXPos(), e.getYPos());
-		entity = e;
-		// direction = e.getRotation()
-		// or something
-		setTag(entity.getTag() + ".Projectile");
-		
+	// This will be for Like Melee Weapons...
+	public HitBox(Image i, int x, int y) {
+		super(i, x, y);
 	}
 
 	@Override
@@ -30,10 +24,9 @@ public class Projectile extends HitBox{
 		throw new UnsupportedOperationException("Not yet Implemented");
 	}
 
-	// We can add a lifetime counter or something
 	@Override
 	public void update(ArrayList<Entity> entities) {
-		move(0, 1);
+		throw new UnsupportedOperationException("Not yet Implemented");
 	}
 
 }

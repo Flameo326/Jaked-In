@@ -1,7 +1,10 @@
 package Models.Players;
 
+import java.util.ArrayList;
 import java.util.Random;
 
+import Models.Entity;
+import Models.Weapon.HitBox;
 import javafx.scene.image.Image;
 
 public class ComputerPlayer extends PlayableCharacter{
@@ -17,7 +20,7 @@ public class ComputerPlayer extends PlayableCharacter{
 	}
 	
 	@Override
-	public void update() {
+	public void update(ArrayList<Entity> entities) {
 		if(++timer > decisionLength){
 			timer = 0;
 			// Choose it's action
@@ -43,8 +46,7 @@ public class ComputerPlayer extends PlayableCharacter{
 	}
 
 	@Override
-	public void attack() {
-		// TODO Auto-generated method stub
-		
+	public HitBox attack() {
+		throw new UnsupportedOperationException("Not yet Implemented");
 	}
 }

@@ -1,5 +1,7 @@
 package Interfaces;
 
+import Models.Weapon.HitBox;
+
 public interface Attackable {
-	public void attack();
+	public HitBox attack();
 }
