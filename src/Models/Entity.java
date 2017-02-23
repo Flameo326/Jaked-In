@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 public abstract class Entity implements Collideable, Moveable{
 	
 	private Image img;
+	private String tag;
 	private int speed = 1;
 	private int xPos, yPos;
 	
@@ -41,6 +42,12 @@ public abstract class Entity implements Collideable, Moveable{
 		}
 	}
 	
+	public void setTag(String s){
+		if(s != null){
+			tag = s;
+		}
+	}
+	
 	public int getSpeed(){
 		return speed;
 	}
@@ -55,6 +62,10 @@ public abstract class Entity implements Collideable, Moveable{
 	
 	public Image getImage(){
 		return img;
+	}
+	
+	public String getTag(){
+		return tag;
 	}
 
 }

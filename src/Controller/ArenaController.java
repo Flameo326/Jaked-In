@@ -2,15 +2,12 @@ package Controller;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.ResourceBundle;
 
-import Interfaces.Collideable;
 import Models.Entity;
 import Models.Map.Map;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
-import Models.Players.PlayableCharacter;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -108,9 +105,9 @@ public class ArenaController implements Initializable {
 		new AnimationTimer(){
 			@Override
 			public void handle(long now) {
-				for(Entity e : entities){
+				for(Entity e : entities.toArray(new Entity[0])){
 					// All Entities are updated even if they don't move
-					e.update();
+					e.update(entities);
 					// Print out Entity Information
 					System.out.println(e.getClass().getSimpleName() + " X: " + e.getXPos() + " Y: " + e.getYPos());
 				}
