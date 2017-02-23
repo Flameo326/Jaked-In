@@ -22,6 +22,8 @@ public class ComputerPlayer extends PlayableCharacter{
 	
 	@Override
 	public void update(ArrayList<Entity> entities) {
+		// We can make the choices so it can move diagnolly
+		// We can also make it so that the length is more random, so like .1 seconds to 3 but by leaps of .1 or something
 		if(++timer > decisionLength){
 			timer = 0;
 			// Choose it's action
@@ -47,11 +49,11 @@ public class ComputerPlayer extends PlayableCharacter{
 				setCurrYDir(0);
 				break;
 			}
-			if(rand.nextBoolean()){
-				HitBox h = attack();
-				if(h != null){
-					entities.add(h);
-				}
+		}
+		if(rand.nextInt(60) == 0){
+			HitBox h = attack();
+			if(h != null){
+				entities.add(h);
 			}
 		}
 		move(getCurrXDir(), getCurrYDir());

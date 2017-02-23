@@ -12,6 +12,7 @@ public class ProjectileWeapon extends Weapon{
 	public ProjectileWeapon(PlayableCharacter e, Image i){
 		super(e, i);
 		setAttackTime(50);
+		setTimer(getAttackTime());
 	}
 
 	@Override
