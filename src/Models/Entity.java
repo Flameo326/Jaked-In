@@ -56,8 +56,24 @@ public abstract class Entity implements Collideable, Moveable{
 		return xPos;
 	}
 	
+	public int getCenterXPos(){
+		return (int) (xPos + img.getWidth()/2);
+	}
+	
 	public int getYPos(){
 		return yPos;
+	}
+	
+	public int getCenterYPos(){
+		return (int) (yPos + img.getHeight()/2);
+	}
+	
+	public int getWidth(){
+		return (int)img.getWidth();
+	}
+	
+	public int getHeight(){
+		return (int) img.getHeight();
 	}
 	
 	public Image getImage(){

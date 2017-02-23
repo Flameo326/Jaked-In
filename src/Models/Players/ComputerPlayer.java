@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 
 public class ComputerPlayer extends PlayableCharacter{
 	
-	private static final int FPS = 30;
+	private static int computerID = 0;
 	
 	private Random rand;
 	private int decisionChoice, decisionLength, timer;
@@ -17,6 +17,7 @@ public class ComputerPlayer extends PlayableCharacter{
 	public ComputerPlayer(Image i, int x, int y) {
 		super(i, x, y);
 		rand = new Random();
+		setTag("Computer." + ++computerID);
 	}
 	
 	@Override
@@ -26,27 +27,36 @@ public class ComputerPlayer extends PlayableCharacter{
 			// Choose it's action
 			decisionChoice = rand.nextInt(4);
 			// Choose the length of time to do that action
-			// 1 - 10 by FPS/2 = .5 Secs - 5 Secs
-			decisionLength = (rand.nextInt(10) + 1) * FPS/2;
+			// 1 - 10 by Quarter Second = .25 Secs - 2.5 Secs
+			decisionLength = rand.nextInt(10) * 15;
+			switch(decisionChoice){
+			case 0:
+				setCurrXDir(0);
+				setCurrYDir(1);
+				break;
+			case 1:
+				setCurrXDir(0);
+				setCurrYDir(-1);
+				break;
+			case 2:
+				setCurrXDir(1);
+				setCurrYDir(0);
+				break;
+			case 3:
+				setCurrXDir(-1);
+				setCurrYDir(0);
+				break;
+			}
+			if(rand.nextBoolean()){
+				HitBox h = attack();
+				if(h != null){
+					entities.add(h);
+				}
+			}
 		}
-		switch(decisionChoice){
-		case 0:
-			move(0, 1);
-			break;
-		case 1:
-			move(0, -1);
-			break;
-		case 2:
-			move(1, 0);
-			break;
-		case 3:
-			move(-1, 0);
-			break;
-		}
+		move(getCurrXDir(), getCurrYDir());
+		System.out.println(getTag() + " X: " + getCenterXPos() + " Y: " + getCenterYPos());
 	}
 
-	@Override
-	public HitBox attack() {
-		throw new UnsupportedOperationException("Not yet Implemented");
-	}
+
 }

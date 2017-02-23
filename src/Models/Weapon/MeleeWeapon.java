@@ -1,25 +1,26 @@
 package Models.Weapon;
 
-import java.util.ArrayList;
-
-import Models.Entity;
+import Models.Players.PlayableCharacter;
+import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class MeleeWeapon extends Weapon{
 
-	public MeleeWeapon(Image i, int x, int y) {
-		super(i, x, y);
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void update(ArrayList<Entity> entities) {
-		throw new UnsupportedOperationException("Not yet Implemented");
+	public MeleeWeapon(PlayableCharacter e, Image i) {
+		super(e, i);
+		setAttackTime(3 * 30);
 	}
 
 	@Override
 	public HitBox attack() {
-		throw new UnsupportedOperationException("Not yet Implemented");
+		HitBox h = null;
+		if(getTimer() > getAttackTime()){
+			setTimer(0);
+			h = new HitBox(getOwnedEntity(), SpriteSheet.getBorderedBlock(20, 20, Color.WHITE));
+			h.setLifeTime((int)(getAttackTime() * 1.05));
+		}
+		return h;
 	}
 
 }

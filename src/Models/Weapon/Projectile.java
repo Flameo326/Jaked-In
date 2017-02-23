@@ -2,38 +2,30 @@ package Models.Weapon;
 
 import java.util.ArrayList;
 
-import Interfaces.Collideable;
-import Models.Bounds;
 import Models.Entity;
+import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
 
 public class Projectile extends HitBox{
 	
-	private Entity entity;
+	private int yDir, xDir;
 
-	public Projectile(Entity e, Image i) {
-		super(i, e.getXPos(), e.getYPos());
-		entity = e;
-		// direction = e.getRotation()
-		// or something
-		setTag(entity.getTag() + ".Projectile");
-		
-	}
-
-	@Override
-	public boolean isColliding(Collideable c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
-	}
-
-	@Override
-	public Bounds getBounds() {
-		throw new UnsupportedOperationException("Not yet Implemented");
+	public Projectile(PlayableCharacter e, Image i) {
+		super(e, i);
+		yDir = getOwnedEntity().getCurrYDir();
+		xDir = getOwnedEntity().getCurrXDir();
+		setSpeed(5);
+		setTag(getOwnedEntity().getTag() + ".Projectile");
 	}
 
 	// We can add a lifetime counter or something
 	@Override
 	public void update(ArrayList<Entity> entities) {
-		move(0, 1);
+		incrementTimer();
+		if(getTimer() >= getLifeTime()){
+			entities.remove(this);
+		}
+		move(xDir, yDir);
 	}
 
 }
