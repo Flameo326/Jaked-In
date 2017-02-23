@@ -53,7 +53,9 @@ public class ArenaController implements Initializable {
 			}
 		}
 		
+		// Players
 		entities.add(player1 = new HumanPlayer(img, 50, 50));
+		// If there is a better way of adding weapons then lets try it...
 		entities.add(player1.getWeapon());
 		entities.add(player2 = new ComputerPlayer(img, 150, 150));
 		entities.add(player2.getWeapon());
