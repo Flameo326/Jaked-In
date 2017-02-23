@@ -16,8 +16,11 @@ public class HumanPlayer extends PlayableCharacter{
 
 	public HumanPlayer(Image i, int x, int y) {
 		super(i, x, y);
+		// Set Tag
 		setTag("Human." + ++humanID);
 		setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE)));
+		// Set Intiial Direction so it's not at 0, 0 or unmoving
+		setCurrXDir(1);
 	}
 	
 	// Right now Direction defaults to 0 if you are not moving, we should default it to a normal one if they haven't moved
@@ -34,7 +37,9 @@ public class HumanPlayer extends PlayableCharacter{
 				move(0, 1);
 				setCurrYDir(1);
 			} else {
-				setCurrYDir(0);
+				if(getCurrXDir() != 0){
+					setCurrYDir(0);
+				}
 			}
 			if(InputHandler.keyInputContains(InputHandler.Player1Left)){
 				if(!InputHandler.keyInputContains(InputHandler.Player1Right)){
@@ -45,7 +50,9 @@ public class HumanPlayer extends PlayableCharacter{
 				move(1,  0);
 				setCurrXDir(1);
 			} else{
-				setCurrXDir(0);
+				if(getCurrYDir() != 0){
+					setCurrXDir(0);
+				}
 			}
 			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
 				HitBox h = attack();
