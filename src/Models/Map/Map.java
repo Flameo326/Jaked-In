@@ -6,6 +6,7 @@ import java.util.Random;
 import Interfaces.Collideable;
 import Models.Bounds;
 import Models.Entity;
+import Models.Upgrades.Upgrade;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
@@ -24,6 +25,7 @@ public class Map {
 		mapObjects = new ArrayList<>();
 		rand = new Random();
 		generateMap();
+		populateMap();
 	}
 	
 	// Map is generated Randomly and stored
@@ -41,12 +43,26 @@ public class Map {
 			int height = (rand.nextInt(heightRange) + 1) * 5;
 			mapObjects.add(createNewWall(xPos, yPos, width, height));
 		}
-	}
-	
-	private void populateMap(){
 		
 	}
 	
+	private void populateMap(){
+		int upgradesAmo = rand.nextInt(5);
+		for(int i = 0; i < upgradesAmo; i++){
+			int xPos = rand.nextInt(mapWidth);
+			int yPos = rand.nextInt(mapHeight);
+			int max;
+			int widthRange = ((max = mapWidth - xPos) > 10 ? 10 : max > 0 ? max : 1);
+			int heightRange = ((max = mapHeight - yPos) > 10 ? 10 : max > 0 ? max : 1);
+			int width = (rand.nextInt(widthRange) + 1) * 5;
+			int height = (rand.nextInt(heightRange) + 1) * 5;
+			mapObjects.add(new Upgrade(SpriteSheet.getBorderedBlock(width, height, Color.MEDIUMTURQUOISE), xPos, yPos));
+		}
+	}
+	
+	// Should we define a new class as wall???
+	// Or is it ok to just define the standard methods neccesary in Entity and not make it abstract?
+	// ???
 	private Entity createNewWall(int x, int y, int width, int height){
 		Image img = SpriteSheet.getBorderedBlock(width, height, Color.color(200.0/255, 200.0/255, 200.0/255));
 		Entity e = new Entity(img, x, y){
