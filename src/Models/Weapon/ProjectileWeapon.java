@@ -2,40 +2,31 @@ package Models.Weapon;
 
 import java.util.ArrayList;
 
-import Interfaces.Attackable;
-import Interfaces.Collideable;
-import Models.Bounds;
 import Models.Entity;
+import Models.Players.PlayableCharacter;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 
-public class ProjectileWeapon extends Weapon implements Attackable{
+public class ProjectileWeapon extends Weapon{
 	
-	private Entity ownedEntity;
-
-	public ProjectileWeapon(Entity e, Image i){
-		super(i, e.getXPos(), e.getYPos());
-		ownedEntity = e;
-		setSpeed(5);
-	}
-
-	@Override
-	public boolean isColliding(Collideable c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
-	}
-
-	@Override
-	public Bounds getBounds() {
-		throw new UnsupportedOperationException("Not yet Implemented");
+	public ProjectileWeapon(PlayableCharacter e, Image i){
+		super(e, i);
+		setAttackTime(50);
 	}
 
 	@Override
 	public void update(ArrayList<Entity> entities) {
-		throw new UnsupportedOperationException("Not yet Implemented");
+		super.update(entities);
 	}
 
 	@Override
 	public HitBox attack() {
-		return new Projectile(ownedEntity, SpriteSheet.getBlock(5, 5));
+		Projectile p = null;
+		if(getTimer() > getAttackTime()){
+			setTimer(0);
+			p = new Projectile(getOwnedEntity(), SpriteSheet.getBlock(5, 5));
+			p.setLifeTime((int)(getAttackTime() * 3.33));
+		}
+		return p;
 	}
 }

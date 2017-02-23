@@ -8,6 +8,7 @@ import Models.Entity;
 import Models.Map.Map;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
+import Models.Players.PlayableCharacter;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,6 +28,7 @@ public class ArenaController implements Initializable {
 	private Canvas myCanvas;
 	private GraphicsContext g;
 	private Map arenaMap;
+	private PlayableCharacter player1, player2;
 	private ArrayList<Entity> entities;
 	
 	// What if we had:
@@ -51,8 +53,10 @@ public class ArenaController implements Initializable {
 			}
 		}
 		
-		entities.add(new HumanPlayer(img, 50, 50));
-		entities.add(new ComputerPlayer(img, 150, 150));
+		entities.add(player1 = new HumanPlayer(img, 50, 50));
+		entities.add(player1.getWeapon());
+		entities.add(player2 = new ComputerPlayer(img, 150, 150));
+		entities.add(player2.getWeapon());
 	}
 	
 	private void updateImage(){
@@ -109,7 +113,7 @@ public class ArenaController implements Initializable {
 					// All Entities are updated even if they don't move
 					e.update(entities);
 					// Print out Entity Information
-					System.out.println(e.getClass().getSimpleName() + " X: " + e.getXPos() + " Y: " + e.getYPos());
+					//System.out.println(e.getClass().getSimpleName() + " X: " + e.getXPos() + " Y: " + e.getYPos());
 				}
 				// Handles the graphical Rendering 
 				updateImage();
