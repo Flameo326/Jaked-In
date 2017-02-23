@@ -13,11 +13,14 @@ public class ComputerPlayer extends PlayableCharacter{
 	
 	private Random rand;
 	private int decisionChoice, decisionLength, timer;
+	private int decisionLengthIncrement, decisionLengthRange;
 
 	public ComputerPlayer(Image i, int x, int y) {
 		super(i, x, y);
 		rand = new Random();
 		setTag("Computer." + ++computerID);
+		setDecisionLengthIncrement(.1);
+		setDecisionLengthRange(30);
 	}
 	
 	@Override
@@ -27,10 +30,10 @@ public class ComputerPlayer extends PlayableCharacter{
 		if(++timer > decisionLength){
 			timer = 0;
 			// Choose it's action
-			decisionChoice = rand.nextInt(4);
+			decisionChoice = rand.nextInt(8);
 			// Choose the length of time to do that action
 			// 1 - 10 by Quarter Second = .25 Secs - 2.5 Secs
-			decisionLength = rand.nextInt(10) * 15;
+			decisionLength = (rand.nextInt(decisionLengthRange) + 1) * decisionLengthIncrement;
 			switch(decisionChoice){
 			case 0:
 				setCurrXDir(0);
@@ -48,6 +51,22 @@ public class ComputerPlayer extends PlayableCharacter{
 				setCurrXDir(-1);
 				setCurrYDir(0);
 				break;
+			case 4:
+				setCurrXDir(1);
+				setCurrYDir(1);
+				break;
+			case 5:
+				setCurrXDir(-1);
+				setCurrYDir(1);
+				break;
+			case 6:
+				setCurrXDir(1);
+				setCurrYDir(-1);
+				break;
+			case 7:
+				setCurrXDir(-1);
+				setCurrYDir(-1);
+				break;
 			}
 		}
 		if(rand.nextInt(60) == 0){
@@ -58,6 +77,33 @@ public class ComputerPlayer extends PlayableCharacter{
 		}
 		move(getCurrXDir(), getCurrYDir());
 		System.out.println(getTag() + " X: " + getCenterXPos() + " Y: " + getCenterYPos());
+	}
+	
+	/**
+	 * Sets the DecisionLengthIncrement or how much DecisionLength increases by for 
+	 * each value in DecisionLengthRange.
+	 * This value will get multiplied by 60 becasue of Frame calculations
+	 * @param i - the value in seconds
+	 */
+	public void setDecisionLengthIncrement(double i){
+		decisionLengthIncrement = (int)(i * 60);
+	}
+	
+	/**
+	 * This value with DecsisionLengthIncrement determines how long the computer will choose it's action.
+	 * The function is decisionLength = (rand.nextInt(Range) + 1) * Increment
+	 * @param i 
+	 */
+	public void setDecisionLengthRange(int i){
+		decisionLengthRange = i;
+	}
+	
+	public int getDecisionLengthIncrement(){
+		return decisionLengthIncrement;
+	}
+	
+	public int getDecisionLengthRange(){
+		return decisionLengthRange;
 	}
 
 
