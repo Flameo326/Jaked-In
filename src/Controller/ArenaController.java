@@ -36,7 +36,7 @@ public class ArenaController implements Initializable {
 		// Initialize Entities
 		entities = new ArrayList<>();
 		
-		WritableImage img = new WritableImage(50, 50);
+		WritableImage img = new WritableImage(30, 30);
 		PixelWriter pw = img.getPixelWriter();
 		int lineWidth = 2;
 		for(int i = 0; i < img.getHeight(); i++){
@@ -49,7 +49,7 @@ public class ArenaController implements Initializable {
 		}
 		
 		// Players
-		entities.add(player1 = new HumanPlayer(img, 50, 50));
+		entities.add(player1 = new HumanPlayer(img, 250, 250));
 		// If there is a better way of adding weapons then lets try it...
 		entities.add(player1.getWeapon());
 		entities.add(player2 = new ComputerPlayer(img, 150, 150));
