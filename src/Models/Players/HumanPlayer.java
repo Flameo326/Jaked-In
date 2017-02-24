@@ -18,7 +18,7 @@ public class HumanPlayer extends PlayableCharacter{
 		super(i, x, y);
 		// Set Tag
 		setTag("Human." + ++humanID);
-		setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE)));
+		//setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE)));
 		// Set Intiial Direction so it's not at 0, 0 or unmoving
 		setCurrXDir(1);
 	}
@@ -27,7 +27,57 @@ public class HumanPlayer extends PlayableCharacter{
 	// and their last direction if they have
 	@Override
 	public void update(ArrayList<Entity> entities){
-		if(getTag().equals("Human.1")){
+		if(getTag().equals("StoryHuman")){
+			if(InputHandler.keyInputContains(InputHandler.Player1Up)){
+				if(!InputHandler.keyInputContains(InputHandler.Player1Down)){
+					for(Entity e : entities){
+						if(e != this){
+							e.setYPos(e.getYPos() + (1 * getSpeed()));
+						}
+					}
+					setCurrYDir(-1);
+				}
+			} else if(InputHandler.keyInputContains(InputHandler.Player1Down)){
+				for(Entity e : entities){
+					if(e != this){
+						e.setYPos(e.getYPos() + (-1 * getSpeed()));
+					}
+				}
+				setCurrYDir(1);
+			} else {
+				if(getCurrXDir() != 0){
+					setCurrYDir(0);
+				}
+			}
+			if(InputHandler.keyInputContains(InputHandler.Player1Left)){
+				if(!InputHandler.keyInputContains(InputHandler.Player1Right)){
+					for(Entity e : entities){
+						if(e != this){
+							e.setXPos(e.getXPos() + (1 * getSpeed()));
+						}
+					}
+					setCurrXDir(-1);
+				}
+			} else if(InputHandler.keyInputContains(InputHandler.Player1Right)){
+				for(Entity e : entities){
+					if(e != this){
+						e.setXPos(e.getXPos() + (-1 * getSpeed()));
+					}
+				}
+				setCurrXDir(1);
+			} else{
+				if(getCurrYDir() != 0){
+					setCurrXDir(0);
+				}
+			}
+			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
+				HitBox h = attack();
+				if(h != null){
+					System.out.println(getTag() + " attacked");
+					entities.add(h);
+				}
+			}
+		} else if(getTag().equals("Human.1")){
 			if(InputHandler.keyInputContains(InputHandler.Player1Up)){
 				if(!InputHandler.keyInputContains(InputHandler.Player1Down)){
 					move(0, -1);
