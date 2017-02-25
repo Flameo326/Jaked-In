@@ -2,6 +2,7 @@ package Models.Players;
 
 import java.util.ArrayList;
 
+import Controller.ArenaController;
 import Controller.InputHandler;
 import Enums.Direction;
 import Models.Entity;
@@ -25,6 +26,7 @@ public class HumanPlayer extends PlayableCharacter{
 		setCurrDir(Direction.RIGHT);
 	}
 	
+	int generateTime = 0;
 	// Right now Direction defaults to 0 if you are not moving, we should default it to a normal one if they haven't moved
 	// and their last direction if they have
 	@Override
@@ -34,7 +36,8 @@ public class HumanPlayer extends PlayableCharacter{
 					InputHandler.Player1Down, InputHandler.Player1Right)){
 				for(Entity e : entities){
 					if(e != this){
-						e.setYPos(e.getYPos() + (1 * getSpeed()));
+						e.setYPos(e.getYPos() + (-getCurrDir().getY() * getSpeed()));
+						e.setXPos(e.getXPos() + (-getCurrDir().getX() * getSpeed()));
 					}
 				}
 			}
@@ -45,17 +48,50 @@ public class HumanPlayer extends PlayableCharacter{
 					entities.add(h);
 				}
 			}
+			if(InputHandler.keyInputContains(KeyCode.CONTROL) && ++generateTime >= 50){
+				generateTime = 0;
+//				for(Entity e : ArenaController.entities.toArray(new Entity[0])){
+//					if(e != this){
+//						ArenaController.entities.remove(e);
+//					}
+//				}
+				entities.clear();
+				entities.add(this);
+				ArenaController.arenaMap.generateMap(20, 20, 100, 100, 2);
+				ArenaController.entities.addAll(ArenaController.arenaMap.getMapObjects());
+				for(Entity e : ArenaController.entities){
+					if(e != this){
+						e.setYPos(e.getYPos() + 200);
+						e.setXPos(e.getXPos() + 200);
+					}
+				}
+			}
 		} else if(getTag().equals("Human.1")){
 			if(updateDirection(InputHandler.Player1Up, InputHandler.Player1Left, 
 					InputHandler.Player1Down, InputHandler.Player1Right)){
 				move(this.getCurrDir().getX(), this.getCurrDir().getY());
-				System.out.println("Tried to move.");
 			}
 			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
 				HitBox h = attack();
 				if(h != null){
 					System.out.println(getTag() + " attacked");
 					entities.add(h);
+				}
+			}
+			if(InputHandler.keyInputContains(KeyCode.CONTROL) && ++generateTime >= 50){
+				generateTime = 0;
+				for(Entity e : ArenaController.entities.toArray(new Entity[0])){
+					if(e != this){
+						ArenaController.entities.remove(e);
+					}
+				}
+				ArenaController.arenaMap.generateMap(20, 20, 100, 100, 2);
+				ArenaController.entities.addAll(ArenaController.arenaMap.getMapObjects());
+				for(Entity e : ArenaController.entities){
+					if(e != this){
+						e.setYPos(e.getYPos() + 200);
+						e.setXPos(e.getXPos() + 200);
+					}
 				}
 			}
 		} else if(getTag().equals("Human.2")){
@@ -73,7 +109,7 @@ public class HumanPlayer extends PlayableCharacter{
 		} else {
 			System.out.println("Human Player Tag is " + getTag());
 		}
-		System.out.println(getTag() + " X: " + getCenterXPos() + " Y: " + getCenterYPos());
+		//System.out.println(getTag() + " X: " + getCenterXPos() + " Y: " + getCenterYPos());
 	}
 	
 	public boolean updateDirection(KeyCode up, KeyCode left, KeyCode down, KeyCode right){
@@ -84,8 +120,6 @@ public class HumanPlayer extends PlayableCharacter{
 		if(InputHandler.keyInputContains(up)){ yMovement--; }
 		if(InputHandler.keyInputContains(down)){ yMovement++; }
 		boolean needsToMove = false;
-		System.out.println(this.getCurrDir());
-		System.out.println(Direction.getDir(xMovement, yMovement));
 		if(xMovement != 0 || yMovement != 0){
 			this.setCurrDir(Direction.getDir(xMovement, yMovement));
 			needsToMove = true;

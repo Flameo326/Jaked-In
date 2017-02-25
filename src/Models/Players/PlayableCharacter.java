@@ -20,7 +20,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	private Direction direction;
 
 	public PlayableCharacter(Image i, int x, int y) {
-		super(i, x, y);
+		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
 		// Just Default it to a Standard Projectile Weapon for now
 		setWeapon(new ProjectileWeapon(this, SpriteSheet.getBlock(5, 5)));
 	}

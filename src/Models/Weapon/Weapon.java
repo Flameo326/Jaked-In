@@ -15,7 +15,7 @@ public abstract class Weapon extends Entity implements Attackable{
 	private int attackTime, timer;
 
 	public Weapon(PlayableCharacter e, Image i){
-		super(i, e.getCenterXPos(), e.getCenterYPos());
+		super(i, e.getCenterXPos(), e.getCenterYPos(), (int)i.getWidth(), (int)i.getHeight());
 		ownedEntity = e;
 	}
 

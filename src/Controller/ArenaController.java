@@ -28,9 +28,9 @@ public class ArenaController implements Initializable {
 	@FXML
 	private Canvas myCanvas;
 	private GraphicsContext g;
-	private Map arenaMap;
+	public static Map arenaMap;
 	private PlayableCharacter player1, player2;
-	private ArrayList<Entity> entities;
+	public static ArrayList<Entity> entities;
 	
 	public ArenaController(){
 		// Initialize Entities
@@ -50,6 +50,7 @@ public class ArenaController implements Initializable {
 		
 		// Players
 		entities.add(player1 = new HumanPlayer(img, 250, 250));
+		player1.setTag("StoryHuman");
 		// If there is a better way of adding weapons then lets try it...
 		entities.add(player1.getWeapon());
 		entities.add(player2 = new ComputerPlayer(img, 150, 150));
@@ -69,13 +70,11 @@ public class ArenaController implements Initializable {
 		myCanvas.sceneProperty().addListener(new ChangeListener<Scene>(){
 			@Override
 			public void changed(ObservableValue<? extends Scene> observable, Scene oldValue, Scene newValue) {
-				System.out.println(newValue);
 				if(newValue != null){
 					newValue.windowProperty().addListener(new ChangeListener<Window>(){
 						@Override
 						public void changed(ObservableValue<? extends Window> observable, Window oldValue,
 								Window newValue) {
-							System.out.println(newValue);
 							if(newValue != null){
 								myCanvas.widthProperty().bind(newValue.widthProperty());
 								myCanvas.heightProperty().bind(newValue.heightProperty());
@@ -83,8 +82,12 @@ public class ArenaController implements Initializable {
 								// Create Map
 								arenaMap = new Map((int)newValue.getWidth(), (int)newValue.getHeight());
 								entities.addAll(0, arenaMap.getMapObjects());
-								
-								System.out.println("Stage Width: " + newValue.getWidth() + ", Height: " + newValue.getHeight());
+								for(Entity e : entities){
+									if(e != player1){
+										e.setYPos(e.getYPos() + 200);
+										e.setXPos(e.getXPos() + 200);
+									}
+								}
 							}
 						}
 					});
@@ -119,3 +122,11 @@ public class ArenaController implements Initializable {
 	}
 
 }
+
+/*Sometimes I still get width or heihgt must be positive errors, fix that.
+ * Some objects only go to the very tip of the room
+ *Some objects are completed but aren still a few pixels away, like an entire block
+ * 
+ * 
+ * 
+ */
