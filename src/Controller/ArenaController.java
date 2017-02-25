@@ -9,6 +9,7 @@ import Models.Map.Map;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
+import SpriteSheet.SpriteSheet;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,17 +32,11 @@ public class ArenaController implements Initializable {
 	private PlayableCharacter player1, player2;
 	private ArrayList<Entity> entities;
 	
-	// What if we had:
-	// - arrayList<Entity> walls or Entitys that don't need to be updated or tested for collision. Basically Don't Move
-	//  - The reason this should be seperate is because walls don't need to be updated or tested for collision against each other
-	// - arrayList<Entity> updateable Entities which do move and can collide. This can be Projectiles, HiitBoxes and Players
-	//  - 
-	
 	public ArenaController(){
 		// Initialize Entities
 		entities = new ArrayList<>();
 		
-		WritableImage img = new WritableImage(50, 50);
+		WritableImage img = new WritableImage(30, 30);
 		PixelWriter pw = img.getPixelWriter();
 		int lineWidth = 2;
 		for(int i = 0; i < img.getHeight(); i++){
@@ -54,7 +49,7 @@ public class ArenaController implements Initializable {
 		}
 		
 		// Players
-		entities.add(player1 = new HumanPlayer(img, 50, 50));
+		entities.add(player1 = new HumanPlayer(img, 250, 250));
 		// If there is a better way of adding weapons then lets try it...
 		entities.add(player1.getWeapon());
 		entities.add(player2 = new ComputerPlayer(img, 150, 150));
@@ -124,19 +119,3 @@ public class ArenaController implements Initializable {
 	}
 
 }
-
-/*Our class needs to keep track of all the entities.
- * Our class also needs to update everything that needs to be updated frequently.
- * 
- * ArrayList Walls 
- *  -- Could be an array, would not need to be updated or checked but other things would need to check against it
- * ArrayList Projectiles
- *  -- All the moving objects in the field. These need to be updated and chacked against Walls and Players
- * ArrayList Hitboxes
- *  -- The Melee weapons?
- *   -- What if we had some generic object that had an update method, we could call it for all objects and if they do something 
- *   -- Then they do something, maybe they don't. This would work for projectiles, Walls, Players, ...nm
- * Array[] Players
- *  -- The players would need to get checked against everything
- *  -- Should we add "Tags" to things to tell what they are
- * */

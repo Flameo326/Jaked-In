@@ -1,12 +1,31 @@
 package SpriteSheet;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 // This Class handles all the Graphics stuff
 public abstract class SpriteSheet {
+	
+	private static Image spriteSheet;
+	private static boolean isInit = false;
+	
+	public static void init(){
+		spriteSheet = new Image("/Other/16x16_Sprite_Sheet.jpg");
+		isInit = true;
+	}
+	
+	public static Image getSpriteSheetImage(int x, int y, int width, int height){
+		if(!isInit){
+			init();
+		}
+		PixelReader pr = spriteSheet.getPixelReader();
+		WritableImage img = new WritableImage(width, height);
+		img.getPixelWriter().setPixels(0, 0, width, height, pr, x, y);
+		return img;
+	}
 	
 	public static Image getBorderedBlock(int width, int height, Color c){
 		WritableImage img = new WritableImage(width, height);
