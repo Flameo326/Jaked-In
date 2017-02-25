@@ -43,6 +43,10 @@ public class Map {
 			int height = (rand.nextInt(heightRange) + 1) * 5;
 			mapObjects.add(createNewWall(xPos, yPos, width, height));
 		}
+		mapObjects.add(createNewWall(0, 0, 20, 500));
+		mapObjects.add(createNewWall(500, 0, 20, 500));
+//		mapObjects.add(createNewWall(xPos, yPos, width, height));
+//		mapObjects.add(createNewWall(xPos, yPos, width, height));
 		
 	}
 	
