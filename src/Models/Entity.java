@@ -10,12 +10,14 @@ public abstract class Entity implements Collideable, Moveable{
 	private Image img;
 	private String tag;
 	private int speed = 1;
-	private int xPos, yPos;
+	private int xPos, yPos, width, height;
 	
-	public Entity(Image i, int x, int y){
+	public Entity(Image i, int x, int y, int width, int height){
 		setImage(i);
 		setXPos(x);
 		setYPos(y);
+		setWidth(width);
+		setHeight(height);
 	}
 	
 	@Override
@@ -34,6 +36,14 @@ public abstract class Entity implements Collideable, Moveable{
 	
 	public void setXPos(int val){
 		xPos = val;
+	}
+	
+	public void setWidth(int val){
+		width = val;
+	}
+	
+	public void setHeight(int val){
+		height = val;
 	}
 	
 	public void setImage(Image i){
@@ -69,11 +79,11 @@ public abstract class Entity implements Collideable, Moveable{
 	}
 	
 	public int getWidth(){
-		return (int)img.getWidth();
+		return width;
 	}
 	
 	public int getHeight(){
-		return (int) img.getHeight();
+		return height;
 	}
 	
 	public Image getImage(){

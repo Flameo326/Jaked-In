@@ -13,7 +13,7 @@ import javafx.scene.image.Image;
 public class Upgrade extends Entity implements Interactable, Collectable{
 
 	public Upgrade(Image i, int x, int y) {
-		super(i, x, y);
+		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
 		// TODO Auto-generated constructor stub
 	}
 

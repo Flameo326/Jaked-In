@@ -76,7 +76,7 @@ public class ComputerPlayer extends PlayableCharacter{
 			}
 		}
 		move(getCurrXDir(), getCurrYDir());
-		System.out.println(getTag() + " X: " + getCenterXPos() + " Y: " + getCenterYPos());
+		//System.out.println(getTag() + " X: " + getCenterXPos() + " Y: " + getCenterYPos());
 	}
 	
 	/**

@@ -15,7 +15,7 @@ public class HitBox extends Entity{
 
 	// This will be for Like Melee Weapons...
 	public HitBox(PlayableCharacter e, Image i) {
-		super(i, e.getCenterXPos()-(int)i.getWidth()/2, e.getCenterYPos()-(int)i.getHeight()/2);
+		super(i, e.getCenterXPos()-(int)i.getWidth()/2, e.getCenterYPos()-(int)i.getHeight()/2, (int)i.getWidth(), (int)i.getHeight());
 		ownedEntity = e;
 		setTag(ownedEntity.getTag() + ".Melee");
 	}

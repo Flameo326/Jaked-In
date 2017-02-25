@@ -77,7 +77,19 @@ public class HumanPlayer extends PlayableCharacter{
 					entities.add(h);
 				}
 			}
-		} else if(getTag().equals("Human.1")){
+		}
+		// To Fix the Direction, I would need to check every possible collection of key inputs they could have for input
+		// For example, if they are pressing W then they shoot up
+		// If they press A and W then they shoot left up
+		// If they press A, S, and W then they shoot... UP?
+		// What if I made it so that InputHandler can test combinations of keys
+		// For example, A means -1, D means 1 Both means 2 and neither means 0
+		// Or should Both be 0?
+		
+		// Also, this is getting long and complaicated for a single method, if we could break it up it would be better, 
+		// If we could maybe have it as a Controller then it would be even better, reuseable, and generalized.
+		// For example, in the case of computer, we can just give it the AI it needs
+		else if(getTag().equals("Human.1")){
 			if(InputHandler.keyInputContains(InputHandler.Player1Up)){
 				if(!InputHandler.keyInputContains(InputHandler.Player1Down)){
 					move(0, -1);
@@ -144,6 +156,6 @@ public class HumanPlayer extends PlayableCharacter{
 		} else {
 			System.out.println("Human Player Tag is " + getTag());
 		}
-		System.out.println(getTag() + " X: " + getCenterXPos() + " Y: " + getCenterYPos());
+		//System.out.println(getTag() + " X: " + getCenterXPos() + " Y: " + getCenterYPos());
 	}
 }
