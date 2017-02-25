@@ -36,8 +36,8 @@ public class HitBox extends Entity{
 		if(++timer >= lifeTime){
 			entities.remove(this);
 		}
-		int xDir = getOwnedEntity().getCurrXDir();
-		int yDir = getOwnedEntity().getCurrYDir();
+		int xDir = getOwnedEntity().getCurrDir().getX();
+		int yDir = getOwnedEntity().getCurrDir().getY();
 		if(xDir > 0){
 			setXPos(ownedEntity.getCenterXPos() + ownedEntity.getWidth()/2);
 		} else if(xDir < 0){

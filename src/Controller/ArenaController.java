@@ -28,9 +28,9 @@ public class ArenaController implements Initializable {
 	@FXML
 	private Canvas myCanvas;
 	private GraphicsContext g;
-	private Map arenaMap;
+	public static Map arenaMap;
 	private PlayableCharacter player1, player2;
-	private ArrayList<Entity> entities;
+	public static ArrayList<Entity> entities;
 	
 	public ArenaController(){
 		// Initialize Entities
@@ -82,6 +82,12 @@ public class ArenaController implements Initializable {
 								// Create Map
 								arenaMap = new Map((int)newValue.getWidth(), (int)newValue.getHeight());
 								entities.addAll(0, arenaMap.getMapObjects());
+								for(Entity e : entities){
+									if(e != player1){
+										e.setYPos(e.getYPos() + 200);
+										e.setXPos(e.getXPos() + 200);
+									}
+								}
 							}
 						}
 					});
@@ -116,3 +122,11 @@ public class ArenaController implements Initializable {
 	}
 
 }
+
+/*Sometimes I still get width or heihgt must be positive errors, fix that.
+ * Some objects only go to the very tip of the room
+ *Some objects are completed but aren still a few pixels away, like an entire block
+ * 
+ * 
+ * 
+ */

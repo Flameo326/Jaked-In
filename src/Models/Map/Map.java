@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Controller.CollisionSystem;
+import Enums.Direction;
 import Interfaces.Collideable;
 import Models.Bounds;
 import Models.Entity;
@@ -31,9 +32,8 @@ public class Map {
 	}
 	
 	// We should try to not generate maps that are less than the player's width and height
-	private void generateMap(int minWidth, int minHeight, int maxWidth, int maxHeight, int roomAmo){
-		
-	
+	public void generateMap(int minWidth, int minHeight, int maxWidth, int maxHeight, int roomAmo){
+		mapObjects.clear();
 		
 		ArrayList<Entity> room = new ArrayList<>();
 		room.add(createNewRoom(minWidth, minHeight, maxWidth, maxHeight));
@@ -146,117 +146,126 @@ public class Map {
 		// Width and Height of anti Axis path is 5 + playerSize to 2 * playerSize
 		// Incrementing by 5
 		int playerW = 30 + 5, playerH = 30 + 5;
-		int width = Math.max(e1.getWidth(), rand.nextInt(playerW/5) * 5 + playerW);
-		int height = Math.max(e1.getHeight(), rand.nextInt(playerH/5) * 5 + playerH);
+		int width = Math.min(e1.getWidth(), rand.nextInt(playerW/5) * 5 + playerW);
+		int height = Math.min(e1.getHeight(), rand.nextInt(playerH/5) * 5 + playerH);
+		System.out.println("Default Width: " + width + " Default Height: " + height);
 		
 		Entity currentRoom = e1;
-		boolean xPath = rand.nextBoolean();
-		boolean xConnected = false, yConnected = false;
+		Direction previousD = null;
+		// false??
+		boolean xConnected = false;
+		boolean yConnected = false;
+		boolean xPath = (xConnected || yConnected ? (xConnected ? false : true): rand.nextBoolean());
+		
+		int i = 0;
 		while(!xConnected || !yConnected){
-			// choose the x or y direction of path
-			if(xPath && !xConnected){
+			int xDiff = e2.getCenterXPos() > currentRoom.getCenterXPos() ? 1 : -1;
+			int yDiff = e2.getCenterYPos() > currentRoom.getCenterYPos() ? 1 : -1;
+			Direction d = Direction.getDir(xDiff, yDiff);
+			if(xPath){
 				// The center Y value of path that will stretch along x Axis
 				int centerY;
-				//if(currentRoom == e1){
-					centerY = rand.nextInt(Math.max(1, currentRoom.getHeight() - height)) + currentRoom.getYPos() + height/2;
-//				} else {
-//					if(e2.getCenterXPos() > currentRoom.getCenterXPos()){
-//						centerY = currentRoom.getXPos() + currentRoom.getWidth() - 
-//					} else {
-//						centerY = 
+				
+				// If we are at the start then choose a random position
+				// Otherwise choose the farthest along edge towards e2
+				if(currentRoom == e1){
+					centerY = rand.nextInt(Math.max(1, currentRoom.getHeight() - height)) + currentRoom.getYPos();
+				} else {
+					centerY = currentRoom.getYPos();
+					if(previousD.getY() == 1){
+						centerY += currentRoom.getHeight() - height;
+					} 
+//					else if(currentRoom.getHeight() < height){
+//						centerY += height - currentRoom.getHeight();
 //					}
-//				}
+				}
 				
 				// The initial center X position of the room which will be generated
 				int initialX;
 				// Width Range
 				int widthMin;
 				int widthMax;
-				if(e2.getCenterXPos() > currentRoom.getCenterXPos()){
-					widthMax = Math.max(1, e2.getXPos() - currentRoom.getXPos() + currentRoom.getWidth());
-					widthMin = Math.min(playerW, widthMax);
+				// change so they can extend further...
+				if(d.getX() == 1){
+					widthMax = e2.getXPos() + (yConnected ? 0 : e2.getWidth()) - (currentRoom.getXPos() + currentRoom.getWidth());
+					widthMin = Math.min(width, widthMax);
 					initialX = currentRoom.getXPos() + currentRoom.getWidth();
 				} else {
-					widthMax = Math.max(1, currentRoom.getXPos() - e2.getXPos() + e2.getWidth());
-					widthMin = Math.min(playerW, widthMax);
+					widthMax = currentRoom.getXPos() - (e2.getXPos() + (yConnected ? e2.getWidth() : 0));
+					widthMin = Math.min(width, widthMax);
 					initialX = currentRoom.getXPos();
 				}
 				
 				// Create the room and set it's values
+				System.out.println(height + " " + widthMin + " " + widthMax);
 				Entity e = createNewRoom(widthMin, height, widthMax, height);
 				e.setImage(SpriteSheet.getBlock(e.getWidth(), e.getHeight()));
-				if(e2.getCenterXPos() > currentRoom.getCenterXPos()){
-					e.setXPos(initialX);
-				} else {
-					e.setXPos(initialX-e.getWidth());
-				}
-				e.setYPos(centerY-e.getHeight()/2);
+				e.setXPos(initialX - (d.getX() == 1 ? 0 : e.getWidth()));
+				e.setYPos(centerY);
 				paths.add(e);
 				currentRoom = e;
-				xConnected = CollisionSystem.AABBvsAABB(e, e2).hasCollided;
-				// Maybe find a way of storing direction like Adam made.
-//				if(e2.getCenterXPos() > currentRoom.getCenterXPos()){
-//					if(e.getXPos() + e.getWidth() >= e2.getXPos()){
-//						xConnected = true;
-//					}
-//				} else {
-//					if(e.getXPos()>= e2.getXPos() + e2.getWidth()){
-//						xConnected = true;
-//					}
-//				}
-				
-			} else if(!yConnected){
+				if(!yConnected) { yConnected = CollisionSystem.isIntersectingYAxis(e, e2); }
+				xConnected = CollisionSystem.isIntersectingAlongLine(e.getXPos(), e.getXPos() + e.getWidth(),
+						e2.getXPos() + (d.getX() == 1 && !yConnected ? width : 0), e2.getXPos() + e2.getWidth() - (d.getX() == -1 && !yConnected ? width : 0));
+			} else {
 				// The center Y value of path that will stretch along x Axis
-				int centerX = rand.nextInt(Math.max(currentRoom.getWidth() - width, 1)) + currentRoom.getXPos() + width/2;
+				int centerX;
+				if(currentRoom == e1){
+					centerX = rand.nextInt(Math.max(currentRoom.getWidth() - width, 1)) + currentRoom.getXPos();
+				} else {
+					//We want to ensure that our path is always connected exactl which means it must be at one end of the
+					// previous path. By default it needs to be at xPos
+					centerX = currentRoom.getXPos();
+					// If we are going in the right direction then we should make it on the right side by adding width
+					if(previousD.getX() == 1){
+						// we add the width or previousRoom and then subtract the width of this path
+						// This also helps if our previous path was forced at a smaller width from the right side
+						centerX += currentRoom.getWidth() - width;
+					}
+//					else if(currentRoom.getWidth() < width ){
+//						// the alternative is that our path was forced at a smaller width from the left side
+//						// in that case we must subtract the opposite value of the previous or just swap the values.
+//						centerX += width - currentRoom.getWidth();
+//					}
+				}
 				// The initial center X position of the room which will be generated
 				int initialY;
 				// Height Range
 				int heightMin;
 				int heightMax;
 				// Aka it's below
-				if(e2.getCenterYPos() > currentRoom.getCenterYPos()){
-					heightMax = Math.max(1, e2.getYPos() - currentRoom.getYPos() + currentRoom.getHeight());
-					heightMin = Math.min(playerH, heightMax);
+				if(d.getY() == 1){
+					// If x is connected then we only want to meet with the object which would be the minimum point
+					// otherwise we can go along the entire height to try and get connected
+					heightMax = e2.getYPos() + (xConnected ? 0 : e2.getHeight()) - (currentRoom.getYPos() + currentRoom.getHeight());
+					heightMin = Math.min(height, heightMax);
 					initialY = currentRoom.getYPos() + currentRoom.getHeight();
 				} else {
-					heightMax = Math.max(1, currentRoom.getYPos() - e2.getYPos() + e2.getHeight());
-					heightMin = Math.min(playerH, heightMax);
+					heightMax = currentRoom.getYPos() - (e2.getYPos() + (xConnected ? e2.getHeight() : 0));
+					heightMin = Math.min(height, heightMax);
 					initialY = currentRoom.getYPos();
 				}
 				
 				// Create the room and set it's values
+				System.out.println(width + " " + heightMin + " " + heightMax);
 				Entity e = createNewRoom(width, heightMin, width, heightMax);
 				e.setImage(SpriteSheet.getBlock(e.getWidth(), e.getHeight()));
-				if(e2.getCenterYPos() > currentRoom.getCenterYPos()){
-					e.setYPos(initialY);
-				} else {
-					e.setYPos(initialY-e.getHeight());
-				}
-				e.setXPos(centerX-e.getWidth()/2);
+				e.setYPos(initialY - (d.getY() == 1 ? 0 : e.getHeight()));
+				e.setXPos(centerX);
 				paths.add(e);
 				currentRoom = e;
-				yConnected = CollisionSystem.AABBvsAABB(e, e2).hasCollided;
-//				if(e2.getCenterYPos() > currentRoom.getCenterYPos()){
-//					if(e.getYPos() + e.getHeight() >= e2.getYPos()){
-//						yConnected = true;
-//					} 
-//				} else {
-//					if(e.getYPos() >= e2.getYPos() + e2.getHeight()){
-//						yConnected = true;
-//					} 
-//				}
+				if(!xConnected) { xConnected = CollisionSystem.isIntersectingXAxis(e, e2); }
+				yConnected = CollisionSystem.isIntersectingAlongLine(e.getYPos(), e.getYPos() + e.getHeight(),
+						e2.getYPos() + (d.getY() == 1 && !xConnected ? height : 0), e2.getYPos() + e2.getHeight() - (d.getY() == -1 && !xConnected ? height : 0));
 			} 
 			System.out.println("Created " + (xPath ? "x" : "y") + "Path X: " + currentRoom.getXPos() + " Y: " + currentRoom.getYPos()
 					+ " Width: " + currentRoom.getWidth() + " Height: " + currentRoom.getHeight());
+			System.out.println("X: " + xConnected + " Y: " + yConnected);
+			System.out.println("xPath is now " + xPath);
 			xPath = !xPath;
+			previousD = d;
+			if(++i > 500){ break; }
 		}
-		
-		
-		// So I choose y or x value first
-		// I choose the top/Bottom or Left/ Right value of e1
-		// I make a new "room" with a size variant of the corresponding value
-		
-		// I keep track of how far it needs to go by
 		return paths;
 	}
 	

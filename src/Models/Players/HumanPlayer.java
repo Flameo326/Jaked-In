@@ -2,12 +2,15 @@ package Models.Players;
 
 import java.util.ArrayList;
 
+import Controller.ArenaController;
 import Controller.InputHandler;
+import Enums.Direction;
 import Models.Entity;
 import Models.Weapon.HitBox;
 import Models.Weapon.MeleeWeapon;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 public class HumanPlayer extends PlayableCharacter{
@@ -20,54 +23,22 @@ public class HumanPlayer extends PlayableCharacter{
 		setTag("Human." + ++humanID);
 		//setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE)));
 		// Set Intiial Direction so it's not at 0, 0 or unmoving
-		setCurrXDir(1);
+		setCurrDir(Direction.RIGHT);
 	}
 	
+	int generateTime = 0;
 	// Right now Direction defaults to 0 if you are not moving, we should default it to a normal one if they haven't moved
 	// and their last direction if they have
 	@Override
 	public void update(ArrayList<Entity> entities){
 		if(getTag().equals("StoryHuman")){
-			if(InputHandler.keyInputContains(InputHandler.Player1Up)){
-				if(!InputHandler.keyInputContains(InputHandler.Player1Down)){
-					for(Entity e : entities){
-						if(e != this){
-							e.setYPos(e.getYPos() + (1 * getSpeed()));
-						}
-					}
-					setCurrYDir(-1);
-				}
-			} else if(InputHandler.keyInputContains(InputHandler.Player1Down)){
+			if(updateDirection(InputHandler.Player1Up, InputHandler.Player1Left, 
+					InputHandler.Player1Down, InputHandler.Player1Right)){
 				for(Entity e : entities){
 					if(e != this){
-						e.setYPos(e.getYPos() + (-1 * getSpeed()));
+						e.setYPos(e.getYPos() + (-getCurrDir().getY() * getSpeed()));
+						e.setXPos(e.getXPos() + (-getCurrDir().getX() * getSpeed()));
 					}
-				}
-				setCurrYDir(1);
-			} else {
-				if(getCurrXDir() != 0){
-					setCurrYDir(0);
-				}
-			}
-			if(InputHandler.keyInputContains(InputHandler.Player1Left)){
-				if(!InputHandler.keyInputContains(InputHandler.Player1Right)){
-					for(Entity e : entities){
-						if(e != this){
-							e.setXPos(e.getXPos() + (1 * getSpeed()));
-						}
-					}
-					setCurrXDir(-1);
-				}
-			} else if(InputHandler.keyInputContains(InputHandler.Player1Right)){
-				for(Entity e : entities){
-					if(e != this){
-						e.setXPos(e.getXPos() + (-1 * getSpeed()));
-					}
-				}
-				setCurrXDir(1);
-			} else{
-				if(getCurrYDir() != 0){
-					setCurrXDir(0);
 				}
 			}
 			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
@@ -77,74 +48,56 @@ public class HumanPlayer extends PlayableCharacter{
 					entities.add(h);
 				}
 			}
-		}
-		// To Fix the Direction, I would need to check every possible collection of key inputs they could have for input
-		// For example, if they are pressing W then they shoot up
-		// If they press A and W then they shoot left up
-		// If they press A, S, and W then they shoot... UP?
-		// What if I made it so that InputHandler can test combinations of keys
-		// For example, A means -1, D means 1 Both means 2 and neither means 0
-		// Or should Both be 0?
-		
-		// Also, this is getting long and complaicated for a single method, if we could break it up it would be better, 
-		// If we could maybe have it as a Controller then it would be even better, reuseable, and generalized.
-		// For example, in the case of computer, we can just give it the AI it needs
-		else if(getTag().equals("Human.1")){
-			if(InputHandler.keyInputContains(InputHandler.Player1Up)){
-				if(!InputHandler.keyInputContains(InputHandler.Player1Down)){
-					move(0, -1);
-					setCurrYDir(-1);
-				}
-			} else if(InputHandler.keyInputContains(InputHandler.Player1Down)){
-				move(0, 1);
-				setCurrYDir(1);
-			} else {
-				if(getCurrXDir() != 0){
-					setCurrYDir(0);
+			if(InputHandler.keyInputContains(KeyCode.CONTROL) && ++generateTime >= 50){
+				generateTime = 0;
+//				for(Entity e : ArenaController.entities.toArray(new Entity[0])){
+//					if(e != this){
+//						ArenaController.entities.remove(e);
+//					}
+//				}
+				entities.clear();
+				entities.add(this);
+				ArenaController.arenaMap.generateMap(20, 20, 100, 100, 2);
+				ArenaController.entities.addAll(ArenaController.arenaMap.getMapObjects());
+				for(Entity e : ArenaController.entities){
+					if(e != this){
+						e.setYPos(e.getYPos() + 200);
+						e.setXPos(e.getXPos() + 200);
+					}
 				}
 			}
-			if(InputHandler.keyInputContains(InputHandler.Player1Left)){
-				if(!InputHandler.keyInputContains(InputHandler.Player1Right)){
-					move(-1, 0);
-					setCurrXDir(-1);
-				}
-			} else if(InputHandler.keyInputContains(InputHandler.Player1Right)){
-				move(1,  0);
-				setCurrXDir(1);
-			} else{
-				if(getCurrYDir() != 0){
-					setCurrXDir(0);
-				}
+		} else if(getTag().equals("Human.1")){
+			if(updateDirection(InputHandler.Player1Up, InputHandler.Player1Left, 
+					InputHandler.Player1Down, InputHandler.Player1Right)){
+				move(this.getCurrDir().getX(), this.getCurrDir().getY());
 			}
 			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
 				HitBox h = attack();
 				if(h != null){
 					System.out.println(getTag() + " attacked");
 					entities.add(h);
+				}
+			}
+			if(InputHandler.keyInputContains(KeyCode.CONTROL) && ++generateTime >= 50){
+				generateTime = 0;
+				for(Entity e : ArenaController.entities.toArray(new Entity[0])){
+					if(e != this){
+						ArenaController.entities.remove(e);
+					}
+				}
+				ArenaController.arenaMap.generateMap(20, 20, 100, 100, 2);
+				ArenaController.entities.addAll(ArenaController.arenaMap.getMapObjects());
+				for(Entity e : ArenaController.entities){
+					if(e != this){
+						e.setYPos(e.getYPos() + 200);
+						e.setXPos(e.getXPos() + 200);
+					}
 				}
 			}
 		} else if(getTag().equals("Human.2")){
-			if(InputHandler.keyInputContains(InputHandler.Player2Up)){
-				if(!InputHandler.keyInputContains(InputHandler.Player2Down)){
-					move(0, -1);
-					setCurrYDir(-1);
-				}
-			} else if(InputHandler.keyInputContains(InputHandler.Player2Down)){
-				move(0, 1);
-				setCurrYDir(1);
-			} else {
-				setCurrYDir(0);
-			}
-			if(InputHandler.keyInputContains(InputHandler.Player2Left)){
-				if(!InputHandler.keyInputContains(InputHandler.Player2Right)){
-					move(-1, 0);
-					setCurrXDir(-1);
-				}
-			} else if(InputHandler.keyInputContains(InputHandler.Player2Right)){
-				move(1,  0);
-				setCurrXDir(1);
-			} else{
-				setCurrXDir(0);
+			if(updateDirection(InputHandler.Player1Up, InputHandler.Player1Left, 
+					InputHandler.Player1Down, InputHandler.Player1Right)){
+				move(this.getCurrDir().getX(), this.getCurrDir().getY());
 			}
 			if(InputHandler.keyInputContains(InputHandler.Player2Attack)){
 				HitBox h = attack();
@@ -158,4 +111,20 @@ public class HumanPlayer extends PlayableCharacter{
 		}
 		//System.out.println(getTag() + " X: " + getCenterXPos() + " Y: " + getCenterYPos());
 	}
+	
+	public boolean updateDirection(KeyCode up, KeyCode left, KeyCode down, KeyCode right){
+		byte xMovement = 0;
+		byte yMovement = 0;
+		if(InputHandler.keyInputContains(right)){ xMovement++; }
+		if(InputHandler.keyInputContains(left)){ xMovement--; }
+		if(InputHandler.keyInputContains(up)){ yMovement--; }
+		if(InputHandler.keyInputContains(down)){ yMovement++; }
+		boolean needsToMove = false;
+		if(xMovement != 0 || yMovement != 0){
+			this.setCurrDir(Direction.getDir(xMovement, yMovement));
+			needsToMove = true;
+		}
+		return needsToMove;
+	}
+	
 }
