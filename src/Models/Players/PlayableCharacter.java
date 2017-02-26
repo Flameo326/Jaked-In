@@ -1,5 +1,6 @@
 package Models.Players;
 
+import Enums.Direction;
 import Interfaces.Attackable;
 import Interfaces.Collideable;
 import Interfaces.Damageable;
@@ -16,10 +17,10 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	
 	private Weapon weapon;
 	private int maxHealth, currentHealth;
-	private int currXDir, currYDir;
+	private Direction direction;
 
 	public PlayableCharacter(Image i, int x, int y) {
-		super(i, x, y);
+		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
 		// Just Default it to a Standard Projectile Weapon for now
 		setWeapon(new ProjectileWeapon(this, SpriteSheet.getBlock(5, 5)));
 	}
@@ -78,13 +79,9 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 			weapon = w;
 		}
 	}
-	
-	public void setCurrXDir(int i){
-		currXDir = i;
-	}
-	
-	public void setCurrYDir(int i){
-		currYDir = i;
+
+	public void setCurrDir(Direction direction) {
+		this.direction = direction;
 	}
 	
 	public int getMaxHealth(){
@@ -99,11 +96,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		return weapon;
 	}
 	
-	public int getCurrXDir(){
-		return currXDir;
-	}
-	
-	public int getCurrYDir(){
-		return currYDir;
+	public Direction getCurrDir(){
+		return direction;
 	}
 }

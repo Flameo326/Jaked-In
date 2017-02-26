@@ -3,6 +3,7 @@ package Models.Players;
 import java.util.ArrayList;
 import java.util.Random;
 
+import Enums.Direction;
 import Models.Entity;
 import Models.Weapon.HitBox;
 import javafx.scene.image.Image;
@@ -34,40 +35,7 @@ public class ComputerPlayer extends PlayableCharacter{
 			// Choose the length of time to do that action
 			// 1 - 10 by Quarter Second = .25 Secs - 2.5 Secs
 			decisionLength = (rand.nextInt(decisionLengthRange) + 1) * decisionLengthIncrement;
-			switch(decisionChoice){
-			case 0:
-				setCurrXDir(0);
-				setCurrYDir(1);
-				break;
-			case 1:
-				setCurrXDir(0);
-				setCurrYDir(-1);
-				break;
-			case 2:
-				setCurrXDir(1);
-				setCurrYDir(0);
-				break;
-			case 3:
-				setCurrXDir(-1);
-				setCurrYDir(0);
-				break;
-			case 4:
-				setCurrXDir(1);
-				setCurrYDir(1);
-				break;
-			case 5:
-				setCurrXDir(-1);
-				setCurrYDir(1);
-				break;
-			case 6:
-				setCurrXDir(1);
-				setCurrYDir(-1);
-				break;
-			case 7:
-				setCurrXDir(-1);
-				setCurrYDir(-1);
-				break;
-			}
+			setCurrDir(Direction.values()[decisionChoice > 4 ? decisionChoice+1 : decisionChoice]);
 		}
 		if(rand.nextInt(60) == 0){
 			HitBox h = attack();
@@ -75,8 +43,8 @@ public class ComputerPlayer extends PlayableCharacter{
 				entities.add(h);
 			}
 		}
-		move(getCurrXDir(), getCurrYDir());
-		System.out.println(getTag() + " X: " + getCenterXPos() + " Y: " + getCenterYPos());
+		move(getCurrDir().getX(), getCurrDir().getY());
+		//System.out.println(getTag() + " X: " + getCenterXPos() + " Y: " + getCenterYPos());
 	}
 	
 	/**

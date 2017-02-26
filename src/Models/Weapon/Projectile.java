@@ -12,8 +12,8 @@ public class Projectile extends HitBox{
 
 	public Projectile(PlayableCharacter e, Image i) {
 		super(e, i);
-		yDir = getOwnedEntity().getCurrYDir();
-		xDir = getOwnedEntity().getCurrXDir();
+		yDir = getOwnedEntity().getCurrDir().getY();
+		xDir = getOwnedEntity().getCurrDir().getX();
 		setSpeed(5);
 		setTag(getOwnedEntity().getTag() + ".Projectile");
 	}
