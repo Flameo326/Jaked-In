@@ -7,11 +7,8 @@ import Controller.InputHandler;
 import Enums.Direction;
 import Models.Entity;
 import Models.Weapon.HitBox;
-import Models.Weapon.MeleeWeapon;
-import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 
 public class HumanPlayer extends PlayableCharacter{
 	
@@ -24,6 +21,7 @@ public class HumanPlayer extends PlayableCharacter{
 		//setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE)));
 		// Set Intiial Direction so it's not at 0, 0 or unmoving
 		setCurrDir(Direction.RIGHT);
+		setSpeed(3);
 	}
 	
 	int generateTime = 0;
@@ -50,19 +48,14 @@ public class HumanPlayer extends PlayableCharacter{
 			}
 			if(InputHandler.keyInputContains(KeyCode.CONTROL) && ++generateTime >= 50){
 				generateTime = 0;
-//				for(Entity e : ArenaController.entities.toArray(new Entity[0])){
-//					if(e != this){
-//						ArenaController.entities.remove(e);
-//					}
-//				}
 				entities.clear();
 				entities.add(this);
-				ArenaController.arenaMap.generateMap(20, 20, 100, 100, 2);
-				ArenaController.entities.addAll(ArenaController.arenaMap.getMapObjects());
+				ArenaController.arenaMap.generateMap(70, 70, 210, 210, 2);
+				ArenaController.entities.addAll(0, ArenaController.arenaMap.getMapObjects());
 				for(Entity e : ArenaController.entities){
 					if(e != this){
-						e.setYPos(e.getYPos() + 200);
-						e.setXPos(e.getXPos() + 200);
+						e.setYPos(e.getYPos() + 250);
+						e.setXPos(e.getXPos() + 250);
 					}
 				}
 			}
@@ -76,22 +69,6 @@ public class HumanPlayer extends PlayableCharacter{
 				if(h != null){
 					System.out.println(getTag() + " attacked");
 					entities.add(h);
-				}
-			}
-			if(InputHandler.keyInputContains(KeyCode.CONTROL) && ++generateTime >= 50){
-				generateTime = 0;
-				for(Entity e : ArenaController.entities.toArray(new Entity[0])){
-					if(e != this){
-						ArenaController.entities.remove(e);
-					}
-				}
-				ArenaController.arenaMap.generateMap(20, 20, 100, 100, 2);
-				ArenaController.entities.addAll(ArenaController.arenaMap.getMapObjects());
-				for(Entity e : ArenaController.entities){
-					if(e != this){
-						e.setYPos(e.getYPos() + 200);
-						e.setXPos(e.getXPos() + 200);
-					}
 				}
 			}
 		} else if(getTag().equals("Human.2")){

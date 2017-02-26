@@ -6,6 +6,7 @@ import Models.Entity;
 import Models.Players.PlayableCharacter;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class ProjectileWeapon extends Weapon{
 	
@@ -25,7 +26,7 @@ public class ProjectileWeapon extends Weapon{
 		Projectile p = null;
 		if(getTimer() > getAttackTime()){
 			setTimer(0);
-			p = new Projectile(getOwnedEntity(), SpriteSheet.getBlock(5, 5));
+			p = new Projectile(getOwnedEntity(), SpriteSheet.getBlock(5, 5, Color.BLACK));
 			p.setLifeTime((int)(getAttackTime() * 3.33));
 		}
 		return p;

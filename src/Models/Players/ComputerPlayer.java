@@ -35,7 +35,7 @@ public class ComputerPlayer extends PlayableCharacter{
 			// Choose the length of time to do that action
 			// 1 - 10 by Quarter Second = .25 Secs - 2.5 Secs
 			decisionLength = (rand.nextInt(decisionLengthRange) + 1) * decisionLengthIncrement;
-			setCurrDir(Direction.values()[decisionChoice > 4 ? decisionChoice+1 : decisionChoice]);
+			setCurrDir(Direction.values()[decisionChoice >= 4 ? decisionChoice+1 : decisionChoice]);
 		}
 		if(rand.nextInt(60) == 0){
 			HitBox h = attack();

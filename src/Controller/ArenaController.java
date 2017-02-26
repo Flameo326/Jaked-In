@@ -84,8 +84,8 @@ public class ArenaController implements Initializable {
 								entities.addAll(0, arenaMap.getMapObjects());
 								for(Entity e : entities){
 									if(e != player1){
-										e.setYPos(e.getYPos() + 200);
-										e.setXPos(e.getXPos() + 200);
+										e.setYPos(e.getYPos() + 250);
+										e.setXPos(e.getXPos() + 250);
 									}
 								}
 							}
