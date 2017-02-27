@@ -47,19 +47,19 @@ public class HumanPlayer extends PlayableCharacter{
 					entities.add(h);
 				}
 			}
-			if(InputHandler.keyInputContains(KeyCode.CONTROL) && ++generateTime >= 50){
-				generateTime = 0;
-				entities.clear();
-				entities.add(this);
-				ArenaController.arenaMap.generateMap(70, 70, .8, 1.2, new Random().nextInt(10) + 1);
-				ArenaController.entities.addAll(0, ArenaController.arenaMap.getMapObjects());
-				for(Entity e : ArenaController.entities){
-					if(e != this){
-						e.setYPos(e.getYPos() + 250);
-						e.setXPos(e.getXPos() + 250);
-					}
-				}
-			}
+//			if(InputHandler.keyInputContains(KeyCode.CONTROL) && ++generateTime >= 50){
+//				generateTime = 0;
+//				entities.clear();
+//				entities.add(this);
+//				ArenaController.arenaMap.generateMap(70, 70, 210, 210, new Random().nextInt(10) + 1);
+//				ArenaController.entities.addAll(0, ArenaController.arenaMap.getMapObjects());
+//				for(Entity e : ArenaController.entities){
+//					if(e != this){
+//						e.setYPos(e.getYPos() + 250);
+//						e.setXPos(e.getXPos() + 250);
+//					}
+//				}
+//			}
 		} else if(getTag().equals("Human.1")){
 			if(updateDirection(InputHandler.Player1Up, InputHandler.Player1Left, 
 					InputHandler.Player1Down, InputHandler.Player1Right)){

@@ -100,4 +100,8 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	public Direction getCurrDir(){
 		return direction;
 	}
+
+	public Entity[] getDisplayableEntities() {
+		return weapon != null ? new Entity[] {this, weapon} : new Entity[] {this};
+	}
 }
