@@ -50,16 +50,8 @@ public class CollisionSystem {
 		
 		// create a new collision based on the previous two...
 		boolean hasCollided = hori.hasCollided && vert.hasCollided;
-		int penDepth;
-		Direction d;
-		if(hori.penDepth < vert.penDepth){
-			penDepth = hori.penDepth;
-			d = hori.collisionNormal;
-		} else {
-			penDepth = vert.penDepth;
-			d = vert.collisionNormal;
-		}
-		return new Collision(a, b, hasCollided, d, penDepth);
+		Direction d = Direction.getDir(hori.collisionNormal.getX(), vert.collisionNormal.getY());
+		return new Collision(a, b, hasCollided, d, hori.xPenDepth, vert.yPenDepth);
 	}
 	
 	/**
@@ -97,7 +89,7 @@ public class CollisionSystem {
 			xDir = 0;
 			penDepth = penLeft;
 		}
-		return new Collision(a, b, colliding, Direction.getDir(xDir, 0), penDepth);
+		return new Collision(a, b, colliding, Direction.getDir(xDir, 0), penDepth, 0);
 	}
 	
 	/**
@@ -135,7 +127,7 @@ public class CollisionSystem {
 			yDir = 0;
 			penDepth = penDown;
 		}
-		return new Collision(a, b, colliding, Direction.getDir(0, yDir), penDepth);
+		return new Collision(a, b, colliding, Direction.getDir(0, yDir), 0, penDepth);
 	}
 	
 	/**

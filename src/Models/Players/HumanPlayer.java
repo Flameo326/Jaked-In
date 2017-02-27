@@ -51,7 +51,7 @@ public class HumanPlayer extends PlayableCharacter{
 				generateTime = 0;
 				entities.clear();
 				entities.add(this);
-				ArenaController.arenaMap.generateMap(70, 70, 210, 210, new Random().nextInt(10) + 1);
+				ArenaController.arenaMap.generateMap(70, 70, .8, 1.2, new Random().nextInt(10) + 1);
 				ArenaController.entities.addAll(0, ArenaController.arenaMap.getMapObjects());
 				for(Entity e : ArenaController.entities){
 					if(e != this){
