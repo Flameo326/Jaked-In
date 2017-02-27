@@ -1,20 +1,52 @@
 package Controller;
 
+import java.util.ArrayList;
+
 import Enums.Direction;
 import Models.Collision;
 import Models.Entity;
 
 public class CollisionSystem {
 	
+	/**
+	 * This method checks to see if the first entity passed in is colliding against the remaining. 
+	 *  It returns an arraylist that contains Collision objects representing all of the collisions that happened
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static ArrayList<Collision> getCollision(Entity a, Entity... entities){
+		ArrayList<Collision> collisions = new ArrayList<>();
+		for(Entity e : entities){
+			collisions.add(getCollision(a, e));
+		}
+		return collisions;
+	}
+	
 	// Simplify it to only AABB for now
-	public static Collision hasCollided(Entity a, Entity b){
+	/**
+	 * This method checks to see if the two entities have collided. 
+	 *  It determines the appropriate way to detect how they collided.
+	 *  This can be AABB vs. AABB, Circle vs. Circle, or AABB vs. Circle
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static Collision getCollision(Entity a, Entity b){
 		return AABBvsAABB(a, b);
 	}
 	
 	// This would need to be changed to take in rectangles instead... probably
+	/**
+	 * This method checks to see if the two entities have collided. 
+	 *  It uses the AABB collision method for simplification
+	 * @param a
+	 * @param b
+	 * @return
+	 */
 	public static Collision AABBvsAABB(Entity a, Entity b){
 		Collision hori = isIntersectingXAxis(a, b);
-		Collision vert = isIntersectingXAxis(a, b);
+		Collision vert = isIntersectingYAxis(a, b);
 		
 		// create a new collision based on the previous two...
 		boolean hasCollided = hori.hasCollided && vert.hasCollided;
@@ -119,6 +151,15 @@ public class CollisionSystem {
 		return !(lineAMax < lineBMin || lineBMax < lineAMin); 
 	}
 	
+	/**
+	 * This method tests for intersection along a linear number line.
+	 * This method returns true if and only if Line A fully intersects, or encapsulates, Line B.
+	 * @param lineAMin
+	 * @param lineAMax
+	 * @param lineBMin
+	 * @param lineBMax
+	 * @return
+	 */
 	public static boolean isFullyEncapsulating(int lineAMin, int lineAMax, int lineBMin, int lineBMax){
 		return !(lineAMin > lineBMin || lineAMax < lineBMax); 
 	}

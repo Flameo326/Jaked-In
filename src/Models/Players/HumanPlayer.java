@@ -1,6 +1,7 @@
 package Models.Players;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import Controller.ArenaController;
 import Controller.InputHandler;
@@ -50,7 +51,7 @@ public class HumanPlayer extends PlayableCharacter{
 //				generateTime = 0;
 //				entities.clear();
 //				entities.add(this);
-//				ArenaController.arenaMap.generateMap(70, 70, 210, 210, 2);
+//				ArenaController.arenaMap.generateMap(70, 70, 210, 210, new Random().nextInt(10) + 1);
 //				ArenaController.entities.addAll(0, ArenaController.arenaMap.getMapObjects());
 //				for(Entity e : ArenaController.entities){
 //					if(e != this){

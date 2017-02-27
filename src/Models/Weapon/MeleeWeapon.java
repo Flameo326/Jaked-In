@@ -20,7 +20,7 @@ public class MeleeWeapon extends Weapon{
 		HitBox h = null;
 		if(getTimer() > getAttackTime()){
 			setTimer(0);
-			h = new HitBox(getOwnedEntity(), SpriteSheet.getBorderedBlock(20, 20, Color.WHITE));
+			h = new HitBox(getOwnedEntity(), SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3));
 			h.setLifeTime((int)(getAttackTime() * .8));
 		}
 		return h;
