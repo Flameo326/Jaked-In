@@ -118,13 +118,4 @@ public class ArenaController implements Initializable {
 //		}.start();
 		gc.start();
 	}
-
 }
-
-/*Sometimes I still get width or heihgt must be positive errors, fix that.
- *Some objects only go to the very tip of the room
- *Some objects are completed but aren still a few pixels away, like an entire block
- * 
- * 
- * 
- */
