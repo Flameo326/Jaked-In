@@ -1,5 +1,6 @@
 package Controller;
 
+import Enums.Direction;
 import Models.Collision;
 import Models.Entity;
 
@@ -12,10 +13,21 @@ public class CollisionSystem {
 	
 	// This would need to be changed to take in rectangles instead... probably
 	public static Collision AABBvsAABB(Entity a, Entity b){
-		boolean hasCollided = true;
-		if(hasCollided = isIntersectingXAxis(a, b)) {}
-		else if(hasCollided = isIntersectingXAxis(a, b)) {}
-		return new Collision(a, b, hasCollided);
+		Collision hori = isIntersectingXAxis(a, b);
+		Collision vert = isIntersectingXAxis(a, b);
+		
+		// create a new collision based on the previous two...
+		boolean hasCollided = hori.hasCollided && vert.hasCollided;
+		int penDepth;
+		Direction d;
+		if(hori.penDepth < vert.penDepth){
+			penDepth = hori.penDepth;
+			d = hori.collisionNormal;
+		} else {
+			penDepth = vert.penDepth;
+			d = vert.collisionNormal;
+		}
+		return new Collision(a, b, hasCollided, d, penDepth);
 	}
 	
 	/**
@@ -29,8 +41,31 @@ public class CollisionSystem {
 	 * @param b - an Entity in AABB form
 	 * @return
 	 */
-	public static boolean isIntersectingXAxis(Entity a, Entity b){
-		return !(a.getXPos() + a.getWidth() < b.getXPos() || b.getXPos() + b.getWidth() < a.getXPos());
+	public static Collision isIntersectingXAxis(Entity a, Entity b){
+		// detect collision
+		boolean colliding = isIntersectingAlongLine(a.getXPos(), a.getXPos() + a.getWidth(), b.getXPos(), b.getXPos() + b.getWidth());
+		
+		// collision Normal, which is the opposite direction we are colliding in
+		// for example, if we are collding on the right side then we need to move left
+		int xDir = 0;
+		int penDepth = 0;
+		
+		// our collision is going to be which side we are collisiong against the smallest
+		int penRight = a.getXPos() + a.getWidth() - b.getXPos();
+		int penLeft = b.getXPos() + b.getWidth() - a.getXPos();
+		if(penRight < penLeft){
+			xDir = -1;
+			penDepth = penRight;
+		} else if(penRight > penLeft){
+			xDir = 1;
+			penDepth = penLeft;
+		}
+		// Otherwise the distance is the exact same and there is no particular direction it should go in
+		else {
+			xDir = 0;
+			penDepth = penLeft;
+		}
+		return new Collision(a, b, colliding, Direction.getDir(xDir, 0), penDepth);
 	}
 	
 	/**
@@ -44,8 +79,31 @@ public class CollisionSystem {
 	 * @param b - an Entity in AABB form
 	 * @return
 	 */
-	public static boolean isIntersectingYAxis(Entity a, Entity b){
-		return !(a.getYPos() + b.getHeight() < b.getYPos() || b.getYPos()  < a.getYPos()  + a.getHeight() ); 
+	public static Collision isIntersectingYAxis(Entity a, Entity b){
+		// detect collision
+		boolean colliding = isIntersectingAlongLine(a.getYPos(), a.getYPos() + a.getHeight(), b.getYPos(), b.getYPos() + b.getHeight());
+		
+		// collision Normal, which is the opposite direction we are colliding in
+		// for example, if we are collding on the top side then we need to move down
+		int yDir = 0;
+		int penDepth = 0;
+		
+		// our collision is going to be which side we are collisiong against the smallest
+		int penUp = a.getYPos() + a.getHeight() - b.getYPos();
+		int penDown = b.getYPos() + b.getHeight() - a.getYPos();
+		if(penUp < penDown){
+			yDir = -1;
+			penDepth = penUp;
+		} else if(penUp > penDown){
+			yDir = 1;
+			penDepth = penDown;
+		}
+		// Otherwise the distance is the exact same and there is no particular direction it should go in
+		else {
+			yDir = 0;
+			penDepth = penDown;
+		}
+		return new Collision(a, b, colliding, Direction.getDir(0, yDir), penDepth);
 	}
 	
 	/**
@@ -59,6 +117,10 @@ public class CollisionSystem {
 	 */
 	public static boolean isIntersectingAlongLine(int lineAMin, int lineAMax, int lineBMin, int lineBMax){
 		return !(lineAMax < lineBMin || lineBMax < lineAMin); 
+	}
+	
+	public static boolean isFullyEncapsulating(int lineAMin, int lineAMax, int lineBMin, int lineBMax){
+		return !(lineAMin > lineBMin || lineAMax < lineBMax); 
 	}
 
 }

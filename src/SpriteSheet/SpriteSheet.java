@@ -44,12 +44,12 @@ public abstract class SpriteSheet {
 		return img;
 	}
 	
-	public static Image getBlock(int width, int height){
+	public static Image getBlock(int width, int height, Color c){
 		WritableImage img = new WritableImage(width, height);
 		PixelWriter pw = img.getPixelWriter();
 		for(int i = 0; i < img.getHeight(); i++){
 			for(int y = 0; y < img.getWidth(); y++){
-				pw.setColor(y, i, Color.BLACK);
+				pw.setColor(y, i, c);
 				
 			}
 		}

@@ -12,6 +12,7 @@ import Models.Weapon.ProjectileWeapon;
 import Models.Weapon.Weapon;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
 	
@@ -22,7 +23,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
 		// Just Default it to a Standard Projectile Weapon for now
-		setWeapon(new ProjectileWeapon(this, SpriteSheet.getBlock(5, 5)));
+		setWeapon(new ProjectileWeapon(this, SpriteSheet.getBorderedBlock(5, 5, Color.WHITE)));
 	}
 
 	@Override
