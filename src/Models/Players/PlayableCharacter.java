@@ -22,6 +22,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
+		this.setDisplayLayer(5);
 		// Just Default it to a Standard Projectile Weapon for now
 		setWeapon(new ProjectileWeapon(this, SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3)));
 	}
