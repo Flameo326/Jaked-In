@@ -7,7 +7,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 // This Class handles all the Graphics stuff
-public abstract class SpriteSheet {
+public final class SpriteSheet {
 	
 	private static Image spriteSheet;
 	private static boolean isInit = false;
@@ -27,10 +27,9 @@ public abstract class SpriteSheet {
 		return img;
 	}
 	
-	public static Image getBorderedBlock(int width, int height, Color c){
+	public static Image getBorderedBlock(int width, int height, Color c, int borderWidth){
 		WritableImage img = new WritableImage(width, height);
 		PixelWriter pw = img.getPixelWriter();
-		int borderWidth = 3;
 		for(int i = 0; i < img.getHeight(); i++){
 			for(int e = 0; e < img.getWidth(); e++){
 				if(i < borderWidth || e < borderWidth || i > img.getHeight()-borderWidth ||
