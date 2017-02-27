@@ -2,8 +2,6 @@ package Models.Map;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
-import java.util.function.Consumer;
 
 import Controller.CollisionSystem;
 import Enums.Direction;
@@ -30,7 +28,8 @@ public class Map {
 		mapHeight = height;
 		mapObjects = new ArrayList<>();
 		rand = new Random();
-		generateMap(70, 70, 200, 200, 10);
+		// rand.nextInt(10)+1
+		generateMap(70, mapWidth, .8, 1.2, 10);
 		populateMap();
 	}
 	
@@ -40,65 +39,99 @@ public class Map {
 	// the more rooms, the more blobbish
 	
 	// We should try to not generate rooms that are less than the player's width and height
-	public void generateMap(int minWidth, int minHeight, int maxWidth, int maxHeight, int roomAmo){
+	public void generateMap(int minWidth, int maxWidth, double minHeightMultiplier, double maxHeightMultiplier, int roomAmo){
 		mapObjects.clear();
 		
-		// It would be better to represent rooms as a tree structure
-		ArrayList<Entity> room = new ArrayList<>();
-		room.add(createNewRoom(minWidth, minHeight, maxWidth, maxHeight));
-		for(int i = 1; i < roomAmo; i++){
-			Entity previousRoom = room.get(i-1);
-			Entity currentRoom = createNewRoom(minWidth, minHeight, maxWidth, maxHeight);
+		Entity currentRoom = createNewRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
+		mapObjects.add(currentRoom);
+		room: for(int i = 1; i < roomAmo; i++){
+			Entity previousRoom = mapObjects.get(mapObjects.size()-1);
+			currentRoom = createNewRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
 			
 			int maxDist = Math.max(currentRoom.getWidth(), currentRoom.getHeight());
-			int radius = (int) ((rand.nextDouble() + rand.nextDouble() + rand.nextDouble() + 1) * maxDist);
+			int radius = (int) ((rand.nextDouble() + 1) * maxDist);
 			// in radians
 			int degree = rand.nextInt(360);
 			int initialDegree = degree;
 			
 			boolean hasNotCollided = false;
-			int p = 0;
-			boolean worked = true;
 			while(!hasNotCollided){
 				int x = (int)(Math.cos(degree * Math.PI / 180) * radius);
 				int y = (int)(Math.sin(degree * Math.PI / 180) * radius);
-				currentRoom.setXPos(x);
-				currentRoom.setYPos(y);
+				currentRoom.setXPos(previousRoom.getXPos() + x);
+				currentRoom.setYPos(previousRoom.getYPos() + y);
 				hasNotCollided = true;
-				for(Collision c : CollisionSystem.getCollision(currentRoom, room.toArray(new Entity[0]))){
-//					if(c.hasCollided || c.penDepth > -20){
-//						hasNotCollided = false;
-//					}
-					hasNotCollided = hasNotCollided && !c.hasCollided;
+				// do a collision check against the rooms which will be at the end of size i
+				for(Collision c : CollisionSystem.getCollision(currentRoom, 
+						mapObjects.toArray(new Entity[mapObjects.size()-i]))){
+					if(Math.min(c.xPenDepth, c.yPenDepth) > -20){
+						hasNotCollided = false;
+					}
+//					hasNotCollided = hasNotCollided && !c.hasCollided;
 				}
 				degree += 99;
-				if(degree >= 360) { degree %= 360; }
-				System.out.println("Looping " + degree + " " + initialDegree);
+				if(degree >= 360) { degree -= 360; }
 				if(degree == initialDegree){
-					System.out.println("Couldn't place room");
 					--i;
-					worked = false; 
-					break;
+					continue room;
 				}
 			}
-			if(worked){
-				room.add(currentRoom);
-				mapObjects.addAll(generatePathsBetween(previousRoom, currentRoom));
+			
+			// Collection of collisions between new Room and previous objects
+			ArrayList<Collision> c =  CollisionSystem.getCollision(currentRoom, mapObjects.toArray(new Entity[0]));
+			
+			// Set default values to the first entity in collection
+			Entity closest = c.get(0).collidingEntity;
+			int smallestXPen = c.get(0).xPenDepth; 
+			int smallestYPen = c.get(0).yPenDepth;
+			int smallestPenetration = Math.max(smallestXPen, smallestYPen);
+			boolean colliding = false;
+			
+			// Check for the Entity that is eiter colliding or has the least (maximum) penetrationDepth
+			for(int y = 1; y < c.size(); y++){
+				
+				// Get the closest object to the currentRoom
+				int temp;
+				if((temp = Math.max(c.get(i).xPenDepth, c.get(i).yPenDepth)) > smallestPenetration) { 
+					smallestYPen = c.get(i).yPenDepth;
+					smallestXPen = c.get(i).xPenDepth;
+					smallestPenetration = temp;
+					closest = c.get(i).collidingEntity;
+				} else if(temp == smallestPenetration){
+					if(c.get(i).yPenDepth > smallestYPen){
+						smallestYPen = c.get(i).yPenDepth;
+						closest = c.get(i).collidingEntity;
+					} else if(c.get(i).xPenDepth > smallestXPen){
+						smallestXPen = c.get(i).xPenDepth;
+						closest = c.get(i).collidingEntity;
+					}
+				}
+				// If the player can move into the room from another object on the map
+				// Then no need to create paths.
+//				if((smallestXPen >= 40 && smallestYPen >= 0) || (smallestYPen >= 40 && smallestXPen >= 0)){
+//					colliding = true; 
+//					break; 
+//				}
 			}
+			if(!colliding){
+				mapObjects.addAll(0, generatePathsBetween(closest, currentRoom));
+			}
+			mapObjects.add(currentRoom);
 		}
-		mapObjects.addAll(room);
 	}
 	
 	
 	private void populateMap(){
 		int upgradesAmo = rand.nextInt(10) + 1;
-		int padding = 5;
 		for(int i = 0; i < upgradesAmo; i++){
 			Entity room = mapObjects.get(rand.nextInt(mapObjects.size()-i));
-			int size = (rand.nextInt(10) + 1) * 5;
 			int temp;
+			while((temp = (int) (Math.min(room.getWidth(), room.getHeight()) * .5)) <= 1){
+				room = mapObjects.get(rand.nextInt(mapObjects.size()-i));
+			}
+			int size = (rand.nextInt(10) + 1) * 5;
 			// anything less than 20 fails
-			if(size > (temp = (int) (Math.min(room.getWidth(), room.getHeight()) * .5))) { size = (temp > 0 ? temp : 1); }
+			if(size > temp) { size = temp; }
 			int xPos = rand.nextInt(room.getWidth() - size) + room.getXPos();
 			int yPos = rand.nextInt(room.getHeight() - size) + room.getYPos();
 			mapObjects.add(new Upgrade(SpriteSheet.getBlock(size, size, Color.BLUEVIOLET), xPos, yPos));
@@ -127,9 +160,9 @@ public class Map {
 		return e;
 	}
 	
-	public Entity createNewRoom(int minWidth, int minHeight, int maxWidth, int maxHeight){
+	public Entity createNewRoom(int minWidth, int maxWidth, double minHeightMultiplier, double maxHeightMultiplier){
 		int width = rand.nextInt(maxWidth - minWidth + 1) + minWidth;
-		int height = rand.nextInt(maxHeight - minHeight + 1) + minHeight;
+		int height = (int)(rand.nextDouble() * (maxHeightMultiplier - minHeightMultiplier) + minHeightMultiplier * width);
 		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUA), 0, 0, width, height){
 			@Override
 			public boolean isColliding(Collideable c) {
@@ -148,6 +181,27 @@ public class Map {
 		return e;
 	}
 	
+	public Entity createNewPath(int minWidth, int minHeight, int maxWidth, int maxHeight){
+		int width = rand.nextInt(maxWidth - minWidth + 1) + minWidth;
+		int height = rand.nextInt(maxHeight - minHeight + 1) + minHeight;
+		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUAMARINE), 0, 0, width, height){
+			@Override
+			public boolean isColliding(Collideable c) {
+				throw new UnsupportedOperationException("Not yet Implemented");
+			}
+			@Override
+			public Bounds getBounds() {
+				throw new UnsupportedOperationException("Not yet Implemented");
+			}
+			@Override
+			public void update(ArrayList<Entity> entities) {
+				// Do Nothing
+			}
+		};
+		e.setTag("Path");
+		return e;
+	}
+	
 	public ArrayList<Entity> generatePathsBetween(Entity e1, Entity e2){
 		ArrayList<Entity> paths = new ArrayList<>();
 //		System.out.println("Making paths from Room: ");
@@ -156,16 +210,21 @@ public class Map {
 //		System.out.println("\tX: " + e2.getXPos() + " Y: " + e2.getYPos() + " Width: " + e2.getWidth() + " Height: " + e2.getHeight());
 		
 		int playerW = 30 + 5, playerH = 30 + 5;
-		// Just in case rooms are smaller than player... which they shouldt be
-		int width = Math.min(Math.min(e1.getWidth(), e2.getWidth()), rand.nextInt((int)(playerW*1.5/5)) * 5 + (int)(playerW*1.5));
-		int height = Math.min(Math.min(e1.getHeight(), e2.getHeight()), rand.nextInt((int)(playerH*1.5/5)) * 5 + (int)(playerH*1.5));
+		int width = rand.nextInt((int)(playerW*1.5/5)) * 5 + (int)(playerW*1.5);
+		int height = rand.nextInt((int)(playerH*1.5/5)) * 5 + (int)(playerH*1.5);
 //		System.out.println("Default Width: " + width + " Default Height: " + height);
 		
 		Entity currentPath = e1;
 		Direction previousD = Direction.NULL;
-		boolean xConnected = false, yConnected = false;
-		boolean xPath = rand.nextBoolean();
+		boolean xConnected = false;
+		boolean yConnected = false;
+		
+		// By default I dont want to move in the X direction if we are already intersecting. This doesnt mean it 
+		// should be considered intersecting, just that we dont want to move in that direction first.
+		boolean xPath = (CollisionSystem.isIntersectingXAxis(e1, e2).hasCollided ? false :
+			CollisionSystem.isIntersectingYAxis(e1, e2).hasCollided ? true : rand.nextBoolean());
 		while(!xConnected || !yConnected){
+			
 			// Negate it get the direction towards the object
 			int xDiff = -CollisionSystem.isIntersectingXAxis(currentPath, e2).collisionNormal.getX();
 			int yDiff = -CollisionSystem.isIntersectingYAxis(currentPath, e2).collisionNormal.getY();
@@ -184,10 +243,10 @@ public class Map {
 				int widthMin = Math.min(width, widthMax);
 //				System.out.println(widthMin + " " + widthMax);
 				
-				path = createNewRoom(widthMin, height, widthMax, height);
+				path = createNewPath(widthMin, height, widthMax, height);
 				int initialY;
 				if(currentPath == e1){
-					initialY = rand.nextInt(currentPath.getHeight() - height + 1) + currentPath.getYPos();
+					initialY = rand.nextInt((currentPath.getHeight() > height ? currentPath.getHeight() - height + 1 : 1)) + currentPath.getYPos();
 				} else {
 					initialY = currentPath.getYPos() + (previousD.getY() == 1 ? currentPath.getHeight() - height : 0);
 				}
@@ -211,10 +270,10 @@ public class Map {
 				int heightMin = Math.min(height, heightMax);
 //				System.out.println(heightMin + " " + heightMax);
 				
-				path = createNewRoom(width, heightMin, width, heightMax);
+				path = createNewPath(width, heightMin, width, heightMax);
 				int initialX;
 				if(currentPath == e1){
-					initialX = rand.nextInt(currentPath.getWidth() - width + 1) + currentPath.getXPos();
+					initialX = rand.nextInt((currentPath.getWidth() > width ? currentPath.getWidth() - width + 1 : 1)) + currentPath.getXPos();
 				} else {
 					initialX = currentPath.getXPos() + (previousD.getX() == 1 ? currentPath.getWidth() - width : 0);
 				}
@@ -232,7 +291,6 @@ public class Map {
 //				+ " Width: " + path.getWidth() + " Height: " + path.getHeight());
 //				System.out.println("X: " + xConnected + " Y: " + yConnected + "\n");
 	
-				path.setImage(SpriteSheet.getBlock(path.getWidth(), path.getHeight(), Color.AQUAMARINE));
 				paths.add(path);
 				currentPath = path;
 			}

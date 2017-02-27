@@ -11,18 +11,20 @@ public class Collision {
 	public final Direction collisionNormal;
 	// The depth of collision
 	// If this value is negative then it indicates how far we need to move to collide
-	public final int penDepth;
+	public final int xPenDepth;
+	public final int yPenDepth;
 	
 	public Collision(Entity collidingEntity, Entity collidedEntity, boolean hasCollided){
-		this(collidingEntity, collidedEntity, hasCollided, Direction.NULL, 0);
+		this(collidingEntity, collidedEntity, hasCollided, Direction.NULL, 0, 0);
 	}
 	
-	public Collision(Entity collidingEntity, Entity collidedEntity, boolean hasCollided, Direction collisionNormal, int penDepth){
+	public Collision(Entity collidingEntity, Entity collidedEntity, boolean hasCollided, Direction collisionNormal, int xPenDepth, int yPenDepth){
 		this.collidedEntity = collidingEntity;
 		this.collidingEntity = collidedEntity;
 		this.hasCollided = hasCollided;
 		this.collisionNormal = collisionNormal;
-		this.penDepth = penDepth;
+		this.xPenDepth = xPenDepth;
+		this.yPenDepth = yPenDepth;
 	}
 
 }
