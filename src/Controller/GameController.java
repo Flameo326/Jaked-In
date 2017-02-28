@@ -33,7 +33,8 @@ public class GameController extends AnimationTimer {
 			// All Entities are updated even if they don't move
 			e.update(entities);
 			// Test for collisions
-			for(int y = i+1; y < entities.size(); y++){
+			for(int y = 0; y < entities.size(); y++){
+				if(y == i) { continue; }
 				Entity colliding = entities.get(y);
 				Collision c = CollisionSystem.getCollision(e, colliding);
 				if(c.hasCollided){

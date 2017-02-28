@@ -6,8 +6,11 @@ import Controller.InputHandler;
 import Enums.Direction;
 import Models.Entity;
 import Models.Weapon.HitBox;
+import Models.Weapon.MeleeWeapon;
+import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 
 public class HumanPlayer extends PlayableCharacter{
 	
@@ -18,7 +21,7 @@ public class HumanPlayer extends PlayableCharacter{
 		// Set Intiial Direction so it's not at 0, 0 or unmoving
 		setCurrDir(Direction.RIGHT);
 		setTag("Human-" + ++humanID);
-		//setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE)));
+		//setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
 	}
 	
 	@Override
