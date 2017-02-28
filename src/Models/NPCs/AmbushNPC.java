@@ -6,26 +6,14 @@ import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
-import Models.Weapon.HitBox;
 import javafx.scene.image.Image;
 
 public class AmbushNPC extends PlayableCharacter implements Interactable {
 
 	public AmbushNPC(Image i, int x, int y) {
 		super(i, x, y);
+		setTag(getTag() + "-EnemyNPC");
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void takeDamage() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public HitBox attack() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

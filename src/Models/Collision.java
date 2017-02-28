@@ -19,8 +19,8 @@ public class Collision {
 	}
 	
 	public Collision(Entity collidingEntity, Entity collidedEntity, boolean hasCollided, Direction collisionNormal, int xPenDepth, int yPenDepth){
-		this.collidedEntity = collidingEntity;
-		this.collidingEntity = collidedEntity;
+		this.collidingEntity = collidingEntity;
+		this.collidedEntity = collidedEntity;
 		this.hasCollided = hasCollided;
 		this.collisionNormal = collisionNormal;
 		this.xPenDepth = xPenDepth;

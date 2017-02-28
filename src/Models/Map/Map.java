@@ -7,7 +7,7 @@ import Controller.CollisionSystem;
 import Enums.Direction;
 import Models.Collision;
 import Models.Entity;
-import Models.Upgrades.Upgrade;
+import Models.Upgrades.MedPack;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -80,7 +80,7 @@ public class Map {
 			ArrayList<Collision> c =  CollisionSystem.getCollision(currentRoom, mapObjects.toArray(new Entity[0]));
 			
 			// Set default values to the first entity in collection
-			Entity closest = c.get(0).collidingEntity;
+			Entity closest = c.get(0).collidedEntity;
 			int smallestXPen = c.get(0).xPenDepth; 
 			int smallestYPen = c.get(0).yPenDepth;
 			int smallestPenetration = Math.max(smallestXPen, smallestYPen);
@@ -95,14 +95,14 @@ public class Map {
 					smallestYPen = c.get(i).yPenDepth;
 					smallestXPen = c.get(i).xPenDepth;
 					smallestPenetration = temp;
-					closest = c.get(i).collidingEntity;
+					closest = c.get(i).collidedEntity;
 				} else if(temp == smallestPenetration){
 					if(c.get(i).yPenDepth > smallestYPen){
 						smallestYPen = c.get(i).yPenDepth;
-						closest = c.get(i).collidingEntity;
+						closest = c.get(i).collidedEntity;
 					} else if(c.get(i).xPenDepth > smallestXPen){
 						smallestXPen = c.get(i).xPenDepth;
-						closest = c.get(i).collidingEntity;
+						closest = c.get(i).collidedEntity;
 					}
 				}
 				// If the player can move into the room from another object on the map
@@ -133,7 +133,7 @@ public class Map {
 			if(size > temp) { size = temp; }
 			int xPos = rand.nextInt(room.getWidth() - size) + room.getXPos();
 			int yPos = rand.nextInt(room.getHeight() - size) + room.getYPos();
-			mapObjects.add(new Upgrade(SpriteSheet.getBlock(size, size, Color.BLUEVIOLET), xPos, yPos));
+			mapObjects.add(new MedPack(SpriteSheet.getBlock(size, size, Color.BLUEVIOLET), xPos, yPos));
 		}
 	}
 	
