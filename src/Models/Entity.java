@@ -4,7 +4,6 @@ import Interfaces.Collideable;
 import Interfaces.Moveable;
 import javafx.scene.image.Image;
 
-// Abstract right?
 public abstract class Entity implements Collideable, Moveable, Comparable<Entity>{
 	
 	private int displayLayer = 0;
@@ -19,6 +18,7 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 		setYPos(y);
 		setWidth(width);
 		setHeight(height);
+		setTag("Entity");
 	}
 	
 	@Override
@@ -59,20 +59,23 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 	public void setHeight(int val){ height = val; }
 	public int getHeight(){ return height; }
 	
-	
 	public int getCenterXPos(){
 		return (int) (xPos + img.getWidth()/2);
 	}
-	
 	
 	public int getCenterYPos(){
 		return (int) (yPos + img.getHeight()/2);
 	}
 	
-
 	@Override
 	public int compareTo(Entity o) {
-		return this.getDisplayLayer() - o.getDisplayLayer();
+		if(getDisplayLayer() < o.getDisplayLayer()){
+			return -1;
+		} else if(getDisplayLayer() == o.getDisplayLayer()){
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
 }

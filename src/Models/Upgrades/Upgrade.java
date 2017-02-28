@@ -13,12 +13,14 @@ public class Upgrade extends Entity implements Interactable, Collectable{
 
 	public Upgrade(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
+		setDisplayLayer(4);
+		setTag("Upgrade");
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void hasCollided(Collision c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
+		// other methods should override this
 	}
 
 	@Override

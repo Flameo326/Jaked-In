@@ -8,14 +8,14 @@ import Models.Map.Map;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
+import SpriteSheet.SpriteSheet;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Window;
 
@@ -24,46 +24,12 @@ public class ArenaController implements Initializable {
 	@FXML
 	private Canvas myCanvas;
 	private GameController gc;
-	public static Map arenaMap;
+	private Map arenaMap;
 	private PlayableCharacter player1, player2;
-	
-	public void ArenaControllerTemp(){
-		
-		WritableImage img = new WritableImage(30, 30);
-		PixelWriter pw = img.getPixelWriter();
-		int lineWidth = 2;
-		for(int i = 0; i < img.getHeight(); i++){
-			for(int y = 0; y < img.getWidth(); y++){
-				if(i < lineWidth || y < lineWidth || i > img.getHeight()-lineWidth ||
-						y > img.getWidth()-lineWidth){
-					pw.setColor(y, i, Color.BLACK);
-				}
-			}
-		}
-		
-		// Players
-		player1 = new HumanPlayer(img, 250, 250);
-		player1.setTag("Human.1");
-		gc.add(player1.getDisplayableEntities());
-		gc.setFocus(player1);
-		
-		player2 = new ComputerPlayer(img, 150, 150);
-		gc.add(player2.getDisplayableEntities());
-	}
-	
-//	private void updateImage(){
-//		g.clearRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
-//		for(Entity e : entities){
-//			g.drawImage(e.getImage(), e.getXPos(), e.getYPos());
-//		}	
-//	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// Resizes the Canvas to it's Stage Width and Height...
-		gc = new GameController(myCanvas);
-		ArenaControllerTemp();
-		
 		myCanvas.sceneProperty().addListener(new ChangeListener<Scene>(){
 		
 			// This is the actual method when ^ this action happens
@@ -97,25 +63,25 @@ public class ArenaController implements Initializable {
 		myCanvas.setOnKeyPressed((e) -> InputHandler.keyPress(e));
 		myCanvas.setOnKeyReleased((e) -> InputHandler.keyRelease(e));
 		
-		// This entire thing will be our "Run" method. It gets called constantly and updates accordingly.
-		// We need to figure out a way for this class to communicate between The ArenaController and everything the player does.
-		// For example, If they create a new Projectile, it needs to be added to the colliders and things that must be
-		// -- graphicaly updated every Frame
-
+		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
+		// Players
+		player1 = new HumanPlayer(img, 250, 250);
+		player2 = new ComputerPlayer(img, 150, 150);
 		
-//		new AnimationTimer(){
-//			@Override
-//			public void handle(long now) {
-//				for(Entity e : entities.toArray(new Entity[0])){
-//					// All Entities are updated even if they don't move
-//					e.update(entities);
-//					// Print out Entity Information
-//					//System.out.println(e.getClass().getSimpleName() + " X: " + e.getXPos() + " Y: " + e.getYPos());
-//				}
-//				// Handles the graphical Rendering 
-//				updateImage();
-//			}
-//		}.start();
+		gc = new GameController(myCanvas);
+		gc.add(player1.getDisplayableEntities());
+		gc.add(player2.getDisplayableEntities());
+		gc.add(new HumanPlayer(img, 50, 50));
+		gc.setFocus(player1);
 		gc.start();
 	}
 }
+
+/*TODO
+ * Fix Path and Generating Rooms
+ * Add Walls
+ * Fix Collision System
+ * Implement Damage and Death
+ * Start on Story Mode
+ * 
+ */

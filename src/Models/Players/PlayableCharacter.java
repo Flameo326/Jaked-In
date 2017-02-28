@@ -21,14 +21,63 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
-		this.setDisplayLayer(5);
+		setSpeed(3);
+		setDisplayLayer(7);
 		// Just Default it to a Standard Projectile Weapon for now
 		setWeapon(new ProjectileWeapon(this, SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3)));
 	}
 
 	@Override
 	public void hasCollided(Collision c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
+		Entity collider;
+		boolean colliding = false;
+		if(c.collidedEntity == this){
+			collider = c.collidingEntity;
+		} else { collider = c.collidedEntity; colliding  = true; }
+		String[] tagElements = collider.getTag().split("-");
+		// We have exactly 2 elements, type and ID
+		String[] ourElements = getTag().split("-");
+		System.out.println("Colliding: " + getTag());
+		System.out.println("Collider: " + collider.getTag());
+		
+		switch(tagElements[0]){
+		// If I collide against these then just move away
+		case "Human":
+		case "Computer":
+		case "NPC":
+		case "Wall":
+			if(colliding){
+				if(c.xPenDepth < c.yPenDepth){
+					setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);
+				} else {
+					setYPos(getYPos() + c.collisionNormal.getY() * c.yPenDepth);
+				}
+			} else {
+				if(c.xPenDepth < c.yPenDepth){
+					setXPos(getXPos() - c.collisionNormal.getX() * c.xPenDepth);
+				} else {
+					setYPos(getYPos() - c.collisionNormal.getY() * c.yPenDepth);
+				}
+			}
+			break;
+		case "Room":
+			// Maybe display the room name in screen...
+			break;
+		case "Upgrade":
+			// If we interact with an upgrade then upgrade should probaly do something, not us
+			// *Note, "Interact" not "Collide"
+			break;
+		// The object is something that damages.
+		// If it's owner is not us then we take damage
+		case "Attack":
+			// 1 for Attack, 1 for Type, 2 for Owner
+			if(tagElements.length == 4 && tagElements[2] == ourElements[0] && tagElements[3] == ourElements[1]){
+				// our own attack
+			} else {
+				// take damage
+			}
+			break;
+		}
 	}
 
 	@Override
@@ -46,7 +95,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		if(getWeapon() != null){
 			return getWeapon().attack();
 		} else {
-			System.out.println(getTag() + ".Weapon is Null"); 
+			System.out.println(getTag() + "-Weapon is Null"); 
 			return null;
 		}	
 	}

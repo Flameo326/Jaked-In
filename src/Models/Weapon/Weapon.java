@@ -16,11 +16,14 @@ public abstract class Weapon extends Entity implements Attackable{
 	public Weapon(PlayableCharacter e, Image i){
 		super(i, e.getCenterXPos(), e.getCenterYPos(), (int)i.getWidth(), (int)i.getHeight());
 		ownedEntity = e;
+		setDisplayLayer(8);
 	}
 
 	@Override
 	public void hasCollided(Collision c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
+		// do nothing im pretty sure
+		// we dont care about collision among weapon... potentially//
+		// only there for display
 	}
 	
 	@Override

@@ -73,6 +73,7 @@ public class Map {
 					--i;
 					continue room;
 				}
+				System.out.println("Here1");
 			}
 			
 			// Collection of collisions between new Room and previous objects
@@ -147,10 +148,11 @@ public class Map {
 			}
 			@Override
 			public void hasCollided(Collision c) {
-				throw new UnsupportedOperationException("Not yet Implemented");
+				// do nothing
 			}
 		};
 		e.setTag("Wall");
+		e.setDisplayLayer(3);
 		return e;
 	}
 	
@@ -160,7 +162,7 @@ public class Map {
 		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUA), 0, 0, width, height){
 			@Override
 			public void hasCollided(Collision c) {
-				throw new UnsupportedOperationException("Not yet Implemented");
+				// do nothing
 			}
 			@Override
 			public void update(ArrayList<Entity> entities) {
@@ -168,6 +170,7 @@ public class Map {
 			}
 		};
 		e.setTag("Room");
+		e.setDisplayLayer(2);
 		return e;
 	}
 	
@@ -177,7 +180,7 @@ public class Map {
 		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUAMARINE), 0, 0, width, height){
 			@Override
 			public void hasCollided(Collision c) {
-				throw new UnsupportedOperationException("Not yet Implemented");
+				// do nothing
 			}
 			@Override
 			public void update(ArrayList<Entity> entities) {
@@ -185,6 +188,7 @@ public class Map {
 			}
 		};
 		e.setTag("Path");
+		e.setDisplayLayer(1);
 		return e;
 	}
 	
@@ -210,7 +214,7 @@ public class Map {
 		boolean xPath = (CollisionSystem.isIntersectingXAxis(e1, e2).hasCollided ? false :
 			CollisionSystem.isIntersectingYAxis(e1, e2).hasCollided ? true : rand.nextBoolean());
 		while(!xConnected || !yConnected){
-			
+			System.out.println("Here2");
 			// Negate it get the direction towards the object
 			int xDiff = -CollisionSystem.isIntersectingXAxis(currentPath, e2).collisionNormal.getX();
 			int yDiff = -CollisionSystem.isIntersectingYAxis(currentPath, e2).collisionNormal.getY();

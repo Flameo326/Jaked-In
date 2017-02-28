@@ -2,14 +2,12 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
-import Interfaces.Collideable;
-import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
 
-public class Prisoner extends Entity implements Collideable, Interactable {
+public class Prisoner extends NPC {
 
 	public Prisoner(Image i, int x, int y, int width, int height) {
 		super(i, x, y, width, height);
