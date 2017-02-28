@@ -2,9 +2,8 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
-import Interfaces.Collideable;
 import Interfaces.Interactable;
-import Models.Bounds;
+import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
@@ -44,15 +43,8 @@ public class Doctor extends Entity implements Interactable {
 	}
 
 	@Override
-	public boolean isColliding(Collideable c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Bounds getBounds() {
-		// TODO Auto-generated method stub
-		return null;
+	public void hasCollided(Collision c) {
+		throw new UnsupportedOperationException("Not yet Implemented");
 	}
 
 }

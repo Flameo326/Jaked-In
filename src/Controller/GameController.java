@@ -1,8 +1,11 @@
 package Controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import Models.Entity;
-import Models.Players.PlayableCharacter;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,11 +17,10 @@ public class GameController extends AnimationTimer {
 	private GraphicsContext g;
 	private Entity focusedEntity;
 	
-	
 	public GameController(Canvas myCanvas) {
-		entities = new ArrayList<>();
 		this.myCanvas = myCanvas;
 		g = myCanvas.getGraphicsContext2D();
+		entities = new ArrayList<>();
 	}
 	
 	@Override

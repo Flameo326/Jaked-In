@@ -5,8 +5,6 @@ import java.util.Random;
 
 import Controller.CollisionSystem;
 import Enums.Direction;
-import Interfaces.Collideable;
-import Models.Bounds;
 import Models.Collision;
 import Models.Entity;
 import Models.Upgrades.Upgrade;
@@ -144,16 +142,12 @@ public class Map {
 		Image img = SpriteSheet.getBlock(width, height, Color.BLACK);
 		Entity e = new Entity(img, x, y, (int)img.getWidth(), (int)img.getHeight()){
 			@Override
-			public boolean isColliding(Collideable c) {
-				throw new UnsupportedOperationException("Not yet Implemented");
-			}
-			@Override
-			public Bounds getBounds() {
-				throw new UnsupportedOperationException("Not yet Implemented");
-			}
-			@Override
 			public void update(ArrayList<Entity> entities) {
 				// Do Nothing
+			}
+			@Override
+			public void hasCollided(Collision c) {
+				throw new UnsupportedOperationException("Not yet Implemented");
 			}
 		};
 		e.setTag("Wall");
@@ -165,11 +159,7 @@ public class Map {
 		int height = (int)(rand.nextDouble() * (maxHeightMultiplier - minHeightMultiplier) + minHeightMultiplier * width);
 		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUA), 0, 0, width, height){
 			@Override
-			public boolean isColliding(Collideable c) {
-				throw new UnsupportedOperationException("Not yet Implemented");
-			}
-			@Override
-			public Bounds getBounds() {
+			public void hasCollided(Collision c) {
 				throw new UnsupportedOperationException("Not yet Implemented");
 			}
 			@Override
@@ -186,11 +176,7 @@ public class Map {
 		int height = rand.nextInt(maxHeight - minHeight + 1) + minHeight;
 		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUAMARINE), 0, 0, width, height){
 			@Override
-			public boolean isColliding(Collideable c) {
-				throw new UnsupportedOperationException("Not yet Implemented");
-			}
-			@Override
-			public Bounds getBounds() {
+			public void hasCollided(Collision c) {
 				throw new UnsupportedOperationException("Not yet Implemented");
 			}
 			@Override

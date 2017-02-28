@@ -3,9 +3,8 @@ package Models.Upgrades;
 import java.util.ArrayList;
 
 import Interfaces.Collectable;
-import Interfaces.Collideable;
 import Interfaces.Interactable;
-import Models.Bounds;
+import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
@@ -18,12 +17,7 @@ public class Upgrade extends Entity implements Interactable, Collectable{
 	}
 
 	@Override
-	public boolean isColliding(Collideable c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
-	}
-
-	@Override
-	public Bounds getBounds() {
+	public void hasCollided(Collision c) {
 		throw new UnsupportedOperationException("Not yet Implemented");
 	}
 

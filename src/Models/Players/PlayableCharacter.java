@@ -2,10 +2,9 @@ package Models.Players;
 
 import Enums.Direction;
 import Interfaces.Attackable;
-import Interfaces.Collideable;
 import Interfaces.Damageable;
 import Interfaces.Dodgeable;
-import Models.Bounds;
+import Models.Collision;
 import Models.Entity;
 import Models.Weapon.HitBox;
 import Models.Weapon.ProjectileWeapon;
@@ -27,12 +26,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	}
 
 	@Override
-	public boolean isColliding(Collideable c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
-	}
-
-	@Override
-	public Bounds getBounds() {
+	public void hasCollided(Collision c) {
 		throw new UnsupportedOperationException("Not yet Implemented");
 	}
 
