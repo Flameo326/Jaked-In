@@ -11,6 +11,7 @@ public class AngryNPC extends PlayableCharacter implements Interactable {
 
 	public AngryNPC(Image i, int x, int y) {
 		super(i, x, y);
+		setTag(getTag() + "-EnemyNPC");
 		// TODO Auto-generated constructor stub
 	}
 

@@ -6,9 +6,9 @@ import Interfaces.Damageable;
 import Interfaces.Dodgeable;
 import Models.Collision;
 import Models.Entity;
-import Models.Weapon.HitBox;
 import Models.Weapon.ProjectileWeapon;
 import Models.Weapon.Weapon;
+import Models.Weapon.Attack.Attack;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -16,8 +16,9 @@ import javafx.scene.paint.Color;
 public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
 	
 	private Weapon weapon;
-	private int maxHealth, currentHealth;
 	private Direction direction;
+	private int maxHealth, currentHealth;
+	private boolean isDodging;
 
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
@@ -25,6 +26,9 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		setDisplayLayer(7);
 		// Just Default it to a Standard Projectile Weapon for now
 		setWeapon(new ProjectileWeapon(this, SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3)));
+		
+		setMaxHealth(100);
+		setCurrentHealth(100);
 	}
 
 	@Override
@@ -32,16 +36,10 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		Entity collider;
 		if(c.collidingEntity == this){
 			collider = c.collidedEntity;
-		} else { 
-//			collider = c.collidingEntity;
-			// we are being collided against, not our responsibility...
-			return;
-		}
+		} else { return; }
+		
 		String[] tagElements = collider.getTag().split("-");
-		// We have exactly 2 elements, type and ID
-		String[] ourElements = getTag().split("-");
-//		System.out.println("Colliding: " + getTag());
-//		System.out.println("Collider: " + collider.getTag());
+//		String[] ourElements = getTag().split("-");
 		
 		switch(tagElements[0]){
 		// If I collide against these then just move away
@@ -49,52 +47,34 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		case "Computer":
 		case "NPC":
 		case "Wall":
-//			if(colliding){
 				if(c.xPenDepth < c.yPenDepth){
-					setXPos(getXPos() - c.collisionNormal.getX() * c.xPenDepth);
+					setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);
 				} else {
-					setYPos(getYPos() - c.collisionNormal.getY() * c.yPenDepth);
+					setYPos(getYPos() + c.collisionNormal.getY() * c.yPenDepth);
 				}
-//			} else {
-//				if(c.xPenDepth < c.yPenDepth){
-//					setXPos(getXPos() - c.collisionNormal.getX() * c.xPenDepth);
-//				} else {
-//					setYPos(getYPos() - c.collisionNormal.getY() * c.yPenDepth);
-//				}
-//			}
 			break;
 		case "Room":
 			// Maybe display the room name in screen...
-			break;
-		case "Upgrade":
-			// If we interact with an upgrade then upgrade should probaly do something, not us
-			// *Note, "Interact" not "Collide"
-			break;
-		// The object is something that damages.
-		// If it's owner is not us then we take damage
-		case "Attack":
-			// 1 for Attack, 1 for Type, 2 for Owner
-			if(tagElements.length == 4 && tagElements[2] == ourElements[0] && tagElements[3] == ourElements[1]){
-				// our own attack
-			} else {
-				// take damage
-			}
 			break;
 		}
 	}
 
 	@Override
 	public void dodge() {
-		throw new UnsupportedOperationException("Not yet Implemented");
+		isDodging = true;
+		// setTimer for dodging
 	}
 
 	@Override
-	public void takeDamage() {
-		currentHealth--;
+	public void takeDamage(int val) {
+		if(!isDodging){
+			currentHealth -= val;
+			System.out.println(getTag() + " has " + getCurrentHealth() + "/" + getMaxHealth());
+		}
 	}
 	
 	@Override
-	public HitBox attack() {
+	public Attack attack() {
 		if(getWeapon() != null){
 			return getWeapon().attack();
 		} else {

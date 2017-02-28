@@ -35,11 +35,11 @@ public class GameController extends AnimationTimer {
 			// Test for collisions
 			for(int y = 0; y < entities.size(); y++){
 				if(y == i) { continue; }
-				Entity colliding = entities.get(y);
-				Collision c = CollisionSystem.getCollision(e, colliding);
+				Entity collided = entities.get(y);
+				Collision c = CollisionSystem.getCollision(e, collided);
 				if(c.hasCollided){
 					e.hasCollided(c);
-					colliding.hasCollided(c);
+					collided.hasCollided(c);
 				}
 			}
 			// Print out Entity Information

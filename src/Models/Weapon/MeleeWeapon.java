@@ -1,6 +1,7 @@
 package Models.Weapon;
 
 import Models.Players.PlayableCharacter;
+import Models.Weapon.Attack.HitBox;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;

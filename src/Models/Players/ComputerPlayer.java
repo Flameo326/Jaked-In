@@ -5,7 +5,7 @@ import java.util.Random;
 
 import Enums.Direction;
 import Models.Entity;
-import Models.Weapon.HitBox;
+import Models.Weapon.Attack.Attack;
 import javafx.scene.image.Image;
 
 public class ComputerPlayer extends PlayableCharacter{
@@ -38,7 +38,7 @@ public class ComputerPlayer extends PlayableCharacter{
 			setCurrDir(Direction.values()[decisionChoice >= 4 ? decisionChoice+1 : decisionChoice]);
 		}
 		if(rand.nextInt(60) == 0){
-			HitBox h = attack();
+			Attack h = attack();
 			if(h != null){
 				entities.add(h);
 			}

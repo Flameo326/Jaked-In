@@ -29,10 +29,10 @@ public abstract class Weapon extends Entity implements Attackable{
 	@Override
 	public void update(ArrayList<Entity> entities){
 		timer++;
-		setXPos(getOwnedEntity().getCenterXPos()-getWidth()/2 + getOwnedEntity().getCurrDir().getX() * getWidth());
-		setYPos(getOwnedEntity().getCenterYPos()-getHeight()/2 + getOwnedEntity().getCurrDir().getY() * getHeight());
-//		setXPos(getOwnedEntity().getCenterXPos()-getWidth()/2);
-//		setYPos(getOwnedEntity().getCenterYPos()-getHeight()/2);
+//		setXPos(getOwnedEntity().getCenterXPos()-getWidth()/2 + getOwnedEntity().getCurrDir().getX() * getWidth());
+//		setYPos(getOwnedEntity().getCenterYPos()-getHeight()/2 + getOwnedEntity().getCurrDir().getY() * getHeight());
+		setXPos(getOwnedEntity().getCenterXPos()-getWidth()/2);
+		setYPos(getOwnedEntity().getCenterYPos()-getHeight()/2);
 	}
 	
 	public void setAttackTime(int i){

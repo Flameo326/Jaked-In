@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import Controller.InputHandler;
 import Enums.Direction;
 import Models.Entity;
-import Models.Weapon.HitBox;
-import Models.Weapon.MeleeWeapon;
-import SpriteSheet.SpriteSheet;
+import Models.Weapon.Attack.Attack;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 
 public class HumanPlayer extends PlayableCharacter{
 	
@@ -32,7 +29,7 @@ public class HumanPlayer extends PlayableCharacter{
 				move(this.getCurrDir().getX(), this.getCurrDir().getY());
 			}
 			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
-				HitBox h = attack();
+				Attack h = attack();
 				if(h != null){
 					System.out.println(getTag() + " attacked");
 					entities.add(h);
@@ -44,7 +41,7 @@ public class HumanPlayer extends PlayableCharacter{
 				move(this.getCurrDir().getX(), this.getCurrDir().getY());
 			}
 			if(InputHandler.keyInputContains(InputHandler.Player2Attack)){
-				HitBox h = attack();
+				Attack h = attack();
 				if(h != null){
 					System.out.println(getTag() + " attacked");
 					entities.add(h);

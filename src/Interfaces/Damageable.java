@@ -1,5 +1,5 @@
 package Interfaces;
 
 public interface Damageable {
-	public void takeDamage();
+	public void takeDamage(int val);
 }

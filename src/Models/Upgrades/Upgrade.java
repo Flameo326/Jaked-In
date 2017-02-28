@@ -9,7 +9,9 @@ import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
 
-public class Upgrade extends Entity implements Interactable, Collectable{
+public abstract class Upgrade extends Entity implements Interactable, Collectable{
+	
+	protected boolean isCollected;
 
 	public Upgrade(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
@@ -19,23 +21,26 @@ public class Upgrade extends Entity implements Interactable, Collectable{
 	}
 
 	@Override
-	public void hasCollided(Collision c) {
-		// other methods should override this
-	}
-
-	@Override
 	public void update(ArrayList<Entity> entities) {
-		// Don't move
+		if(isCollected){
+			entities.remove(this);
+		}
 	}
-
+	
 	@Override
-	public void collect(PlayableCharacter c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
-	}
-
-	@Override
-	public void interact(PlayableCharacter c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
+	public void hasCollided(Collision c) {
+		Entity collider;
+		if(c.collidingEntity == this){
+			collider = c.collidedEntity;
+		} else { 
+			collider = c.collidingEntity;
+		}
+		String[] tagElements = collider.getTag().split("-");
+		switch(tagElements[0]){
+		case "Human":
+			collect((PlayableCharacter)collider);
+			break;
+		}
 	}
 
 }

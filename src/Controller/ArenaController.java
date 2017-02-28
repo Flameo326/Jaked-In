@@ -70,7 +70,7 @@ public class ArenaController implements Initializable {
 		
 		gc = new GameController(myCanvas);
 		gc.add(player1.getDisplayableEntities());
-//		gc.add(player2.getDisplayableEntities());
+		gc.add(player2.getDisplayableEntities());
 		gc.add(new HumanPlayer(img, 50, 50));
 		gc.setFocus(player1);
 		gc.start();

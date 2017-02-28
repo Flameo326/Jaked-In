@@ -28,7 +28,6 @@ public class MedicNPC extends Entity implements Interactable {
 	public void interact(PlayableCharacter c) {
 		Random randy = new Random();
 		c.heal(randy.nextInt(21) + 20);
-
 	}
 
 	@Override
