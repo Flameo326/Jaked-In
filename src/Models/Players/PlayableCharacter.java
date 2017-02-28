@@ -30,15 +30,18 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	@Override
 	public void hasCollided(Collision c) {
 		Entity collider;
-		boolean colliding = false;
-		if(c.collidedEntity == this){
-			collider = c.collidingEntity;
-		} else { collider = c.collidedEntity; colliding  = true; }
+		if(c.collidingEntity == this){
+			collider = c.collidedEntity;
+		} else { 
+//			collider = c.collidingEntity;
+			// we are being collided against, not our responsibility...
+			return;
+		}
 		String[] tagElements = collider.getTag().split("-");
 		// We have exactly 2 elements, type and ID
 		String[] ourElements = getTag().split("-");
-		System.out.println("Colliding: " + getTag());
-		System.out.println("Collider: " + collider.getTag());
+//		System.out.println("Colliding: " + getTag());
+//		System.out.println("Collider: " + collider.getTag());
 		
 		switch(tagElements[0]){
 		// If I collide against these then just move away
@@ -46,19 +49,19 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		case "Computer":
 		case "NPC":
 		case "Wall":
-			if(colliding){
-				if(c.xPenDepth < c.yPenDepth){
-					setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);
-				} else {
-					setYPos(getYPos() + c.collisionNormal.getY() * c.yPenDepth);
-				}
-			} else {
+//			if(colliding){
 				if(c.xPenDepth < c.yPenDepth){
 					setXPos(getXPos() - c.collisionNormal.getX() * c.xPenDepth);
 				} else {
 					setYPos(getYPos() - c.collisionNormal.getY() * c.yPenDepth);
 				}
-			}
+//			} else {
+//				if(c.xPenDepth < c.yPenDepth){
+//					setXPos(getXPos() - c.collisionNormal.getX() * c.xPenDepth);
+//				} else {
+//					setYPos(getYPos() - c.collisionNormal.getY() * c.yPenDepth);
+//				}
+//			}
 			break;
 		case "Room":
 			// Maybe display the room name in screen...

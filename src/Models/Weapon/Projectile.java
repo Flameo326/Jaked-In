@@ -38,20 +38,22 @@ public class Projectile extends HitBox{
 		String[] tagElements = collider.getTag().split("-");
 		// We have exactly 2 elements, type and ID
 		String[] ourElements = getTag().split("-");
-		System.out.println("Colliding: " + getTag());
-		System.out.println("Collider: " + collider.getTag());
+//		System.out.println("Colliding: " + getTag());
+//		System.out.println("Collider: " + collider.getTag());
 		
 		switch(tagElements[0]){
 		// If I collide against these then just move away
 		case "Attack":
 		case "Wall":
-			if(c.xPenDepth < c.yPenDepth){
-				setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);
-				setCurrDir(Direction.getDir(-getCurrDir().getY(), getCurrDir().getY()));
-			} else {
-				setYPos(getYPos() + c.collisionNormal.getY() * c.yPenDepth);
-				setCurrDir(Direction.getDir(getCurrDir().getY(), -getCurrDir().getY()));
-			}
+//			if(c.xPenDepth < c.yPenDepth){
+//				setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);
+//				setCurrDir(Direction.getDir(-getCurrDir().getY(), getCurrDir().getY()));
+//			} else {
+//				setYPos(getYPos() + c.collisionNormal.getY() * c.yPenDepth);
+//				setCurrDir(Direction.getDir(getCurrDir().getY(), -getCurrDir().getY()));
+//			}
+			System.out.println("Colliding: " + getTag());
+			System.out.println("Collider: " + collider.getTag());
 			break;
 		case "Human":
 		case "Computer":
