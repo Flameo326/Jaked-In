@@ -6,28 +6,36 @@ import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
+import Models.Upgrades.MedPack;
+import Models.Upgrades.Upgrade;
 import javafx.scene.image.Image;
 
 public class MedicNPC extends Entity implements Interactable {
+	
+	private String[] dialogue = {"You dont need my help right now.", "You are hurt! This will help."};
+	
 
 	public MedicNPC(Image i, int x, int y, int width, int height) {
 		super(i, x, y, width, height);
 	}
-	
-	public String dialogue(){
-		//Will this have access to the player HP? If so will need a if/if else statement.
-		String response = "You are hurt! This will help.";
-		return response;
+
+	public String conversation(PlayableCharacter c) {
+		if (c.getMaxHealth() > c.getCurrentHealth()) {
+			Upgrade u = new MedPack(null, 0, 0);
+			u.collect(c);
+			return dialogue[1];
+		} else {
+			return dialogue[0];
+		}
 	}
-	
-	public String callPlayer(){
+
+	public String callPlayer() {
 		return "OVER HERE!!";
 	}
 
 	@Override
 	public void interact(PlayableCharacter c) {
-		Random randy = new Random();
-		c.heal(randy.nextInt(21) + 20);
+		conversation(c);
 	}
 
 	@Override
@@ -38,7 +46,7 @@ public class MedicNPC extends Entity implements Interactable {
 	@Override
 	public void update(ArrayList<Entity> entities) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
