@@ -15,11 +15,10 @@ public class GameController extends AnimationTimer {
 	private GraphicsContext g;
 	private Entity focusedEntity;
 	
-	
 	public GameController(Canvas myCanvas) {
-		entities = new ArrayList<>();
 		this.myCanvas = myCanvas;
 		g = myCanvas.getGraphicsContext2D();
+		entities = new ArrayList<>();
 	}
 	
 	@Override

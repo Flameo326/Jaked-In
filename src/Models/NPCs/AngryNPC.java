@@ -2,15 +2,9 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
-import Interfaces.Attackable;
-import Interfaces.Collideable;
-import Interfaces.Damageable;
-import Interfaces.Dodgeable;
 import Interfaces.Interactable;
-import Models.Bounds;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
-import Models.Weapon.HitBox;
 import javafx.scene.image.Image;
 
 public class AngryNPC extends PlayableCharacter implements Interactable {

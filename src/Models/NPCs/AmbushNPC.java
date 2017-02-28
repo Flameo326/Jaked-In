@@ -2,9 +2,8 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
-import Interfaces.Collideable;
 import Interfaces.Interactable;
-import Models.Bounds;
+import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import Models.Weapon.HitBox;
@@ -36,15 +35,8 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 	}
 
 	@Override
-	public boolean isColliding(Collideable c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Bounds getBounds() {
-		// TODO Auto-generated method stub
-		return null;
+	public void hasCollided(Collision c) {
+		throw new UnsupportedOperationException("Not yet Implemented");
 	}
 
 	@Override

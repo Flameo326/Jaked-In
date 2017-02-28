@@ -1,8 +1,7 @@
 package Interfaces;
 
-import Models.Bounds;
+import Models.Collision;
 
 public interface Collideable {
-	public boolean isColliding(Collideable c);
-	public Bounds getBounds();
+	public void hasCollided(Collision c);
 }

@@ -1,9 +1,7 @@
 package Models.Players;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-import Controller.ArenaController;
 import Controller.InputHandler;
 import Enums.Direction;
 import Models.Entity;

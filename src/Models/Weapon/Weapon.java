@@ -3,8 +3,7 @@ package Models.Weapon;
 import java.util.ArrayList;
 
 import Interfaces.Attackable;
-import Interfaces.Collideable;
-import Models.Bounds;
+import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
@@ -20,12 +19,7 @@ public abstract class Weapon extends Entity implements Attackable{
 	}
 
 	@Override
-	public boolean isColliding(Collideable c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
-	}
-
-	@Override
-	public Bounds getBounds() {
+	public void hasCollided(Collision c) {
 		throw new UnsupportedOperationException("Not yet Implemented");
 	}
 	
