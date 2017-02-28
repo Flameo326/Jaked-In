@@ -8,21 +8,23 @@ import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
 
 public class StoryNPC extends NPC {
+	private static int storyLineCount = 0;
+	private static String[] storyLine = {"Null"};//fill in the rest of the array
 
 	public StoryNPC(Image i, int x, int y, int width, int height) {
 		super(i, x, y, width, height);
-		// TODO Auto-generated constructor stub
+		
 	}
 
+	public String dialogue(){
+		//array with 15-20 story dialogue
+		return storyLine[storyLineCount++];
+	}
+	
 	@Override
 	public void interact(PlayableCharacter c) {
-		// TODO Auto-generated method stub
+	
 
-	}
-
-	@Override
-	public void hasCollided(Collision c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
 	}
 
 	@Override

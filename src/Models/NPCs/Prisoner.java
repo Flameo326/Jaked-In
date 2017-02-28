@@ -1,6 +1,7 @@
 package Models.NPCs;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import Models.Collision;
 import Models.Entity;
@@ -9,9 +10,26 @@ import javafx.scene.image.Image;
 
 public class Prisoner extends NPC {
 
+	private String[] dialogue = { "Thank you so much for saving me!", // 0
+			"It’s about time you snapped out of it, thank you!", // 1
+			"I gotta get out of here. I can’t spend any more time here", // 2
+			"Thanks! Goodbye!", // 3
+			"I’m so glad to be free, it’s time to get back to the front lines!", // 4
+			"You killed my little girl!" }; // 5 attacks player
+
 	public Prisoner(Image i, int x, int y, int width, int height) {
 		super(i, x, y, width, height);
-		// TODO Auto-generated constructor stub
+
+	}
+
+	public String conversation(PlayableCharacter c) {
+		Random randy = new Random();
+		int selection = randy.nextInt(dialogue.length);
+		if (selection == 5) {
+
+		}
+		return dialogue[selection];
+
 	}
 
 	@Override
@@ -28,7 +46,7 @@ public class Prisoner extends NPC {
 	@Override
 	public void update(ArrayList<Entity> entities) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
