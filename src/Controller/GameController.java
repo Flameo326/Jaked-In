@@ -2,8 +2,6 @@ package Controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import Models.Entity;
 import javafx.animation.AnimationTimer;
@@ -37,6 +35,7 @@ public class GameController extends AnimationTimer {
 
 	private void updateImage(){
 		g.clearRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
+		Collections.sort(entities);
 		int offsetX = 0, offsetY = 0;
 		if(focusedEntity != null){
 			offsetX = focusedEntity.getXPos();
