@@ -19,7 +19,7 @@ public class ComputerPlayer extends PlayableCharacter{
 	public ComputerPlayer(Image i, int x, int y) {
 		super(i, x, y);
 		rand = new Random();
-		setTag("Computer." + ++computerID);
+		setTag("Computer-" + ++computerID);
 		setDecisionLengthIncrement(.1);
 		setDecisionLengthRange(30);
 	}

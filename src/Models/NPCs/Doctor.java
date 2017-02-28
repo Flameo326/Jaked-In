@@ -2,13 +2,12 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
-import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
 
-public class Doctor extends Entity implements Interactable {
+public class Doctor extends NPC {
 
 	private String[] dialogue = {
 			"I’m sorry for all of this. Watson forced me to work on you."

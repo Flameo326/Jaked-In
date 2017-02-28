@@ -8,6 +8,14 @@ import Models.Entity;
 
 public class CollisionSystem {
 	
+	public static ArrayList<Collision> getCollision(ArrayList<Entity> entities){
+		ArrayList<Collision> collisions = new ArrayList<>();
+		for(int i = 0; i < entities.size(); i++){
+			collisions.addAll(getCollision(entities.get(i), entities.toArray(new Entity[i+1])));
+		}
+		return collisions;
+	}
+	
 	/**
 	 * This method checks to see if the first entity passed in is colliding against the remaining. 
 	 *  It returns an arraylist that contains Collision objects representing all of the collisions that happened

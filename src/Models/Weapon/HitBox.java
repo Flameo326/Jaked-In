@@ -16,12 +16,29 @@ public class HitBox extends Entity{
 	public HitBox(PlayableCharacter e, Image i) {
 		super(i, e.getCenterXPos()-(int)i.getWidth()/2, e.getCenterYPos()-(int)i.getHeight()/2, (int)i.getWidth(), (int)i.getHeight());
 		ownedEntity = e;
-		setTag(ownedEntity.getTag() + ".Melee");
+		setTag("Attack-Melee-" + ownedEntity.getTag());
+		setDisplayLayer(5);
 	}
 
 	@Override
 	public void hasCollided(Collision c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
+		Entity collider;
+		if(c.collidedEntity == this){
+			collider = c.collidingEntity;
+		} else { collider = c.collidedEntity; }
+		String[] tagElements = collider.getTag().split("-");
+		// We have exactly 2 elements, type and ID
+		String[] ourElements = getTag().split("-");
+		System.out.println("Colliding: " + getTag());
+		System.out.println("Collider: " + collider.getTag());
+		
+		switch(tagElements[0]){
+		case "Human":
+		case "Computer":
+		case "NPC":
+			// do damage if possible
+			break;
+		}
 	}
 
 	// Position the hitBox in the direction that the object was moving

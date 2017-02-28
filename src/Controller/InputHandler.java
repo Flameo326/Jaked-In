@@ -12,11 +12,11 @@ public class InputHandler {
 	public static KeyCode Player1Left = KeyCode.A;
 	public static KeyCode Player1Right = KeyCode.D;
 	public static KeyCode Player1Attack = KeyCode.SPACE;
-	public static KeyCode Player2Up = null;
-	public static KeyCode Player2Down = null;
-	public static KeyCode Player2Left = null;
-	public static KeyCode Player2Right = null;
-	public static KeyCode Player2Attack = null;
+	public static KeyCode Player2Up = KeyCode.UP;
+	public static KeyCode Player2Down = KeyCode.DOWN;
+	public static KeyCode Player2Left = KeyCode.LEFT;
+	public static KeyCode Player2Right = KeyCode.KP_RIGHT;
+	public static KeyCode Player2Attack = KeyCode.ENTER;
 	
 	// We can Add more Relevant Input Things here if Needed
 	private static HashSet<KeyCode> keyInput = new HashSet<>();
