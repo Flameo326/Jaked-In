@@ -18,6 +18,7 @@ public class Map {
 	private ArrayList<Entity> mapObjects;
 	private Random rand;
 	private int mapWidth, mapHeight;
+	private boolean mapIsLinear = true;
 	
 	public Map(int width, int height){
 		mapWidth = width;
@@ -28,6 +29,7 @@ public class Map {
 		ArrayList<Entity> rooms = generateRooms(150, mapWidth, .8, 1.2, 10);
 		generatePaths(rooms);
 		populateMap(rooms);
+//		mapObjects.addAll(rooms);
 	}
 	
 	// Current Problems:
@@ -48,14 +50,17 @@ public class Map {
 		// Create first starting room
 		Entity currentRoom = createNewRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
 		rooms.add(currentRoom);
-		mapObjects.add(currentRoom);
+//		mapObjects.add(currentRoom);
 		
 		room: for(int i = 1; i < roomAmo; i++){
-			Entity previousRoom = mapObjects.get(mapObjects.size()-1);
+			Entity previousRoom = rooms.get(i-1);
 			currentRoom = createNewRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
 			
 			int maxDist = Math.max(currentRoom.getWidth(), currentRoom.getHeight());
 			int radius = (int) ((rand.nextDouble() + 1) * maxDist);
+			if(!mapIsLinear){
+				radius = (int)(maxWidth * maxHeightMultiplier * roomAmo/5);
+			}
 			// in radians
 			int degree = rand.nextInt(360);
 			int initialDegree = degree;
@@ -64,12 +69,20 @@ public class Map {
 			while(!hasNotCollided){
 				int x = (int)(Math.cos(degree * Math.PI / 180) * radius);
 				int y = (int)(Math.sin(degree * Math.PI / 180) * radius);
-				currentRoom.setXPos(previousRoom.getXPos() + x);
-				currentRoom.setYPos(previousRoom.getYPos() + y);
+				
+				if(mapIsLinear){
+					// Linear
+					currentRoom.setXPos(previousRoom.getXPos() + x);
+					currentRoom.setYPos(previousRoom.getYPos() + y);
+				} else {
+					// Scatterplot
+					currentRoom.setXPos(x);
+					currentRoom.setYPos(y);
+				}
+				System.out.println("Here");
 				hasNotCollided = true;
 				// do a collision check against the rooms which will be at the end of size i
-				for(Collision c : CollisionSystem.getCollision(currentRoom, 
-						mapObjects.toArray(new Entity[mapObjects.size()-i]))){
+				for(Collision c : CollisionSystem.getCollision(currentRoom, rooms.toArray(new Entity[0]))){
 					if(Math.min(c.xPenDepth, c.yPenDepth) > -20){
 						hasNotCollided = false;
 					}
@@ -81,7 +94,7 @@ public class Map {
 					continue room;
 				}
 			}
-			mapObjects.add(currentRoom);
+//			mapObjects.add(currentRoom);
 			rooms.add(currentRoom);
 		}
 		return rooms;
@@ -91,10 +104,11 @@ public class Map {
 		for(int i = 0; i < rooms.size(); i++){
 			Entity currentRoom = rooms.get(i);
 			
-			ArrayList<Collision> c =  CollisionSystem.getCollision(currentRoom, mapObjects.toArray(new Entity[0]));
+			// If this is zero then 
+			ArrayList<Collision> c = CollisionSystem.getCollision(currentRoom, mapObjects.toArray(new Entity[0]));
 			Entity closest = null;
 			int smallestPenetration = Integer.MIN_VALUE;
-			boolean notColliding = true;
+			boolean notColliding = c.size() > 0;
 			
 			for(int y = 0; y < c.size(); y++){
 				if(c.get(y).collidedEntity == currentRoom) { continue; }
@@ -116,6 +130,7 @@ public class Map {
 //				mapObjects.addAll(generatePathsBetween(currentRoom, closest));
 				mapObjects.addAll(generatePathsBetween(closest, currentRoom));
 			}
+			mapObjects.add(currentRoom);
 		}
 	}
 	
@@ -131,7 +146,7 @@ public class Map {
 	}
 	
 	
-	private Entity createNewWall(int x, int y, int width, int height){
+	public Entity createNewWall(int x, int y, int width, int height){
 		Image img = SpriteSheet.getBlock(width, height, Color.BLACK);
 		Entity e = new Entity(img, x, y, (int)img.getWidth(), (int)img.getHeight()){
 			@Override
@@ -245,6 +260,7 @@ public class Map {
 				System.out.println("Width Min and Max: " + widthMin + " " + widthMax);
 				
 				path = createNewPath(widthMin, height, widthMax, height);
+				
 				int initialY;
 				if(previousPath == e1){
 					initialY = rand.nextInt(Math.max(previousPath.getHeight() - height + 1, 1)) + previousShape.getMinY() + height/2;

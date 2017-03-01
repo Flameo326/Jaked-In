@@ -116,11 +116,43 @@ public class CollisionSystem {
 			shapeB = a.getShape();
 		} else { throw new IllegalArgumentException("Neither Entity is a circle Shape is not a circle."); }
 		
-		boolean collided = false;
 		int penXDepth = 0, penYDepth = 0;
-		int xDir = 0, yDir = 0;
+		int xDir, yDir;
+		int xDist, yDist;
+		boolean collided = false;
 		
-		// Figure how to collide Circle and AABB
+		if(shapeA.getCenterY() > shapeB.getCenterY()){
+			yDir = 1;
+			yDist = shapeA.getCenterY() - shapeB.getCenterY();
+			penYDepth = shapeB.getMaxY() - shapeA.getMinY();
+		} else {
+			yDir = -1;
+			yDist = shapeB.getCenterY() - shapeA.getCenterY();
+			penYDepth = shapeA.getMaxY() - shapeB.getMinY();
+		}
+		if(shapeA.getCenterX() > shapeB.getCenterX()){
+			xDir = 1;
+			xDist = shapeA.getCenterX() - shapeB.getCenterX();
+			penXDepth = shapeB.getMaxX() - shapeA.getMinX();
+		} else {
+			xDir = -1;
+			xDist = shapeB.getCenterX() - shapeA.getCenterX();
+			penXDepth = shapeA.getMaxX() - shapeB.getMinX();
+		}
+		
+		// Test for outside of intersection
+		if(xDist > shapeB.getWidth()/2 + shapeA.getRadius()) { collided = false; }
+		else if(yDist > shapeB.getHeight()/2 + shapeA.getRadius()) { collided = false; }
+		// Test for inside of intersection
+		// - Shouldnt both of these be true?
+		else if(xDist <= shapeB.getWidth()/2) { collided = true; }
+		else if(yDist <= shapeA.getHeight()/2) { collided = true; }
+		// Otherwise it may or may not be intersecting the corner
+		else {
+			int temp;
+			int distSqr = (temp = xDist - shapeB.getWidth()) * temp + (temp = yDist - shapeB.getHeight()) * temp;
+			collided = distSqr <= (temp = shapeA.getRadius()) * temp;
+		}
 		
 		return new Collision(a, b, collided, Direction.getDir(xDir, yDir), penXDepth, penYDepth);
 	}
