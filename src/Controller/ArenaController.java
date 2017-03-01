@@ -49,7 +49,10 @@ public class ArenaController implements Initializable {
 								// Create Map
 								arenaMap = new Map((int)newValue.getWidth(), (int)newValue.getHeight());
 								gc.add(arenaMap.getMapObjects().toArray(new Entity[0]));
-								
+								Entity room = arenaMap.createNewWall(20, 100, 20, 100);
+								room.setXPos(50);
+								room.setYPos(50);
+								gc.add(room);
 							}
 						}
 					});
@@ -65,8 +68,8 @@ public class ArenaController implements Initializable {
 		
 		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
 		// Players
-		player1 = new HumanPlayer(img, 250, 250);
-		player2 = new ComputerPlayer(img, 150, 150);
+		player1 = new HumanPlayer(img, 0, 0);
+		player2 = new ComputerPlayer(img, -100, -100);
 		
 		gc = new GameController(myCanvas);
 		gc.add(player1.getDisplayableEntities());
