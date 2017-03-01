@@ -5,9 +5,11 @@ import java.util.Collections;
 
 import Models.Collision;
 import Models.Entity;
+import Models.Map.Map;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 
 public class GameController extends AnimationTimer {
 
@@ -15,6 +17,10 @@ public class GameController extends AnimationTimer {
 	private Canvas myCanvas;
 	private GraphicsContext g;
 	private Entity focusedEntity;
+	private Map arenaMap;
+	//temp vars
+	boolean prevHeld = false;
+	
 	
 	public GameController(Canvas myCanvas) {
 		this.myCanvas = myCanvas;
@@ -45,6 +51,18 @@ public class GameController extends AnimationTimer {
 			// Print out Entity Information
 			//System.out.println(e.getClass().getSimpleName() + " X: " + e.getXPos() + " Y: " + e.getYPos());
 		}
+		if(InputHandler.keyInputContains(KeyCode.CONTROL)){
+			prevHeld = true;
+		} else {
+			if(prevHeld){
+				prevHeld = false;
+				if(arenaMap != null){
+					this.remove(arenaMap.getMapObjects().toArray(new Entity[0]));
+					setArenaMap(new Map(500, 500));
+					this.add(arenaMap.getMapObjects().toArray(new Entity[0]));
+				}
+			}
+		}
 		// Handles the graphical Rendering 
 		updateImage();
 	}
@@ -70,8 +88,21 @@ public class GameController extends AnimationTimer {
 		Collections.sort(entities);
 	}
 	
+	public void remove(Entity... items) {
+		for(Entity i : items){
+			if(entities.contains(i)){
+				entities.remove(i);
+			}
+		}
+		Collections.sort(entities);
+	}
+	
 	public void setFocus(Entity focusedEntity){
 		this.focusedEntity = focusedEntity;
+	}
+
+	public void setArenaMap(Map arenaMap) {
+		this.arenaMap = arenaMap;
 	}
 	
 }

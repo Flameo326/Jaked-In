@@ -18,9 +18,6 @@ public class Map {
 	private Random rand;
 	private int mapWidth, mapHeight;
 	
-	// So just create a 2 Dimensional Array that represents the Map
-	// WE fill those 
-	
 	public Map(int width, int height){
 		mapWidth = width;
 		mapHeight = height;
@@ -73,7 +70,6 @@ public class Map {
 					--i;
 					continue room;
 				}
-				System.out.println("Here1");
 			}
 			
 			// Collection of collisions between new Room and previous objects
@@ -214,7 +210,7 @@ public class Map {
 		boolean xPath = (CollisionSystem.isIntersectingXAxis(e1, e2).hasCollided ? false :
 			CollisionSystem.isIntersectingYAxis(e1, e2).hasCollided ? true : rand.nextBoolean());
 		while(!xConnected || !yConnected){
-			System.out.println("Here2");
+//			System.out.println("Here2");
 			// Negate it get the direction towards the object
 			int xDiff = -CollisionSystem.isIntersectingXAxis(currentPath, e2).collisionNormal.getX();
 			int yDiff = -CollisionSystem.isIntersectingYAxis(currentPath, e2).collisionNormal.getY();
