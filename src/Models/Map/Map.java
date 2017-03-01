@@ -199,6 +199,15 @@ public class Map {
 		return e;
 	}
 	
+//	public void generateWalls(Entity e){
+//		Shape shape = e.getShape();
+//		mapObjects.add(createNewWall())
+//	}
+//	
+//	public void checkWalls(Entity e){
+//		
+//	}
+	
 	public ArrayList<Entity> generatePathsBetween(Entity e1, Entity e2){
 		ArrayList<Entity> paths = new ArrayList<>();
 		System.out.println("Making paths from Room: ");
