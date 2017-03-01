@@ -21,7 +21,6 @@ public class HumanPlayer extends PlayableCharacter{
 		// Set Intiial Direction so it's not at 0, 0 or unmoving
 		setCurrDir(Direction.RIGHT);
 		setTag("Human-" + ++humanID);
-		setSpeed(5);
 		//setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
 	}
 	
@@ -35,7 +34,7 @@ public class HumanPlayer extends PlayableCharacter{
 			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
 				Attack h = attack();
 				if(h != null){
-//					System.out.println(getTag() + " attacked");
+					System.out.println(getTag() + " attacked");
 					entities.add(h);
 				}
 			}
@@ -52,7 +51,7 @@ public class HumanPlayer extends PlayableCharacter{
 				}
 			}
 		} else {
-//			System.out.println("Human Player Tag is " + getTag());
+			System.out.println("Human Player Tag is " + getTag());
 		}
 	}
 	
