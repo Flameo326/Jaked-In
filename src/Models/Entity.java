@@ -2,32 +2,23 @@ package Models;
 
 import Interfaces.Collideable;
 import Interfaces.Moveable;
-import Models.Shape.Shape;
 import javafx.scene.image.Image;
 
 public abstract class Entity implements Collideable, Moveable, Comparable<Entity>{
 	
+	private int displayLayer = 0;
 	private Image img;
-	private Shape shape;
 	private String tag;
 	private int speed = 1;
-	// Since we have a shape, these are no longer neccesary
-//	private int xPos, yPos, width, height;
-	private int displayLayer;
+	private int xPos, yPos, width, height;
 	
 	public Entity(Image i, int x, int y, int width, int height){
-		this(i, new Shape(x, y, width, height));
-//		setXPos(x);
-//		setYPos(y);
-//		setWidth(width);
-//		setHeight(height);
-	}
-	
-	public Entity(Image i, Shape shape){
 		setImage(i);
-		setShape(shape);
+		setXPos(x);
+		setYPos(y);
+		setWidth(width);
+		setHeight(height);
 		setTag("Entity");
-		setDisplayLayer(0);
 	}
 	
 	@Override
@@ -56,30 +47,24 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 	public void setSpeed(int val){ speed = val; }
 	public int getSpeed(){ return speed; }
 	
-	public void setShape(Shape s) { shape = s; }
-	public Shape getShape() { return shape; }
+	public void setXPos(int val){ xPos = val; }
+	public int getXPos(){ return xPos; }
 	
-	// X and Y now correlate to the center position...
-	// Should we provide method to get display point???
-	// does it actually matter?
-	public void setXPos(int val){ shape.setCenterX(val); }
-	public int getXPos(){ return shape.getCenterX(); }
+	public void setYPos(int val){ yPos = val; }
+	public int getYPos(){ return yPos; }
 	
-	public void setYPos(int val){ shape.setCenterY(val); }
-	public int getYPos(){ return shape.getCenterY(); }
+	public void setWidth(int val){ width = val; }
+	public int getWidth(){ return width; }
 	
-	public void setWidth(int val){ shape.setWidth(val); }
-	public int getWidth(){ return shape.getWidth(); }
+	public void setHeight(int val){ height = val; }
+	public int getHeight(){ return height; }
 	
-	public void setHeight(int val){ shape.setHeight(val); }
-	public int getHeight(){ return shape.getHeight(); }
-	
-	public int getDisplayableXPos(){
-		return shape.getMinX();
+	public int getCenterXPos(){
+		return (int) (xPos + img.getWidth()/2);
 	}
 	
-	public int getDisplayableYPos(){
-		return shape.getMinY();
+	public int getCenterYPos(){
+		return (int) (yPos + img.getHeight()/2);
 	}
 	
 	@Override

@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import Enums.Direction;
 import Models.Collision;
 import Models.Entity;
-import Models.Shape.Circle;
-import Models.Shape.Shape;
 
 public class CollisionSystem {
 	
@@ -43,24 +41,13 @@ public class CollisionSystem {
 	 * @return
 	 */
 	public static Collision getCollision(Entity a, Entity b){
-		Collision c;
-		if(a.getShape() instanceof Circle){
-			if(b.getShape() instanceof Circle){
-				c = CirclevsCircle(a, b);
-			} else {
-				c = CirclevsAABB(a, b);
-			}
-		} else if(b.getShape() instanceof Circle){
-			c = CirclevsAABB(a, b);
-		} else {
-			c = AABBvsAABB(a, b);
-		}
-		return c;
+		return AABBvsAABB(a, b);
 	}
 	
+	// This would need to be changed to take in rectangles instead... probably
 	/**
 	 * This method checks to see if the two entities have collided. 
-	 *  The two Entities MUST support AABB Collision through the Rectangle Shape
+	 *  It uses the AABB collision method for simplification
 	 * @param a
 	 * @param b
 	 * @return
@@ -73,56 +60,6 @@ public class CollisionSystem {
 		boolean hasCollided = hori.hasCollided && vert.hasCollided;
 		Direction d = Direction.getDir(hori.collisionNormal.getX(), vert.collisionNormal.getY());
 		return new Collision(a, b, hasCollided, d, hori.xPenDepth, vert.yPenDepth);
-	}
-	
-	public static Collision CirclevsCircle(Entity a, Entity b){
-		Circle shapeA, shapeB;
-		if( a.getShape() instanceof Circle){
-			shapeA = (Circle)a.getShape();
-		} else { throw new IllegalArgumentException("Entity a's Shape is not a circle."); }
-		if( b.getShape() instanceof Circle){
-			shapeB = (Circle)b.getShape();
-		} else { throw new IllegalArgumentException("Entity b's Shape is not a circle."); }
-
-		int radiusSum = shapeA.getRadius() + shapeB.getRadius();
-		int xDir = 0, yDir = 0;
-		int penXDepth = 0, penYDepth = 0;
-		if(shapeA.getCenterX() < shapeB.getCenterX()){
-			penXDepth = shapeB.getCenterX() - shapeA.getCenterX();
-			xDir = -1;
-		} else {
-			penXDepth = shapeA.getCenterX() - shapeB.getCenterX();
-			xDir = 1;
-		}
-		if(shapeA.getCenterY() < shapeB.getCenterY()){
-			penYDepth = shapeB.getCenterY() - shapeA.getCenterY();
-			yDir = -1;
-		} else {
-			penYDepth = shapeA.getCenterY() - shapeB.getCenterY();
-			yDir = 1;
-		}
-		boolean colliding = radiusSum*radiusSum < penXDepth*penXDepth + penYDepth*penYDepth;
-		return new Collision(a, b, colliding, Direction.getDir(xDir, yDir), penXDepth, penYDepth);
-	}
-	
-	public static Collision CirclevsAABB(Entity a, Entity b){
-		Circle shapeA;
-		Shape shapeB;
-		if( a.getShape() instanceof Circle){
-			shapeA = (Circle)a.getShape();
-			shapeB = b.getShape();
-		}else if( b.getShape() instanceof Circle){
-			shapeA = (Circle)b.getShape();
-			shapeB = a.getShape();
-		} else { throw new IllegalArgumentException("Neither Entity is a circle Shape is not a circle."); }
-		
-		boolean collided = false;
-		int penXDepth = 0, penYDepth = 0;
-		int xDir = 0, yDir = 0;
-		
-		// Figure how to collide Circle and AABB
-		
-		return new Collision(a, b, collided, Direction.getDir(xDir, yDir), penXDepth, penYDepth);
 	}
 	
 	/**
@@ -138,10 +75,29 @@ public class CollisionSystem {
 	 */
 	public static Collision isIntersectingXAxis(Entity a, Entity b){
 		// detect collision
-		Shape shapeA = a.getShape();
-		Shape shapeB = b.getShape();
-		Collision c = getCollisionFromLine(shapeA.getMinX(), shapeA.getMaxX(), shapeB.getMinX(), shapeB.getMaxX());
-		return new Collision(a, b, c.hasCollided, Direction.getDir(c.collisionNormal.getX(), 0), c.xPenDepth, 0);
+		boolean colliding = isIntersectingAlongLine(a.getXPos(), a.getXPos() + a.getWidth(), b.getXPos(), b.getXPos() + b.getWidth());
+		
+		// collision Normal, which is the opposite direction we are colliding in
+		// for example, if we are collding on the right side then we need to move left
+		int xDir = 0;
+		int penDepth = 0;
+		
+		// our collision is going to be which side we are collisiong against the smallest
+		int penRight = a.getXPos() + a.getWidth() - b.getXPos();
+		int penLeft = b.getXPos() + b.getWidth() - a.getXPos();
+		if(penRight < penLeft){
+			xDir = -1;
+			penDepth = penRight;
+		} else if(penRight > penLeft){
+			xDir = 1;
+			penDepth = penLeft;
+		}
+		// Otherwise the distance is the exact same and there is no particular direction it should go in
+		else {
+			xDir = 0;
+			penDepth = penLeft;
+		}
+		return new Collision(a, b, colliding, Direction.getDir(xDir, 0), penDepth, 0);
 	}
 	
 	/**
@@ -157,29 +113,29 @@ public class CollisionSystem {
 	 */
 	public static Collision isIntersectingYAxis(Entity a, Entity b){
 		// detect collision
-		Shape shapeA = a.getShape();
-		Shape shapeB = b.getShape();
-		Collision c = getCollisionFromLine(shapeA.getMinY(), shapeA.getMaxY(), shapeB.getMinY(), shapeB.getMaxY());
-		return new Collision(a, b, c.hasCollided, Direction.getDir(0, c.collisionNormal.getX()), 0, c.xPenDepth);
-	}
-	
-	public static Collision getCollisionFromLine(int lineAMin, int lineAMax, int lineBMin, int lineBMax){
-		boolean colliding = isIntersectingAlongLine(lineAMin, lineAMax, lineBMin, lineBMax);
-		int xDir = 0;
+		boolean colliding = isIntersectingAlongLine(a.getYPos(), a.getYPos() + a.getHeight(), b.getYPos(), b.getYPos() + b.getHeight());
+		
+		// collision Normal, which is the opposite direction we are colliding in
+		// for example, if we are collding on the top side then we need to move down
+		int yDir = 0;
 		int penDepth = 0;
-		int penLeft = lineAMax - lineBMin;
-		int penRight = lineBMax - lineAMin;
-		if(penLeft < penRight){
-			xDir = -1;
-			penDepth = penLeft;
-		} else if(penLeft > penRight){
-			xDir = 1;
-			penDepth = penRight;
-		} else {
-			xDir = 0;
-			penDepth = penRight;
+		
+		// our collision is going to be which side we are collisiong against the smallest
+		int penUp = a.getYPos() + a.getHeight() - b.getYPos();
+		int penDown = b.getYPos() + b.getHeight() - a.getYPos();
+		if(penUp < penDown){
+			yDir = -1;
+			penDepth = penUp;
+		} else if(penUp > penDown){
+			yDir = 1;
+			penDepth = penDown;
 		}
-		return new Collision(null, null, colliding, Direction.getDir(xDir, 0), penDepth, 0);
+		// Otherwise the distance is the exact same and there is no particular direction it should go in
+		else {
+			yDir = 0;
+			penDepth = penDown;
+		}
+		return new Collision(a, b, colliding, Direction.getDir(0, yDir), 0, penDepth);
 	}
 	
 	/**
@@ -192,7 +148,7 @@ public class CollisionSystem {
 	 * @return 
 	 */
 	public static boolean isIntersectingAlongLine(int lineAMin, int lineAMax, int lineBMin, int lineBMax){
-		return!(lineAMax < lineBMin || lineBMax < lineAMin); 
+		return !(lineAMax < lineBMin || lineBMax < lineAMin); 
 	}
 	
 	/**

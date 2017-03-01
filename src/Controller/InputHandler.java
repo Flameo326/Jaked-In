@@ -15,7 +15,7 @@ public class InputHandler {
 	public static KeyCode Player2Up = KeyCode.UP;
 	public static KeyCode Player2Down = KeyCode.DOWN;
 	public static KeyCode Player2Left = KeyCode.LEFT;
-	public static KeyCode Player2Right = KeyCode.RIGHT;
+	public static KeyCode Player2Right = KeyCode.KP_RIGHT;
 	public static KeyCode Player2Attack = KeyCode.ENTER;
 	
 	// We can Add more Relevant Input Things here if Needed

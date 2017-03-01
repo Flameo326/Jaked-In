@@ -65,8 +65,8 @@ public class ArenaController implements Initializable {
 		
 		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
 		// Players
-		player1 = new HumanPlayer(img, 0, 0);
-		player2 = new ComputerPlayer(img, -100, -100);
+		player1 = new HumanPlayer(img, 250, 250);
+		player2 = new ComputerPlayer(img, 150, 150);
 		
 		gc = new GameController(myCanvas);
 		gc.add(player1.getDisplayableEntities());

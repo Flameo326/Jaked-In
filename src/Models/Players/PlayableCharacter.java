@@ -47,11 +47,11 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		case "Computer":
 		case "NPC":
 		case "Wall":
-			if(c.xPenDepth < c.yPenDepth){
-				setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);
-			} else {
-				setYPos(getYPos() + c.collisionNormal.getY() * c.yPenDepth);
-			}
+				if(c.xPenDepth < c.yPenDepth){
+					setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);
+				} else {
+					setYPos(getYPos() + c.collisionNormal.getY() * c.yPenDepth);
+				}
 			break;
 		case "Room":
 			// Maybe display the room name in screen...
