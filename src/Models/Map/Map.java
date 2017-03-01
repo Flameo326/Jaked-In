@@ -81,46 +81,6 @@ public class Map {
 					continue room;
 				}
 			}
-			
-			// Collection of collisions between new Room and previous objects
-			ArrayList<Collision> c =  CollisionSystem.getCollision(currentRoom, mapObjects.toArray(new Entity[0]));
-			
-			// Set default values to the first entity in collection
-			Entity closest = c.get(0).collidedEntity;
-			int smallestXPen = c.get(0).xPenDepth; 
-			int smallestYPen = c.get(0).yPenDepth;
-			int smallestPenetration = Math.max(smallestXPen, smallestYPen);
-			boolean colliding = false;
-			
-			// Check for the Entity that is eiter colliding or has the least (maximum) penetrationDepth
-			for(int y = 1; y < c.size(); y++){
-				
-				// Get the closest object to the currentRoom
-				int temp;
-				if((temp = Math.max(c.get(i).xPenDepth, c.get(i).yPenDepth)) > smallestPenetration) { 
-					smallestYPen = c.get(i).yPenDepth;
-					smallestXPen = c.get(i).xPenDepth;
-					smallestPenetration = temp;
-					closest = c.get(i).collidedEntity;
-				} else if(temp == smallestPenetration){
-					if(c.get(i).yPenDepth > smallestYPen){
-						smallestYPen = c.get(i).yPenDepth;
-						closest = c.get(i).collidedEntity;
-					} else if(c.get(i).xPenDepth > smallestXPen){
-						smallestXPen = c.get(i).xPenDepth;
-						closest = c.get(i).collidedEntity;
-					}
-				}
-				// If the player can move into the room from another object on the map
-				// Then no need to create paths.
-//				if((smallestXPen >= 40 && smallestYPen >= 0) || (smallestYPen >= 40 && smallestXPen >= 0)){
-//					colliding = true; 
-//					break; 
-//				}
-			}
-			if(!colliding){
-				mapObjects.addAll(0, generatePathsBetween(closest, currentRoom));
-			}
 			mapObjects.add(currentRoom);
 			rooms.add(currentRoom);
 		}
@@ -355,4 +315,5 @@ public class Map {
 	public ArrayList<Entity> getMapObjects(){
 		return mapObjects;
 	}
+
 }
