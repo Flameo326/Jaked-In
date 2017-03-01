@@ -8,13 +8,19 @@ import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
 
 public class AngryNPC extends PlayableCharacter implements Interactable {
+	
+	private String dialogue = "You killed my Family!";
 
 	public AngryNPC(Image i, int x, int y) {
 		super(i, x, y);
 		setTag(getTag() + "-EnemyNPC");
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	public String conversation(PlayableCharacter c) {
+		return dialogue;
+	}
+	
 	@Override
 	public void update(ArrayList<Entity> entities) {
 		// TODO Auto-generated method stub
@@ -23,8 +29,7 @@ public class AngryNPC extends PlayableCharacter implements Interactable {
 
 	@Override
 	public void interact(PlayableCharacter c) {
-		// TODO Auto-generated method stub
-		
+		conversation(c);
 	}
 
 
