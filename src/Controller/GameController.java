@@ -49,7 +49,7 @@ public class GameController extends AnimationTimer {
 				}
 			}
 			// Print out Entity Information
-			//System.out.println(e.getClass().getSimpleName() + " X: " + e.getXPos() + " Y: " + e.getYPos());
+//			System.out.println(e.getClass().getSimpleName() + " X: " + e.getXPos() + " Y: " + e.getYPos());
 		}
 		if(InputHandler.keyInputContains(KeyCode.CONTROL)){
 			prevHeld = true;
@@ -71,11 +71,12 @@ public class GameController extends AnimationTimer {
 		g.clearRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
 		int offsetX = 0, offsetY = 0;
 		if(focusedEntity != null){
-			offsetX = focusedEntity.getXPos();
-			offsetY = focusedEntity.getYPos();
+			offsetX = focusedEntity.getDisplayableXPos();
+			offsetY = focusedEntity.getDisplayableYPos();
 		}
 		for(Entity e : entities){
-			g.drawImage(e.getImage(), e.getXPos() - offsetX + (myCanvas.getWidth()/2), e.getYPos() - offsetY + (myCanvas.getHeight()/2));
+			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (myCanvas.getWidth()/2),
+					e.getDisplayableYPos() - offsetY + (myCanvas.getHeight()/2));
 		}	
 	}
 
