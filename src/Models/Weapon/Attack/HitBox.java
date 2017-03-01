@@ -22,18 +22,18 @@ public class HitBox extends Attack{
 		int xDir = getOwnedEntity().getCurrDir().getX();
 		int yDir = getOwnedEntity().getCurrDir().getY();
 		if(xDir > 0){
-			setXPos(getOwnedEntity().getCenterXPos() + getOwnedEntity().getWidth()/2);
+			setXPos(getOwnedEntity().getXPos() + getOwnedEntity().getWidth()/2 + getWidth()/2);
 		} else if(xDir < 0){
-			setXPos(getOwnedEntity().getCenterXPos() - getOwnedEntity().getWidth()/2 - getWidth());
+			setXPos(getOwnedEntity().getXPos() - getOwnedEntity().getWidth()/2 - getWidth()/2);
 		} else {
-			setXPos(getOwnedEntity().getCenterXPos()-getWidth()/2);
+			setXPos(getOwnedEntity().getXPos());
 		}
 		if(yDir > 0){
-			setYPos(getOwnedEntity().getCenterYPos() + getOwnedEntity().getHeight()/2);
+			setYPos(getOwnedEntity().getYPos() + getOwnedEntity().getHeight()/2 + getHeight()/2);
 		} else if(yDir < 0){
-			setYPos(getOwnedEntity().getCenterYPos() - getOwnedEntity().getHeight()/2 - getHeight());
+			setYPos(getOwnedEntity().getYPos() - getOwnedEntity().getHeight()/2 - getHeight()/2);
 		} else {
-			setYPos(getOwnedEntity().getCenterYPos() - getHeight()/2);
+			setYPos(getOwnedEntity().getYPos());
 		}
 	}
 }

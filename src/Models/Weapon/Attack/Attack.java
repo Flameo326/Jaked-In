@@ -17,7 +17,7 @@ public abstract class Attack extends Entity {
 	
 	// This will be for Like Melee Weapons...
 	public Attack(PlayableCharacter e, Image i) {
-		super(i, e.getCenterXPos()-(int)i.getWidth()/2, e.getCenterYPos()-(int)i.getHeight()/2, (int)i.getWidth(), (int)i.getHeight());
+		super(i, e.getXPos(), e.getYPos(), (int)i.getWidth(), (int)i.getHeight());
 		ownedEntity = e;
 		hasHit = new HashSet<Entity>();
 		setTag("Attack-" + ownedEntity.getTag());
