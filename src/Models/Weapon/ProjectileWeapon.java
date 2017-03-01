@@ -1,8 +1,5 @@
 package Models.Weapon;
 
-import java.util.ArrayList;
-
-import Models.Entity;
 import Models.Players.PlayableCharacter;
 import Models.Weapon.Attack.Attack;
 import Models.Weapon.Attack.Projectile;
@@ -16,11 +13,6 @@ public class ProjectileWeapon extends Weapon{
 		super(e, i);
 		setAttackTime(50);
 		setTimer(getAttackTime());
-	}
-
-	@Override
-	public void update(ArrayList<Entity> entities) {
-		super.update(entities);
 	}
 
 	@Override

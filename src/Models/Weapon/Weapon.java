@@ -14,7 +14,7 @@ public abstract class Weapon extends Entity implements Attackable{
 	private int attackTime, timer;
 
 	public Weapon(PlayableCharacter e, Image i){
-		super(i, e.getCenterXPos(), e.getCenterYPos(), (int)i.getWidth(), (int)i.getHeight());
+		super(i, e.getXPos(), e.getYPos(), (int)i.getWidth(), (int)i.getHeight());
 		ownedEntity = e;
 		setDisplayLayer(8);
 	}
@@ -29,10 +29,8 @@ public abstract class Weapon extends Entity implements Attackable{
 	@Override
 	public void update(ArrayList<Entity> entities){
 		timer++;
-//		setXPos(getOwnedEntity().getCenterXPos()-getWidth()/2 + getOwnedEntity().getCurrDir().getX() * getWidth());
-//		setYPos(getOwnedEntity().getCenterYPos()-getHeight()/2 + getOwnedEntity().getCurrDir().getY() * getHeight());
-		setXPos(getOwnedEntity().getCenterXPos()-getWidth()/2);
-		setYPos(getOwnedEntity().getCenterYPos()-getHeight()/2);
+		setXPos(getOwnedEntity().getXPos());
+		setYPos(getOwnedEntity().getYPos());
 	}
 	
 	public void setAttackTime(int i){
