@@ -3,12 +3,13 @@ package Puzzle;
 import java.util.ArrayList;
 
 import Interfaces.Interactable;
+import Interfaces.Subscribable;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
 
-public class Button extends Entity implements Interactable{
+public class Button extends Entity implements Interactable, Subscribable<Button>{
 	
 	public Button(Image i, int x, int y, int width, int height) {
 		super(i, x, y, width, height);
@@ -29,6 +30,12 @@ public class Button extends Entity implements Interactable{
 
 	@Override
 	public void update(ArrayList<Entity> entities) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update() {
 		// TODO Auto-generated method stub
 		
 	}
