@@ -1,5 +1,6 @@
 package Models.Players;
 
+import Controller.InputHandler;
 import Enums.Direction;
 import Interfaces.Attackable;
 import Interfaces.Damageable;
@@ -11,6 +12,7 @@ import Models.Weapon.Weapon;
 import Models.Weapon.Attack.Attack;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
@@ -37,6 +39,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		if(c.collidingEntity == this){
 			collider = c.collidedEntity;
 		} else { return; }
+		if(InputHandler.keyInputContains(KeyCode.F)) { return; }
 		
 		String[] tagElements = collider.getTag().split("-");
 //		String[] ourElements = getTag().split("-");
