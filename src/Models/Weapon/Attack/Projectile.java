@@ -45,10 +45,10 @@ public class Projectile extends Attack{
 		case "Wall":
 			if(c.xPenDepth < c.yPenDepth){
 				setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);
-				setCurrDir(Direction.getDir(c.collisionNormal.getX(), getCurrDir().getY()));
+				setCurrDir(Direction.getDir(-c.collisionNormal.getX(), getCurrDir().getY()));
 			} else {
 				setYPos(getYPos() + c.collisionNormal.getY() * c.yPenDepth);
-				setCurrDir(Direction.getDir(getCurrDir().getX(), c.collisionNormal.getY()));
+				setCurrDir(Direction.getDir(getCurrDir().getX(), -c.collisionNormal.getY()));
 			}
 			break;
 		}

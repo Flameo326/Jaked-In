@@ -49,10 +49,6 @@ public class ArenaController implements Initializable {
 								// Create Map
 								arenaMap = new Map((int)newValue.getWidth(), (int)newValue.getHeight());
 								gc.add(arenaMap.getMapObjects().toArray(new Entity[0]));
-								Entity room = arenaMap.createNewWall(20, 100, 20, 100);
-								room.setXPos(50);
-								room.setYPos(50);
-								gc.add(room);
 							}
 						}
 					});
