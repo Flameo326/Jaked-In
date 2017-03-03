@@ -47,7 +47,7 @@ public class CombinedColor extends Button {
 	}
 	
 	@Override
-	public void update() {
+	public void update(Button b) {
 		red = 255;
 		green = 255;
 		blue = 255;
