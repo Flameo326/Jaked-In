@@ -18,7 +18,7 @@ public class ResetButton extends Button implements Interactable, Publishable<But
 
 	@Override
 	public void interact(PlayableCharacter c) {
-		
+		notifySubscribers();
 		
 	}
 	@Override

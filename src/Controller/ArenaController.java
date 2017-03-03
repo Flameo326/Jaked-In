@@ -8,6 +8,7 @@ import Models.Map.Map;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
+import Models.Upgrades.MedPack;
 import SpriteSheet.SpriteSheet;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -73,6 +74,7 @@ public class ArenaController implements Initializable {
 		gc.add(new HumanPlayer(img, 50, 50));
 		gc.setFocus(player1);
 		gc.start();
+		gc.add(new MedPack(SpriteSheet.getBlock(10, 10, Color.RED), 80, 80));
 	}
 }
 
