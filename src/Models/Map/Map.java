@@ -8,7 +8,6 @@ import Enums.Direction;
 import Models.Collision;
 import Models.Entity;
 import Models.Shape.Shape;
-import Models.Upgrades.MedPack;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -16,34 +15,17 @@ import javafx.scene.paint.Color;
 public class Map {
 	
 	private ArrayList<Entity> mapObjects;
-	private Random rand;
+	protected Random rand;
 	private int mapWidth, mapHeight;
 	private int border = 10;
-	private boolean mapIsLinear = true;
+	private boolean mapIsLinear;
 	
 	public Map(int width, int height){
 		mapWidth = width;
 		mapHeight = height;
 		mapObjects = new ArrayList<>();
 		rand = new Random();
-		
-		generateMap();
 	}
-	
-	// Current Problems:
-	// Paths sometimes look ugly when they intersect but not cleanly, 
-	// 	- i.e. they hang over on one side of the room making it lopsided
-	//  -  - We can make it so that they are either generated on one side or the other, not in between
-	//  -  - Find some way to make it so they generate long enought to be ok
-	// Sometimes the path will not generate correctly and go into infinite while loop
-	// - Fixed???
-	// Rooms are sometimes generated smaller than 150 and default width/ height affect that giving out of bounds
-	// Paths will techincally not intersect but will be displayed as if they do...
-	//
-	// Walls may split weirdly in 3 ways, fix
-	// Walls may give invalid dimensions when duplicating
-	// Some walls appear overextended on the map but do not affect movement
-	
 	
 	// This method can be overrode for different functionality
 	public void generateMap(){
@@ -154,15 +136,8 @@ public class Map {
 		mapObjects.addAll(walls);
 	}
 	
-	private void populateMap(ArrayList<Entity> rooms){
-		int upgradesAmo = rand.nextInt(10) + 1;
-		for(int i = 0; i < upgradesAmo; i++){
-			Entity room = rooms.get(rand.nextInt(rooms.size()));
-			int size = (rand.nextInt(10) + 1) * 5;
-			int xPos = rand.nextInt(room.getWidth() - size) + room.getShape().getMinX() + size/2;
-			int yPos = rand.nextInt(room.getHeight() - size) + room.getShape().getMinY() + size/2;
-			mapObjects.add(new MedPack(SpriteSheet.getBlock(size, size, Color.BLUEVIOLET), xPos, yPos));
-		}
+	public void populateMap(ArrayList<Entity> rooms){
+		
 	}
 	
 	public Entity createNewWall(int x, int y, int width, int height){
@@ -291,7 +266,7 @@ public class Map {
 			Entity e = mapObjects.get(i);
 			
 			// Don't care about other walls
-			if(e.getTag().equals("Wall")) { continue; }
+//			if(e.getTag().equals("Wall")) { continue; }
 			
 			ArrayList<Collision> collisions = CollisionSystem.getCollision(e, walls.toArray(new Entity[0]));
 			walls.clear();
@@ -423,9 +398,6 @@ public class Map {
 		return walls;
 	}
 	
-	//
-	// Wall does not removed when it should
-	
 	private void resizeWallWidth(Entity wall, int pointOfIntersect, int dir){
 		Shape shapeW = wall.getShape();
 		int width = shapeW.getWidth(), xPos = shapeW.getCenterX();
@@ -435,7 +407,7 @@ public class Map {
 		} else if(dir == -1){
 			width =  pointOfIntersect - shapeW.getMinX();
 			xPos = shapeW.getMinX() + width/2;
-		} else { /* ot Valid */ }
+		} else { /* not Valid */ }
 		wall.setXPos(xPos);
 		wall.setWidth(width);
 	}
@@ -449,7 +421,7 @@ public class Map {
 		} else if(dir == -1){
 			height =  pointOfIntersect - shapeW.getMinY();
 			yPos = shapeW.getMinY() + height/2;
-		} else { /* ot Valid */ }
+		} else { /* not Valid */ }
 		wall.setYPos(yPos);
 		wall.setHeight(height);
 	}
@@ -491,7 +463,6 @@ public class Map {
 				shapeE2.getMaxY() - (d.getY() == -1 && !xConnected ? playerH : 0))){
 			xPath = true;
 		}
-//		int i = 0;
 		while(!xConnected || !yConnected){
 			System.out.println("looping in Paths");
 			// Negate it get the direction towards the object
@@ -499,8 +470,7 @@ public class Map {
 			d = Direction.getDir(-c.collisionNormal.getX(), -c.collisionNormal.getY());
 			Entity path = null;
 			
-			if(xPath /*&& !(CollisionSystem.isFullyEncapsulating(currentPath.getShape().getMinX(),
-					currentPath.getShape().getMaxX(), e2.getShape().getMinX(), e2.getShape().getMaxX()))*/){
+			if(xPath){
 				int widthMax;
 				if(d.getX() == 1){
 					widthMax = (yConnected ? shapeE2.getMinX() : shapeE2.getMaxX()) - (previousShape.getMaxX());
@@ -527,8 +497,7 @@ public class Map {
 						previousShape.getMinX() - path.getWidth()/2);
 				path.setXPos(initialX);
 				path.setYPos(initialY);
-			} else /*if(!(CollisionSystem.isFullyEncapsulating(currentPath.getShape().getMinY(),
-					currentPath.getShape().getMaxY(), e2.getShape().getMinY(), e2.getShape().getMaxY())))*/{
+			} else {
 				int heightMax;
 				if(d.getY() == 1){
 					heightMax = (xConnected ? shapeE2.getMinY() : shapeE2.getMaxY()) - previousShape.getMaxY();
@@ -579,13 +548,32 @@ public class Map {
 			}
 			xPath = !xPath;
 			previousD = d;
-//			if(++i >= 100) { break; }
 		}
 		return paths;
 	}
 	
+	public void setMapIsLinear(boolean b){
+		mapIsLinear = b;
+	}
+	
+	public void setBorder(int i){
+		border = i;
+	}
+	
 	public ArrayList<Entity> getMapObjects(){
 		return mapObjects;
+	}
+	
+	public int getBorder(){
+		return border;
+	}
+	
+	public int getMapWidth(){
+		return mapWidth;
+	}
+	
+	public int getMapHeight(){
+		return mapHeight;
 	}
 
 }
