@@ -11,7 +11,8 @@ import javafx.scene.image.Image;
 public abstract class Weapon extends Entity implements Attackable{
 
 	private final PlayableCharacter ownedEntity;
-	private int attackTime, timer;
+	private int attackTime;
+	protected int timer;
 
 	public Weapon(PlayableCharacter e, Image i){
 		super(i, e.getXPos(), e.getYPos(), (int)i.getWidth(), (int)i.getHeight());

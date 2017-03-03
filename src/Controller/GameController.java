@@ -6,14 +6,12 @@ import java.util.Collections;
 import Models.Collision;
 import Models.Entity;
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class GameController extends AnimationTimer {
 
@@ -23,6 +21,8 @@ public class GameController extends AnimationTimer {
 	private Entity focusedEntity;
 	private Stage error;
 	private Label playPos;
+	private long normalNanoTime;
+	private long timesCounted;
 	
 	public GameController(Canvas myCanvas) {
 		this.myCanvas = myCanvas;
@@ -74,10 +74,19 @@ public class GameController extends AnimationTimer {
 			offsetX = focusedEntity.getDisplayableXPos();
 			offsetY = focusedEntity.getDisplayableYPos();
 		}
+		double screenWidth = (myCanvas.getWidth()/2);
+		double screenHeight = (myCanvas.getHeight()/2);
+		long startTime = System.nanoTime();
 		for(Entity e : entities){
-			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (myCanvas.getWidth()/2),
-					e.getDisplayableYPos() - offsetY + (myCanvas.getHeight()/2), e.getWidth(), e.getHeight());
-		}	
+			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + screenWidth,
+						e.getDisplayableYPos() - offsetY + screenHeight, e.getWidth(), e.getHeight());
+		}
+		normalNanoTime += System.nanoTime() - startTime;
+		if(++timesCounted == 500){
+			normalNanoTime = normalNanoTime / timesCounted;
+			timesCounted = 0;
+			System.out.println("Update Image:" + normalNanoTime);
+		}
 	}
 
 	public void add(Entity... items) {

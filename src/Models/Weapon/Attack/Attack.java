@@ -12,7 +12,8 @@ public abstract class Attack extends Entity {
 	
 	protected HashSet<Entity> hasHit;
 	private final PlayableCharacter ownedEntity;
-	private int lifeTime, timer;
+	protected int lifeTime;
+	protected int timer;
 	private int damage;
 	
 	// This will be for Like Melee Weapons...
