@@ -3,31 +3,42 @@ package Controller;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import Models.Collision;
+import Interfaces.Publishable;
+import Interfaces.Subscribable;
 import Models.Entity;
+import Models.Players.PlayableCharacter;
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
-public class GameController extends AnimationTimer {
+public class GameController extends AnimationTimer implements Publishable<PlayableCharacter>{
+	
+	// This boolean will indicate wether or not we are in story mode right now
+	// controls are different in story or arena
+	public static boolean StoryMode;
 
 	private ArrayList<Entity> entities;
-	private Canvas myCanvas;
-	private GraphicsContext g;
+	private ArrayList<PlayableCharacter> players;
+	private ArrayList<Subscribable<PlayableCharacter>> subscribers;
+	private ArrayList<Canvas> windows;
+//	private GraphicsContext g;
 	private Entity focusedEntity;
+	
 	private Stage error;
 	private Label playPos;
 	
-	public GameController(Canvas myCanvas) {
-		this.myCanvas = myCanvas;
-		g = myCanvas.getGraphicsContext2D();
+	public GameController(Canvas myCanvas, boolean storyMode) {
+		GameController.StoryMode = storyMode;
+		windows = new ArrayList<>();
 		entities = new ArrayList<>();
+		players = new ArrayList<>();
+		subscribers = new ArrayList<>();
+		
+		addWindow(myCanvas);
 		
 		playPos = new Label();
 		
@@ -49,38 +60,35 @@ public class GameController extends AnimationTimer {
 			Entity e = entities.get(i);
 			// All Entities are updated even if they don't move
 			e.update(entities);
-			// Test for collisions
-			for(int y = 0; y < entities.size(); y++){
-				if(y == i) { continue; }
-				Entity collided = entities.get(y);
-				Collision c = CollisionSystem.getCollision(e, collided);
-				if(c.hasCollided){
-					e.hasCollided(c);
-					collided.hasCollided(c);
-				}
-			}
-			// Print out Entity Information
-//			System.out.println(e.getClass().getSimpleName() + " X: " + e.getXPos() + " Y: " + e.getYPos());
+			// Entity gets checked for collisions if it moved
+			CollisionSystem.checkMovementCollisions(e, entities);
 		}
-		playPos.setText("Player Center X: " + focusedEntity.getXPos() + " Y: " + focusedEntity.getYPos());
+		if(focusedEntity != null){
+			playPos.setText("Player Center X: " + focusedEntity.getXPos() + " Y: " + focusedEntity.getYPos());
+		}
+		
 		// Handles the graphical Rendering 
-		updateImage();
+		for(Canvas c : windows){
+			updateImage(c);
+		}
+		notifySubscribers();
 	}
 
-	private void updateImage(){
-		g.clearRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
+	private void updateImage(Canvas c){
+		GraphicsContext g = c.getGraphicsContext2D();
+		g.clearRect(0, 0, c.getWidth(), c.getHeight());
 		int offsetX = 0, offsetY = 0;
 		if(focusedEntity != null){
 			offsetX = focusedEntity.getDisplayableXPos();
 			offsetY = focusedEntity.getDisplayableYPos();
 		}
 		for(Entity e : entities){
-			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (myCanvas.getWidth()/2),
-					e.getDisplayableYPos() - offsetY + (myCanvas.getHeight()/2), e.getWidth(), e.getHeight());
+			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (c.getWidth()/2),
+					e.getDisplayableYPos() - offsetY + (c.getHeight()/2), e.getWidth(), e.getHeight());
 		}	
 	}
 
-	public void add(Entity... items) {
+	public void addEntity(Entity... items) {
 		for(Entity i : items){
 			if(!entities.contains(i)){
 				entities.add(i);
@@ -89,8 +97,49 @@ public class GameController extends AnimationTimer {
 		Collections.sort(entities);
 	}
 	
+	public void addPlayer(PlayableCharacter p){
+		if(!players.contains(p)){
+			players.add(p);
+		}
+	}
+	
+	public void addWindow(Canvas c){
+		if(!windows.contains(c)){
+			windows.add(c);
+		}
+	}
+	
 	public void setFocus(Entity focusedEntity){
 		this.focusedEntity = focusedEntity;
 	}
+
+	@Override
+	public void attach(Subscribable<PlayableCharacter> sub) {
+		if(!subscribers.contains(sub)){
+			subscribers.add(sub);
+		}
+	}
+
+	@Override
+	public void detach(Subscribable<PlayableCharacter> sub) {
+		subscribers.remove(sub);
+	}
+
+	@Override
+	public void notifySubscribers() {
+		for(PlayableCharacter p : players){
+			for(Subscribable<PlayableCharacter> s : subscribers){
+				s.update(p);
+			}
+		}
+	}
 	
+	/*
+	 * GC takes in a canvas to draw on and a boolean representing its mode
+	 * You can add Entities to it which will be updated and displayed to the screen
+	 * You can add subsribers which will be alerted of Win or Loss conditions
+	 * You can add players which are the Win and Loss Conditions
+	 * - The GC will update everything and display it, 
+	 * - then it will notify its subscribers of anything that has changed
+	 */
 }

@@ -35,7 +35,7 @@ public class Button extends Entity implements Interactable, Subscribable<Button>
 	}
 
 	@Override
-	public void update() {
+	public void update(Button value) {
 		// TODO Auto-generated method stub
 		
 	}

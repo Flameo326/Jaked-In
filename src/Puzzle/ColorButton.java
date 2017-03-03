@@ -36,7 +36,7 @@ public class ColorButton extends Button {
 	}
 	
 	@Override
-	public void update() {
+	public void update(Button b) {
 		color = 255;
 	}
 
