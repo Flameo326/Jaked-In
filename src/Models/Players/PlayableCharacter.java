@@ -19,11 +19,13 @@ import javafx.scene.paint.Color;
 public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
 	
 	private Weapon weapon;
+	private Entity healthBar;
 	private int maxHealth, currentHealth;
 	private boolean isDodging;
 
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
+		healthBar = new HealthBar(this);
 		setSpeed(3);
 		setDisplayLayer(7);
 		// Just Default it to a Standard Projectile Weapon for now
@@ -131,6 +133,6 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	}
 
 	public Entity[] getDisplayableEntities() {
-		return weapon != null ? new Entity[] {this, weapon} : new Entity[] {this};
+		return weapon != null ? new Entity[] {this, weapon, healthBar} : new Entity[] {this, healthBar};
 	}
 }

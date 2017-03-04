@@ -54,5 +54,21 @@ public final class SpriteSheet {
 		}
 		return img;
 	}
+	
+	public static Image getHealthBarImage(double percent, int width){
+		WritableImage img = new WritableImage(width, 10);
+		PixelWriter pw = img.getPixelWriter();
+		int border = 2;
+		for(int i = 0; i < img.getHeight(); i++){
+			for(int y = 0; y < img.getWidth(); y++){
+				if(i < border || y < border || i > img.getWidth()-border || i > img.getHeight()-border){
+					pw.setColor(y, i, Color.BLACK);
+				} else if(y < width * percent){
+					pw.setColor(y, i, Color.RED);
+				}
+			}
+		}
+		return img;
+	}
 
 }

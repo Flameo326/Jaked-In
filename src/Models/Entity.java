@@ -18,6 +18,10 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 	private int speed = 1;
 	private int displayLayer;
 	
+	public Entity(Image i, int x, int y){
+		this(i, x, y, (int)i.getWidth(), (int)i.getHeight());
+	}
+	
 	public Entity(Image i, int x, int y, int width, int height){
 		this(i, new Shape(x, y, width, height));
 	}
