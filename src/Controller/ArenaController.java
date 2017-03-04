@@ -11,6 +11,7 @@ import Models.Map.Map;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
+import Models.Upgrades.MedPack;
 import SpriteSheet.SpriteSheet;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -145,6 +146,21 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 		// KeyEvent to record input while playing
 		myCanvas.setOnKeyPressed((e) -> InputHandler.keyPress(e));
 		myCanvas.setOnKeyReleased((e) -> InputHandler.keyRelease(e));
+
+		
+		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
+		// Players
+		player1 = new HumanPlayer(img, 0, 0);
+		player2 = new ComputerPlayer(img, -100, -100);
+		
+		gc = new GameController(myCanvas);
+		gc.add(player1.getDisplayableEntities());
+		gc.add(player2.getDisplayableEntities());
+		gc.add(new HumanPlayer(img, 50, 50));
+		gc.setFocus(player1);
+		gc.start();
+		
+
 	}
 
 	@Override
