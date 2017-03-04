@@ -19,6 +19,7 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	
 	// This boolean will indicate wether or not we are in story mode right now
 	// controls are different in story or arena
+	public static long timer;
 	public static boolean StoryMode;
 
 	private ArrayList<Entity> entities;
@@ -55,6 +56,7 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	// -- graphicaly updated every Frame
 	@Override
 	public void handle(long now) {
+		timer = now;
 		for(int i = 0; i < entities.size(); i++){
 			Entity e = entities.get(i);
 			// All Entities are updated 
