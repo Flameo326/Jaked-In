@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import Interfaces.Subscribable;
 import Models.Entity;
 import Models.Map.Map;
-import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
 import SpriteSheet.SpriteSheet;
@@ -29,6 +28,8 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	private Map currentLevel;
 	// create variables for the levels and generate them during init
 	int level = 0;
+	
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

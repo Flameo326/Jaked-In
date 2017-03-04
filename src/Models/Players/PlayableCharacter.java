@@ -1,7 +1,8 @@
 package Models.Players;
 
+import java.util.ArrayList;
+
 import Controller.InputHandler;
-import Enums.Direction;
 import Interfaces.Attackable;
 import Interfaces.Damageable;
 import Interfaces.Dodgeable;
@@ -18,7 +19,6 @@ import javafx.scene.paint.Color;
 public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
 	
 	private Weapon weapon;
-	private Direction direction;
 	private int maxHealth, currentHealth;
 	private boolean isDodging;
 
@@ -32,6 +32,13 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		setMaxHealth(100);
 		setCurrentHealth(100);
 	}
+	
+	@Override
+	public void update(ArrayList<Entity> entities){
+		if(!isAlive()){
+			entities.remove(this);
+		}
+	}
 
 	@Override
 	public void hasCollided(Collision c) {
@@ -42,10 +49,8 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		if(InputHandler.keyInputContains(KeyCode.F)) { return; }
 		
 		String[] tagElements = collider.getTag().split("-");
-//		String[] ourElements = getTag().split("-");
 		
 		switch(tagElements[0]){
-		// If I collide against these then just move away
 		case "Human":
 		case "Computer":
 		case "NPC":
@@ -110,10 +115,6 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 			weapon = w;
 		}
 	}
-
-	public void setCurrDir(Direction direction) {
-		this.direction = direction;
-	}
 	
 	public int getMaxHealth(){
 		return maxHealth;
@@ -125,10 +126,6 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	
 	public Weapon getWeapon(){
 		return weapon;
-	}
-	
-	public Direction getCurrDir(){
-		return direction;
 	}
 
 	public Entity[] getDisplayableEntities() {
