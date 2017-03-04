@@ -4,18 +4,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import Enums.ButtonColors;
+import Interfaces.Publishable;
+import Interfaces.Subscribable;
+import Models.Entity;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-public class CombinedColor extends Button {
+public class CombinedColor extends Button implements Publishable<Door>{
 
-	
-	private static int red = 255;
-	private static int green = 255;
-	private static int blue = 255;
-	private static ArrayList<Integer> possibleSolutions = new ArrayList<>();
-	private static Color solutionColor;
-	private static boolean isSolved = false;
+	private ArrayList<Door> subscribers = new ArrayList<>();
+	private int red = 255;
+	private int green = 255;
+	private int blue = 255;
+	private ArrayList<Integer> possibleSolutions = new ArrayList<>();
+	private final Color solutionColor;
+	private boolean isSolved = false;
 
 	public CombinedColor(Image i, int x, int y, int width, int height) {
 		super(i, x, y, width, height);
@@ -26,7 +29,7 @@ public class CombinedColor extends Button {
 		solutionColor = Color.rgb(possibleSolutions.get(0), possibleSolutions.get(1), possibleSolutions.get(2));
 	}
 
-	public static void changeColor(ButtonColors color, int newColorValue) {
+	public void changeColor(ButtonColors color, int newColorValue) {
 		if (color == ButtonColors.RED) {
 			red = newColorValue;
 		} else if (color == ButtonColors.GREEN) {
@@ -34,16 +37,24 @@ public class CombinedColor extends Button {
 		} else {
 			blue = newColorValue;
 		}
+		checkForSolution();
 	}
 
-	public static Color getColor() {
+	public Color getColor() {
 		Color c = Color.rgb(red, green, blue);
 		return c;
 	}
+	
+	public Color getSolutionColor(){
+		return solutionColor;
+	}
 
 	
-	public static void checkForSolution(){
+	public void checkForSolution(){
 		isSolved = getColor().equals(solutionColor);
+		if(isSolved = true){
+			notifySubscribers();
+		}
 	}
 	
 	@Override
@@ -51,6 +62,25 @@ public class CombinedColor extends Button {
 		red = 255;
 		green = 255;
 		blue = 255;
+	}
+
+	@Override
+	public void attach(Subscribable<Door> sub) {
+		subscribers.add((Door) sub);	
+	}
+
+	@Override
+	public void detach(Subscribable<Door> sub) {
+		subscribers.remove(sub);
+		
+	}
+
+	@Override
+	public void notifySubscribers() {
+		for (Subscribable<Door> s : subscribers) {
+			s.update(null);
+		}
+		
 	}
 
 }
