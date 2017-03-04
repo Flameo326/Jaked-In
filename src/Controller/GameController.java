@@ -25,7 +25,6 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	private ArrayList<PlayableCharacter> players;
 	private ArrayList<Subscribable<PlayableCharacter>> subscribers;
 	private ArrayList<Canvas> windows;
-//	private GraphicsContext g;
 	private Entity focusedEntity;
 	
 	private Stage error;
@@ -58,10 +57,8 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	public void handle(long now) {
 		for(int i = 0; i < entities.size(); i++){
 			Entity e = entities.get(i);
-			// All Entities are updated even if they don't move
+			// All Entities are updated 
 			e.update(entities);
-			// Entity gets checked for collisions if it moved
-			CollisionSystem.checkMovementCollisions(e, entities);
 		}
 		if(focusedEntity != null){
 			playPos.setText("Player Center X: " + focusedEntity.getXPos() + " Y: " + focusedEntity.getYPos());

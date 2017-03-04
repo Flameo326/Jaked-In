@@ -10,6 +10,22 @@ import Models.Shape.Shape;
 
 public class CollisionSystem {
 	
+	public static void checkMovementCollisions(Entity e, ArrayList<Entity> entities){
+		// Test for collisions
+		Shape shapeE = e.getShape();
+		for(int y = 0; y < entities.size(); y++){
+			Entity collided = entities.get(y);
+			if(collided == e) { continue; }
+			Shape shapeC = collided.getShape();
+			
+			Collision c = getCollision(e, collided);
+			if(c.hasCollided){
+				e.hasCollided(c);
+				collided.hasCollided(c);
+			} 
+		}
+	}
+	
 	public static ArrayList<Collision> getCollision(ArrayList<Entity> entities){
 		ArrayList<Collision> collisions = new ArrayList<>();
 		for(int i = 0; i < entities.size(); i++){
@@ -73,6 +89,16 @@ public class CollisionSystem {
 		boolean hasCollided = hori.hasCollided && vert.hasCollided;
 		Direction d = Direction.getDir(hori.collisionNormal.getX(), vert.collisionNormal.getY());
 		return new Collision(a, b, hasCollided, d, hori.xPenDepth, vert.yPenDepth);
+	}
+	
+	public static Collision AABBvsAABBShape(Shape a, Shape b){
+		Collision hori = getCollisionFromLine(a.getMinX(), a.getMaxX(), b.getMinX(), b.getMaxX());
+		Collision vert = getCollisionFromLine(a.getMinY(), a.getMaxY(), b.getMinY(), b.getMaxY());
+		
+		// create a new collision based on the previous two...
+		boolean hasCollided = hori.hasCollided && vert.hasCollided;
+		Direction d = Direction.getDir(hori.collisionNormal.getX(), vert.collisionNormal.getX());
+		return new Collision(null, null, hasCollided, d, hori.xPenDepth, vert.xPenDepth);
 	}
 	
 	public static Collision CirclevsCircle(Entity a, Entity b){
