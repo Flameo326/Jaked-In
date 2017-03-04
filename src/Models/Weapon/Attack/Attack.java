@@ -3,6 +3,7 @@ package Models.Weapon.Attack;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import Controller.GameController;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
@@ -52,11 +53,20 @@ public abstract class Attack extends Entity {
 			return;
 		}
 		
+		// In ArenaMode
+		if(!GameController.StoryMode){
+			if(!collidedChar.getTag().equals(getOwnedEntity().getTag())){
+				collidedChar.takeDamage(getDamage());
+				hasHit.add(collider);
+				return;
+			}
+		} 
+		
 		String[] tagElements = collidedChar.getTag().split("-");
 		String[] ourElements = getTag().split("-");
 		switch(tagElements[0]){
 		case "Human":
-			if(!ourElements[2].equals("AllyNPC") && !ourElements[1].equals("Human")){
+			 if(!ourElements[2].equals("AllyNPC") && !ourElements[1].equals("Human")){
 				collidedChar.takeDamage(getDamage());
 				hasHit.add(collider);
 			} 

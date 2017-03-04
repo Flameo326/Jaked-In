@@ -36,7 +36,9 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	@Override
 	public void update(ArrayList<Entity> entities){
 		if(!isAlive()){
-			entities.remove(this);
+			for(Entity e : getDisplayableEntities()){
+				entities.remove(e);
+			}
 		}
 	}
 

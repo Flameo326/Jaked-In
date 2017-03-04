@@ -17,7 +17,7 @@ public class Jaked_In extends Application {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/StartFXML.fxml"));
 		BorderPane root = loader.load();
 		
-		Scene scene = new Scene(root, 500, 500);
+		Scene scene = new Scene(root, 600, 500);
 		stage.setScene(scene);
 		
 		stage.setTitle("Jak'd In");

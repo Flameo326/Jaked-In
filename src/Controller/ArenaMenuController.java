@@ -2,7 +2,6 @@ package Controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import FXML.PlayerBox;
@@ -16,23 +15,34 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ArenaMenuController implements Initializable{
 
+    @FXML
+    private VBox playerMenu;
+
+    @FXML
+    private Label label1;
+
+    @FXML
+    private Label label2;
+
+    @FXML
+    private Label label3;
+
 	@FXML
     private HBox playersBox;
-	private ArrayList<PlayerBox> players;
 
     @FXML
     private Button startButton;
@@ -45,12 +55,34 @@ public class ArenaMenuController implements Initializable{
 
     @FXML
     void addBtnAction(ActionEvent event) {
-
+    	if(playersBox.getChildren().size() < 4) {
+    		playersBox.getChildren().add(new PlayerBox());
+    		resizePlayerBox();
+    	} else {
+    		// Add Error Message about maximum players
+    	}
     }
 
     @FXML
     void removeBtnAction(ActionEvent event) {
-
+    	if(playersBox.getChildren().size() > 2) {
+    		playersBox.getChildren().remove(playersBox.getChildren().size()-1);
+    		resizePlayerBox();
+    	} else {
+    		// Add Error Message about minimum players
+    	}
+    	
+    }
+    
+    private void resizePlayerBox(){
+    	for(Node n : playersBox.getChildren()){
+    		PlayerBox playBox;
+    		if(n instanceof PlayerBox){
+    			playBox = (PlayerBox)n;
+    		} else { continue; }
+    		
+    		playBox.prefWidthProperty().bind(playersBox.widthProperty().divide(playersBox.getChildren().size()));
+    	}
     }
 
     @FXML
@@ -88,7 +120,7 @@ public class ArenaMenuController implements Initializable{
     		// Set weapon
     		switch(playBox.getWeaponType()){
     		case "Projectile":
-    			p.setWeapon(new ProjectileWeapon(p, SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3)));
+    			p.setWeapon(new ProjectileWeapon(p, SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3)));
     			break;
     		case "Melee":
     			p.setWeapon(new MeleeWeapon(p, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
@@ -110,16 +142,13 @@ public class ArenaMenuController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		label1.setPadding(new Insets(10, 0, 0, 0));
+		label1.prefWidthProperty().bind(playerMenu.widthProperty());
+		label2.prefWidthProperty().bind(playerMenu.widthProperty());
+		label3.prefWidthProperty().bind(playerMenu.widthProperty());
 		
-		
-		// Intialize two blocks for Players then allow adding and removing from 2 - 8 from an arrayList
-		PlayerBox p1 = new PlayerBox();
-		p1.prefWidthProperty().bind(playersBox.widthProperty().multiply(.5));
-		playersBox.getChildren().add(p1);
-		
-		PlayerBox p2 = new PlayerBox();
-		p2.prefWidthProperty().bind(playersBox.widthProperty().multiply(.5));
-		playersBox.getChildren().add(p2);
+		addBtnAction(null);
+		addBtnAction(null);
 	}
 
 }
