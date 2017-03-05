@@ -15,8 +15,6 @@ import javafx.scene.paint.Color;
 public class HumanPlayer extends PlayableCharacter{
 	
 	private static int humanID = 0;
-	private long normalNanoTime;
-	private long timesCounted;
 
 	public HumanPlayer(Image i, int x, int y) {
 		super(i, x, y);
@@ -55,12 +53,6 @@ public class HumanPlayer extends PlayableCharacter{
 			}
 		} else {
 			System.out.println("Human Player Tag is " + getTag());
-		}
-		normalNanoTime += System.nanoTime() - startTime;
-		if(++timesCounted == 500){
-			normalNanoTime = normalNanoTime / timesCounted;
-			timesCounted = 0;
-			System.out.println("Human update:" + normalNanoTime);
 		}
 	}
 	

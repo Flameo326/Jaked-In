@@ -2,6 +2,6 @@ package Interfaces;
 
 public interface Subscribable<T> {
 	
-	void update();
+	void update(T value);
 
 }

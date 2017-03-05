@@ -35,7 +35,7 @@ public class ResetButton extends Button implements Interactable, Publishable<But
 	@Override
 	public  void notifySubscribers() {
 		for (Subscribable<Button> s : subscribers) {
-			s.update();
+			s.update(null);
 		}
 	}
 
