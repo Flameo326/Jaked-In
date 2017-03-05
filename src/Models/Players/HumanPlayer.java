@@ -69,4 +69,8 @@ public class HumanPlayer extends PlayableCharacter{
 		return needsToMove;
 	}
 	
+	public static void resetHumanID(){
+		humanID = 0;
+	}
+	
 }

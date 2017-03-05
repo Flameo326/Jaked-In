@@ -73,7 +73,7 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 		notifySubscribers();
 	}
 
-	private void updateImage(Canvas c){
+	public void updateImage(Canvas c){
 		GraphicsContext g = c.getGraphicsContext2D();
 		g.clearRect(0, 0, c.getWidth(), c.getHeight());
 		int offsetX = 0, offsetY = 0;
@@ -102,6 +102,10 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 		}
 	}
 	
+	public void removePlayer(PlayableCharacter p){
+		players.remove(p);
+	}
+	
 	public void addWindow(Canvas c){
 		if(!windows.contains(c)){
 			windows.add(c);
@@ -126,7 +130,7 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 
 	@Override
 	public void notifySubscribers() {
-		for(PlayableCharacter p : players){
+		for(PlayableCharacter p : players.toArray(new PlayableCharacter[0])){
 			for(Subscribable<PlayableCharacter> s : subscribers){
 				s.update(p);
 			}

@@ -1,5 +1,6 @@
 package Controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,11 +20,20 @@ import SpriteSheet.SpriteSheet;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class ArenaController implements Initializable, Subscribable<PlayableCharacter> {
@@ -34,7 +44,7 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 	private int width, height;
 	
 	private ArenaMap arenaMap;
-	private ArrayList<PlayableCharacter> players;
+	private ArrayList<PlayableCharacter> players, deadPlayers;
 	private Random rand;
 	private long upgradeTime;
 	
@@ -89,10 +99,61 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 	public void stop(){
 		gc.stop();
 	}
+	
+	public void displayWinner(){
+		GraphicsContext g = myCanvas.getGraphicsContext2D();
+		g.setFill(Color.WHITE);
+		g.fillRect(width/4, height/8, width/2, height*3/4);
+		
+		g.setStroke(Color.BLACK);
+		g.strokeRect(width/4, height/8, width/2, height*3/4);
+		
+		g.setFont(new Font(32));
+		g.setFill(Color.BLACK);
+		g.setTextAlign(TextAlignment.CENTER);
+		
+		int yPos = height*3/8;
+		g.fillText("1.) " + players.get(0).getTag(), width/2, yPos);
+		yPos += 32;
+		
+		g.setFont(new Font(18));
+		for(int i = deadPlayers.size()-1; i > -1; i--){
+			Entity e = deadPlayers.get(i);
+			g.fillText(2 + (deadPlayers.size()-1-i) + ".) " + e.getTag(), width/2, yPos);
+			yPos += 18;
+		}
+		
+		int btnWidth = width*2/5;
+		int btnHeight =  height/16;
+		int btnX = width/2 - btnWidth/2;
+		int btnY = height*13/16 - btnHeight/2;
+		g.strokeRoundRect(btnX, btnY, btnWidth, btnHeight, 5, 5);
+		g.fillText("Back to Main Menu", btnX + btnWidth/2, btnY + btnHeight*3/4, btnWidth);
+		myCanvas.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+			int x = (int)e.getSceneX();
+			int y = (int)e.getSceneY();
+			if(x < btnX || x > btnX + btnWidth || y < btnY || y > btnY + btnHeight){
+				// Succesfuly clicked button
+				Stage s = (Stage)myCanvas.getScene().getWindow();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/StartFXML.fxml"));
+				BorderPane root = null;
+				try {
+					root = loader.load();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				Scene scene = new Scene(root, s.getScene().getWidth(), s.getScene().getHeight());
+				s.setScene(scene);
+				s.centerOnScreen();
+			}
+		});
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		players = new ArrayList<>();
+		deadPlayers = new ArrayList<>();
 		rand = new Random();
 		
 		gc = new GameController(myCanvas, false);
@@ -151,29 +212,19 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 		
 		// Check for win
 		if(!value.isAlive()){
+			gc.removePlayer(value);
 			players.remove(value);
+			deadPlayers.add(value);
 			
 			// stop when a win condition is achieved
 			// in this case, it's when one player is remaining
 			if(players.size() == 1){
-				System.out.println("Player " + players.get(0).getTag() + " is the Winner!");
+				gc.handle(GameController.timer);
 				gc.stop();
+				HumanPlayer.resetHumanID();
+				displayWinner();
 			}
 		}
 	}
-	
-	/*
-	 * We need to be able to determine Loss in Story and Arena
-	 *
-	 * Loss in Arena is either of the two players dying
-	 * 
-	 * Loss in Story is the players expiring their lives.
-	 * 
-	 * GC has access to Story/ Arena boolean
-	 * 
-	 * Subscriber and Publisher Model would be useful, but it sounds ugly
-	 * 
-	 * 
-	 */
 }
 
