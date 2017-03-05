@@ -2,6 +2,7 @@ package Models.Weapon.Attack;
 
 import java.util.ArrayList;
 
+import Enums.Direction;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
@@ -13,6 +14,7 @@ public class HitBox extends Attack{
 		super(e, i);
 		setTag(getTag() + "-Melee");
 		setDamage(20);
+		setCurrDir(Direction.getDir(0, 0));
 	}
 	
 	// Position the hitBox in the direction that the object was moving
@@ -35,5 +37,6 @@ public class HitBox extends Attack{
 		} else {
 			setYPos(getOwnedEntity().getYPos());
 		}
+		move(entities);
 	}
 }
