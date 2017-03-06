@@ -2,6 +2,7 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
+import Controller.StoryController;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
@@ -21,9 +22,8 @@ public class Doctor extends NPC {
 			"Please, just leave me alone." };// 3
 	private int count = 0;
 
-	public Doctor(Image i, int x, int y, int width, int height) {
-		super(i, x, y, width, height);
-
+	public Doctor(Image i, StoryController st, int x, int y) {
+		super(i, st, x, y);
 	}
 
 	public String conversation(PlayableCharacter c) {

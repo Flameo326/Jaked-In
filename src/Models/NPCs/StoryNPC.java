@@ -2,6 +2,7 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
+import Controller.StoryController;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
@@ -19,9 +20,9 @@ public class StoryNPC extends NPC {
 		"We heard that Tron hasn’t been seen in a long time. I hope Grinsler didn’t kill him",
 		"We stand with the users! Destory Watson once and for all!"};
 
-	public StoryNPC(Image i, int x, int y) {
-		super(i, x, y,(int)i.getWidth(), (int)i.getHeight());
-		
+
+	public StoryNPC(Image i, StoryController st, int x, int y) {
+		super(i, st, x, y);
 	}
 
 	public String dialogue(){
