@@ -227,4 +227,3 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 		}
 	}
 }
-
