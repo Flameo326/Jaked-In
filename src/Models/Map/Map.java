@@ -30,7 +30,7 @@ public class Map {
 	// This method can be overrode for different functionality
 	public void generateMap(){
 		mapObjects.clear();
-		ArrayList<Entity> rooms = generateRooms(150, mapWidth, .8, 1.2, 5);
+		ArrayList<Entity> rooms = generateRooms(150, mapWidth, .8, 1.2, 10);
 		generatePaths(rooms);
 		populateMap(rooms);
 	}
@@ -41,16 +41,18 @@ public class Map {
 		// Create first starting room
 		Entity currentRoom = createNewRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
 		rooms.add(currentRoom);
-		
+		int radius = 0;
+		if(!mapIsLinear){
+			radius = (int)(((maxWidth * maxHeightMultiplier - minWidth * minHeightMultiplier)) * roomAmo*.1);
+		}
 		room: for(int i = 1; i < roomAmo; i++){
-			Entity previousRoom = rooms.get(i-1);
+			Entity previousRoom = rooms.get(rooms.size()-1);
 			currentRoom = createNewRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
 			
 			int maxDist = Math.max(currentRoom.getWidth(), currentRoom.getHeight());
-			int radius = (int) ((rand.nextDouble() + 1) * maxDist);
-			if(!mapIsLinear){
-				radius = (int)(maxWidth * maxHeightMultiplier * roomAmo/5);
-			}
+			if(mapIsLinear){
+				radius = (int) ((rand.nextDouble() + 1) * maxDist);
+			} 
 			// in radians
 			int degree = rand.nextInt(360);
 			int initialDegree = degree;
@@ -71,7 +73,7 @@ public class Map {
 				}
 				
 				hasNotCollided = true;
-				// do a collision check against the rooms which will be at the end of size i
+				// do a collision check against the rooms 
 				for(Collision c : CollisionSystem.getCollision(currentRoom, rooms.toArray(new Entity[0]))){
 					if(Math.min(c.xPenDepth, c.yPenDepth) > -20){
 						hasNotCollided = false;
@@ -80,7 +82,6 @@ public class Map {
 				degree += 99;
 				if(degree >= 360) { degree -= 360; }
 				if(degree == initialDegree){
-					--i;
 					continue room;
 				}
 			}
@@ -93,7 +94,7 @@ public class Map {
 		ArrayList<Entity> walls = new ArrayList<>();
 		for(int i = 0; i < rooms.size(); i++){
 			Entity currentRoom = rooms.get(i);
-			System.out.println("Generatring Room");
+			System.out.println("Generating Room");
 			walls.addAll(generateWalls(currentRoom, walls));
 			
 			// If this is zero then 
@@ -199,8 +200,8 @@ public class Map {
 		
 		ArrayList<Entity> walls = new ArrayList<>();
 		Shape shape = e.getShape();
-		int height = shape.getHeight();
-		int width = shape.getWidth() + border*2;
+		int height = shape.getRoundedHeight();
+		int width = shape.getRoundedWidth() + border*2;
 		
 		// Top
 		System.out.println("Top");
@@ -318,13 +319,23 @@ public class Map {
 				" Max Y:" + shapeE.getMaxY());
 			
 		// Check if it's completely within the object and remove
-		if(c.xPenDepth >= shapeW.getRoundedWidth() && c.yPenDepth >= shapeW.getRoundedHeight()){
+		if(c.xPenDepth >= shapeW.getWidth() && c.yPenDepth >= shapeW.getHeight()){
 			// the Wall is entirely inside the object.
 			walls.remove(wall);
 			System.out.println("Wall was removed");
+//		if(shapeE.getMinY() <= shapeW.getMinY() && shapeE.getMaxY() >= shapeW.getMaxY()
+//				&& shapeE.getMinX() <= shapeW.getMinX() && shapeE.getMaxX() >= shapeW.getMaxX()){
+//			// the Wall is entirely inside the object.
+//			walls.remove(wall);
+//			System.out.println("Wall was removed");
 		} else if(c.xPenDepth > 0 && c.yPenDepth > 0){
 			walls.remove(wall);
 			boolean split = false, hasWidth = false, hasHeight =  false;
+			if(wall.getWidth() <= 0 || wall.getHeight() <= 0) {
+				System.out.println("Wall did not have valid width or height");
+				walls.clear(); 
+				return walls; 
+			}
 			Entity wall1 = createNewWall(wall.getXPos(), wall.getYPos(),
 					wall.getWidth(), wall.getHeight());
 			Entity wall2 = createNewWall(wall.getXPos(), wall.getYPos(), 
@@ -343,7 +354,7 @@ public class Map {
 				resizeWallWidth(wall4, shapeE.getMaxX(), 1);
 			} 
 			// Check if Wall extends outside Entity
-			else if(c.xPenDepth < wall.getWidth()){
+			else if(c.xPenDepth < shapeW.getRoundedWidth()){
 				hasWidth = true;
 				resizeWallWidth(wall1, xDir == 1 ? shapeE.getMaxX() : shapeE.getMinX(), xDir);
 			} 
@@ -357,7 +368,7 @@ public class Map {
 				resizeWallHeight(wall4, shapeE.getMaxY(), 1);
 			} 
 			// Check if Wall extends outside Entity
-			else if(c.yPenDepth < wall.getHeight()) {
+			else if(c.yPenDepth < shapeW.getRoundedHeight()) {
 				hasHeight = true;
 				resizeWallHeight(wall2, yDir == 1 ? shapeE.getMaxY() : shapeE.getMinY() , yDir);
 			} 
