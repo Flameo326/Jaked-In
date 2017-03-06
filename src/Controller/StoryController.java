@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import Interfaces.Subscribable;
 import Models.Entity;
 import Models.Map.Map;
+import Models.NPCs.MedicNPC;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
 import SpriteSheet.SpriteSheet;
@@ -26,6 +27,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	private GameController gc;
 	private PlayableCharacter player1;
 	private Map currentLevel;
+	private MedicNPC medic;
 	// create variables for the levels and generate them during init
 	int level = 0;
 	
@@ -35,12 +37,15 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	public void initialize(URL location, ResourceBundle resources) {
 		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
 		player1 = new HumanPlayer(img, 0, 0);
+		medic = new MedicNPC(SpriteSheet.getBorderedBlock(30, 30, Color.RED, 3), player1.getXPos()+15, player1.getYPos()+15);
 		
 		gc = new GameController(myCanvas, true);
 		gc.attach(this);
 		gc.addEntity(player1.getDisplayableEntities());
 		gc.addPlayer(player1);
 		gc.setFocus(player1);
+
+
 		
 		// Resizes the Canvas to it's Stage Width and Height...
 		myCanvas.sceneProperty().addListener(new ChangeListener<Scene>(){
