@@ -41,6 +41,13 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 
 	
 	public StoryController(){
+		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
+		player1 = new HumanPlayer(img, 0, 0);
+		gc = new GameController(myCanvas, true);
+		gc.attach(this);
+		gc.addEntity(player1.getDisplayableEntities());
+		gc.addPlayer(player1);
+		gc.setFocus(player1);
 		generateLevels();
 //		gc.addEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
 	}
@@ -78,8 +85,8 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 				+ "fish amoung dolhins. Who am I?");
 		s.setLetterSpeed(1);
 		s.setSpeed(5);
-		startCutscene(s);
-//		gc.start();
+//		startCutscene(s);
+		gc.start();
 	}
 	
 	public void start(){
@@ -96,16 +103,6 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
-		player1 = new HumanPlayer(img, 0, 0);
-		gc = new GameController(myCanvas, true);
-		gc.attach(this);
-		gc.addEntity(player1.getDisplayableEntities());
-		gc.addPlayer(player1);
-		gc.setFocus(player1);
-
-
-		
 		// Resizes the Canvas to it's Stage Width and Height...
 		myCanvas.sceneProperty().addListener(new ChangeListener<Scene>(){
 		
@@ -160,5 +157,4 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	public void update(Boolean b) {
 		if(b){ start(); }
 	}
-
 }
