@@ -2,6 +2,7 @@ package Models.Upgrades;
 
 import java.util.ArrayList;
 
+import Controller.GameController;
 import Interfaces.Collectable;
 import Interfaces.Interactable;
 import Models.Collision;
@@ -30,15 +31,28 @@ public abstract class Upgrade extends Entity implements Interactable, Collectabl
 	@Override
 	public void hasCollided(Collision c) {
 		Entity collider;
-		if(c.collidingEntity == this){
-			collider = c.collidedEntity;
-		} else { 
+		PlayableCharacter collidedChar;
+		
+		if(c.collidedEntity == this){
 			collider = c.collidingEntity;
+		} else { collider = c.collidedEntity; }
+		
+		if(collider instanceof PlayableCharacter){
+			collidedChar = (PlayableCharacter)collider;
+		} else {
+			//Upgrade can not do anything
+			return;
 		}
+		
 		String[] tagElements = collider.getTag().split("-");
 		switch(tagElements[0]){
 		case "Human":
-			collect((PlayableCharacter)collider);
+			collect(collidedChar);
+			break;
+		case "Computer":
+			if(!GameController.StoryMode){
+				collect(collidedChar);
+			}
 			break;
 		}
 	}

@@ -3,29 +3,53 @@ package Controller;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import Models.Collision;
+import Interfaces.Publishable;
+import Interfaces.Subscribable;
 import Models.Entity;
 import Models.Map.Map;
+import Models.Players.PlayableCharacter;
 import javafx.animation.AnimationTimer;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
 
-public class GameController extends AnimationTimer {
+public class GameController extends AnimationTimer implements Publishable<PlayableCharacter>{
+	
+	// This boolean will indicate wether or not we are in story mode right now
+	// controls are different in story or arena
+	public static long timer;
+	public static boolean StoryMode;
 
 	private ArrayList<Entity> entities;
-	private Canvas myCanvas;
-	private GraphicsContext g;
+	private ArrayList<PlayableCharacter> players;
+	private ArrayList<Subscribable<PlayableCharacter>> subscribers;
+	private ArrayList<Canvas> windows;
 	private Entity focusedEntity;
 	private Map arenaMap;
 	//temp vars
 	boolean prevHeld = false;
 	
 	
-	public GameController(Canvas myCanvas) {
-		this.myCanvas = myCanvas;
-		g = myCanvas.getGraphicsContext2D();
+	private Stage error;
+	private Label playPos;
+	
+	public GameController(Canvas myCanvas, boolean storyMode) {
+		GameController.StoryMode = storyMode;
+		windows = new ArrayList<>();
 		entities = new ArrayList<>();
+		players = new ArrayList<>();
+		subscribers = new ArrayList<>();
+		
+		addWindow(myCanvas);
+		
+		playPos = new Label();
+		
+		StackPane root = new StackPane(playPos);
+		Scene scene = new Scene(root, 300, 50);
+		
+		error = new Stage();
+		error.setScene(scene);
+		error.show();
 	}
 	
 	// This entire thing will be our "Run" method. It gets called constantly and updates accordingly.
@@ -34,53 +58,37 @@ public class GameController extends AnimationTimer {
 	// -- graphicaly updated every Frame
 	@Override
 	public void handle(long now) {
+		timer = now;
 		for(int i = 0; i < entities.size(); i++){
 			Entity e = entities.get(i);
-			// All Entities are updated even if they don't move
+			// All Entities are updated 
 			e.update(entities);
-			// Test for collisions
-			for(int y = 0; y < entities.size(); y++){
-				if(y == i) { continue; }
-				Entity collided = entities.get(y);
-				Collision c = CollisionSystem.getCollision(e, collided);
-				if(c.hasCollided){
-					e.hasCollided(c);
-					collided.hasCollided(c);
-				}
-			}
-			// Print out Entity Information
-//			System.out.println(e.getClass().getSimpleName() + " X: " + e.getXPos() + " Y: " + e.getYPos());
 		}
-		if(InputHandler.keyInputContains(KeyCode.CONTROL)){
-			prevHeld = true;
-		} else {
-			if(prevHeld){
-				prevHeld = false;
-				if(arenaMap != null){
-					this.remove(arenaMap.getMapObjects().toArray(new Entity[0]));
-					setArenaMap(new Map(500, 500));
-					this.add(arenaMap.getMapObjects().toArray(new Entity[0]));
-				}
-			}
+		if(focusedEntity != null){
+			playPos.setText("Player Center X: " + focusedEntity.getXPos() + " Y: " + focusedEntity.getYPos());
 		}
 		// Handles the graphical Rendering 
-		updateImage();
+		for(Canvas c : windows){
+			updateImage(c);
+		}
+		notifySubscribers();
 	}
 
-	private void updateImage(){
-		g.clearRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
+	public void updateImage(Canvas c){
+		GraphicsContext g = c.getGraphicsContext2D();
+		g.clearRect(0, 0, c.getWidth(), c.getHeight());
 		int offsetX = 0, offsetY = 0;
 		if(focusedEntity != null){
 			offsetX = focusedEntity.getDisplayableXPos();
 			offsetY = focusedEntity.getDisplayableYPos();
 		}
 		for(Entity e : entities){
-			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (myCanvas.getWidth()/2),
-					e.getDisplayableYPos() - offsetY + (myCanvas.getHeight()/2));
+				g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (c.getWidth()/2),
+						e.getDisplayableYPos() - offsetY + (c.getHeight()/2), e.getWidth(), e.getHeight());
 		}	
 	}
 
-	public void add(Entity... items) {
+	public void addEntity(Entity... items) {
 		for(Entity i : items){
 			if(!entities.contains(i)){
 				entities.add(i);
@@ -89,21 +97,61 @@ public class GameController extends AnimationTimer {
 		Collections.sort(entities);
 	}
 	
-	public void remove(Entity... items) {
+
+	public void removeEntity(Entity... items){
 		for(Entity i : items){
-			if(entities.contains(i)){
-				entities.remove(i);
-			}
+			entities.remove(i);
 		}
-		Collections.sort(entities);
+	}
+	
+	public void addPlayer(PlayableCharacter p){
+		if(!players.contains(p)){
+			players.add(p);
+		}
+	}
+	
+	public void removePlayer(PlayableCharacter p){
+		players.remove(p);
+	}
+	
+	public void addWindow(Canvas c){
+		if(!windows.contains(c)){
+			windows.add(c);
+		}
 	}
 	
 	public void setFocus(Entity focusedEntity){
 		this.focusedEntity = focusedEntity;
 	}
 
-	public void setArenaMap(Map arenaMap) {
-		this.arenaMap = arenaMap;
+
+	@Override
+	public void attach(Subscribable<PlayableCharacter> sub) {
+		if(!subscribers.contains(sub)){
+			subscribers.add(sub);
+		}
+	}
+
+	@Override
+	public void detach(Subscribable<PlayableCharacter> sub) {
+		subscribers.remove(sub);
+	}
+
+	@Override
+	public void notifySubscribers() {
+		for(PlayableCharacter p : players.toArray(new PlayableCharacter[0])){
+			for(Subscribable<PlayableCharacter> s : subscribers){
+				s.update(p);
+			}
+		}
 	}
 	
+	/*
+	 * GC takes in a canvas to draw on and a boolean representing its mode
+	 * You can add Entities to it which will be updated and displayed to the screen
+	 * You can add subsribers which will be alerted of Win or Loss conditions
+	 * You can add players which are the Win and Loss Conditions
+	 * - The GC will update everything and display it, 
+	 * - then it will notify its subscribers of anything that has changed
+	 */
 }

@@ -1,6 +1,8 @@
 package Models.Players;
 
-import Enums.Direction;
+import java.util.ArrayList;
+
+import Controller.InputHandler;
 import Interfaces.Attackable;
 import Interfaces.Damageable;
 import Interfaces.Dodgeable;
@@ -11,24 +13,35 @@ import Models.Weapon.Weapon;
 import Models.Weapon.Attack.Attack;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
 	
 	private Weapon weapon;
-	private Direction direction;
+	private Entity healthBar;
 	private int maxHealth, currentHealth;
 	private boolean isDodging;
 
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
-		setSpeed(2);
+		healthBar = new HealthBar(this);
+		setSpeed(3);
 		setDisplayLayer(7);
 		// Just Default it to a Standard Projectile Weapon for now
 		setWeapon(new ProjectileWeapon(this, SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3)));
 		
 		setMaxHealth(100);
 		setCurrentHealth(100);
+	}
+	
+	@Override
+	public void update(ArrayList<Entity> entities){
+		if(!isAlive()){
+			for(Entity e : getDisplayableEntities()){
+				entities.remove(e);
+			}
+		}
 	}
 
 	@Override
@@ -37,12 +50,11 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		if(c.collidingEntity == this){
 			collider = c.collidedEntity;
 		} else { return; }
+		if(InputHandler.keyInputContains(KeyCode.F)) { return; }
 		
 		String[] tagElements = collider.getTag().split("-");
-//		String[] ourElements = getTag().split("-");
 		
 		switch(tagElements[0]){
-		// If I collide against these then just move away
 		case "Human":
 		case "Computer":
 		case "NPC":
@@ -107,10 +119,6 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 			weapon = w;
 		}
 	}
-
-	public void setCurrDir(Direction direction) {
-		this.direction = direction;
-	}
 	
 	public int getMaxHealth(){
 		return maxHealth;
@@ -123,12 +131,8 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	public Weapon getWeapon(){
 		return weapon;
 	}
-	
-	public Direction getCurrDir(){
-		return direction;
-	}
 
 	public Entity[] getDisplayableEntities() {
-		return weapon != null ? new Entity[] {this, weapon} : new Entity[] {this};
+		return weapon != null ? new Entity[] {this, weapon, healthBar} : new Entity[] {this, healthBar};
 	}
 }

@@ -20,7 +20,8 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="storyBtn" mnemonicParsing="false" text="Story" textAlignment="CENTER" />
+            <Button fx:id="storyBtn" mnemonicParsing="false" onAction="#storyBtnAction" text="New Story" textAlignment="CENTER" />
+            <Button fx:id="loadBtn" mnemonicParsing="false" onAction="#loadBtnAction" text="Load Story" />
             <Button fx:id="arenaBtn" mnemonicParsing="false" onAction="#arenaBtnAction" text="Arena" textAlignment="CENTER" />
             <Button fx:id="exitBtn" mnemonicParsing="false" onAction="#exitBtnAction" text="Exit" textAlignment="CENTER" />
          </children>

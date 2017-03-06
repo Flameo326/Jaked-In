@@ -3,6 +3,8 @@ package Models.Shape;
 public class Shape {
 	
 	private int centerX, centerY;
+	
+	// Width and Height are deceptive, they can be one mre than the actual value because of floating point conversion
 	private int width, height;
 	
 	// Should be stored or derived?
@@ -31,14 +33,14 @@ public class Shape {
 	
 	public void setWidth(int val){
 		width = val;
-		setMinX(getCenterX() - getWidth()/2);
-		setMaxX(getCenterX() + getWidth()/2);
+		setMinX(getCenterX() - width/2);
+		setMaxX(getCenterX() + width/2);
 	}
 	
 	public void setHeight(int val){
 		height = val;
-		setMinY(getCenterY() - getHeight()/2);
-		setMaxY(getCenterY() + getHeight()/2);
+		setMinY(getCenterY() - height/2);
+		setMaxY(getCenterY() + height/2);
 	}
 	
 	public void setMinX(int val){
@@ -71,6 +73,14 @@ public class Shape {
 	
 	public int getHeight(){
 		return height;
+	}
+	
+	public int getRoundedWidth(){
+		return getMaxX()-getMinX();
+	}
+	
+	public int getRoundedHeight(){
+		return getMaxY()-getMinY();
 	}
 	
 	public int getMinX(){

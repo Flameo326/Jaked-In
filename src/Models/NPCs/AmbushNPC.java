@@ -9,16 +9,22 @@ import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
 
 public class AmbushNPC extends PlayableCharacter implements Interactable {
+	
+	private String dialogue = "GET HIM!";
 
 	public AmbushNPC(Image i, int x, int y) {
 		super(i, x, y);
 		setTag(getTag() + "-EnemyNPC");
 		// TODO Auto-generated constructor stub
 	}
+	
+	public String conversation(PlayableCharacter c) {
+		return dialogue;
+	}
 
 	@Override
 	public void interact(PlayableCharacter c) {
-		// TODO Auto-generated method stub
+		conversation(c);
 
 	}
 
