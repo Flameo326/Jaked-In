@@ -14,7 +14,7 @@ public class Floor1Map extends Map{
 	@Override
 	public void populateMap(ArrayList<Entity> rooms){
 		rooms.get(0).getXPos();
-		getMapObjects().add();
+//		getMapObjects().add();
 		
 	}
 

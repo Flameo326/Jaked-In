@@ -3,12 +3,12 @@ package Models.Players;
 import java.util.ArrayList;
 
 import Controller.InputHandler;
+import Enums.BulletType;
 import Interfaces.Attackable;
 import Interfaces.Damageable;
 import Interfaces.Dodgeable;
 import Models.Collision;
 import Models.Entity;
-import Models.Weapon.ExplodingProjectileWeapon;
 import Models.Weapon.ProjectileWeapon;
 import Models.Weapon.Weapon;
 import Models.Weapon.Attack.Attack;
@@ -30,7 +30,8 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		setSpeed(3);
 		setDisplayLayer(7);
 		// Just Default it to a Standard Projectile Weapon for now
-		setWeapon(new ExplodingProjectileWeapon(this, SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3)));
+		Image img = SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3);
+		setWeapon(new ProjectileWeapon(this, img, 20, 3000, BulletType.BOUNCE));
 		
 		setMaxHealth(100);
 		setCurrentHealth(100);

@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -96,6 +97,12 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 			}
 		}
 		Collections.sort(entities);
+	}
+	
+	public void removeEntity(Entity... items){
+		for(Entity i : items){
+			entities.remove(i);
+		}
 	}
 	
 	public void addPlayer(PlayableCharacter p){
