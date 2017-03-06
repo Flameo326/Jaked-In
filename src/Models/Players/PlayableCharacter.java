@@ -31,7 +31,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		setDisplayLayer(7);
 		// Just Default it to a Standard Projectile Weapon for now
 		Image img = SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3);
-		setWeapon(new ProjectileWeapon(this, img, 20, 3000, BulletType.BOUNCE));
+		setWeapon(new ProjectileWeapon(this, img, 20, 30000, BulletType.BOUNCE));
 		
 		setMaxHealth(100);
 		setCurrentHealth(100);
