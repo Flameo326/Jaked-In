@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -53,6 +54,9 @@ public class ArenaMenuController implements Initializable{
 
     @FXML
     private Button removeButton;
+    
+    @FXML
+    private Button backBtn;
 
     @FXML
     void addBtnAction(ActionEvent event) {
@@ -62,6 +66,18 @@ public class ArenaMenuController implements Initializable{
     	} else {
     		// Add Error Message about maximum players
     	}
+    }
+    
+    @FXML
+    void backBtnAction() throws IOException {
+    	PlayerBox.resetHumanPlayers();
+    	Stage s = (Stage)backBtn.getScene().getWindow();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/StartFXML.fxml"));
+		BorderPane root = loader.load();
+		
+		Scene scene = new Scene(root, s.getScene().getWidth(), s.getScene().getHeight());
+		s.setScene(scene);
+		s.centerOnScreen();
     }
 
     @FXML

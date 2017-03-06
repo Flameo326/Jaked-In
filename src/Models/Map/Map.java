@@ -43,7 +43,7 @@ public class Map {
 		rooms.add(currentRoom);
 		int radius = 0;
 		if(!mapIsLinear){
-			radius = (int)(((maxWidth * maxHeightMultiplier - minWidth * minHeightMultiplier)) * roomAmo*.1);
+			radius = (int)(((maxWidth * maxHeightMultiplier - minWidth * minHeightMultiplier)) * roomAmo);
 		}
 		room: for(int i = 1; i < roomAmo; i++){
 			Entity previousRoom = rooms.get(rooms.size()-1);

@@ -47,6 +47,12 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 			}
 		}
 	}
+	
+	@Override
+	public void move(ArrayList<Entity> entities) {
+		super.move(entities);
+		healthBar.update(entities);
+	}
 
 	@Override
 	public void hasCollided(Collision c) {

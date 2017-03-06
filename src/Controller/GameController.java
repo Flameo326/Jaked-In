@@ -67,7 +67,6 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 //		} 
 		// Handles the graphical Rendering 
 		for(Canvas c : windows){
-			System.out.println(x);
 			updateImage(c);
 		}
 		notifySubscribers();

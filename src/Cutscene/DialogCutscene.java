@@ -12,71 +12,58 @@ import javafx.scene.text.TextAlignment;
 
 public class DialogCutscene extends Cutscene {
 	
-	private Image prevImage;
+	private WritableImage prevImage;
 	private String[] phrases;
 	private int phraseCount, letterCount;
-	private int yPos, speed;
-	private int letterSpeed;
-	private long nextLetter, nextUp;
+	private int yPos;
 
-	public DialogCutscene(StoryController st, String... phrases) {
+	public DialogCutscene(StoryController st, double percent, String... phrases) {
 		super(st);
 		this.phrases = phrases;
-		yPos = (int) (getCanvas().getHeight()*7/8);
+		yPos = (int)(getCanvas().getHeight()*percent);
 		
-		
-//		getGraphics().getPixelWriter().getPixelFormat().
-//		prevImage = new WritableImage((int)getCanvas().getWidth(), (int)getCanvas().getHeight());
-//		for(int i = 0; i < prevImage.getHeight(); i++){
-//			for(int y = 0; i < prevImage.getWidth(); y++){
-//				
-//			}
-//		}
-//		PixelWriter pw = ((WritableImage)prevImage).getPixelWriter();
-//		getGraphics().getPixelWriter().getPixelFormat().
+		getCanvas().snapshot(null, prevImage);
 		
 		getGraphics().setTextAlign(TextAlignment.CENTER);
 	}
 	
-	public void setSpeed(int val){
-		speed = val;
+	public void setYPos(double v){
+		yPos = (int)(getCanvas().getHeight()*v);
 	}
 	
-	public void setLetterSpeed(int val){
-		letterSpeed = val;
+	public void setFont(Font f){
+		getGraphics().setFont(f);
+	}
+	
+	public void setText(String...text){
+		phrases = text;
 	}
 
 	@Override
 	public void handle(long now) {
 		getGraphics().clearRect(0, 0, getCanvas().getWidth(), getCanvas().getHeight());
-//		getGraphics().drawImage(prevImage, 0, 0);
+		getGraphics().drawImage(prevImage, 0, 0);
 		
 		getGraphics().setFill(new Color(1, 1, 1, .5));
 		getGraphics().fillRect(0, 0, getCanvas().getWidth(), getCanvas().getHeight());
-		
-		getGraphics().setFont(new Font(12));
+
 		getGraphics().setFill(Color.BLACK);
 		
-		if(now >= nextLetter){
-			letterCount++;
-			nextLetter = letterSpeed/1000000l + now;
-			if(!(phraseCount >= phrases.length) && letterCount >= phrases[phraseCount].length()){
-				letterCount = 0;
-				phraseCount++;
-			}
+		letterCount++;
+		if(!(phraseCount >= phrases.length) && letterCount >= phrases[phraseCount].length()){
+			letterCount = 0;
+			phraseCount++;
 		}
-		if(now >= nextUp){
-			yPos -= 1;
-			nextUp = now + speed/1000000l;
-		}
-//		yPos += speed;
+		
 		int tempYPos = yPos;
 		for(int i = 0; i < phraseCount; i++){
 			getGraphics().fillText(phrases[i], getCanvas().getWidth()/2, tempYPos);
 			tempYPos += 12;
 		}
 		if(!(phraseCount >= phrases.length)){
-			getGraphics().fillText(phrases[phraseCount].substring(0, letterCount), getCanvas().getWidth()/2, tempYPos);
+			for(int i = 0; i < phrases[phraseCount].length()/90; i++){
+				getGraphics().fillText(phrases[phraseCount].substring(0, letterCount), getCanvas().getWidth()/2, tempYPos);
+			}
 		}
 			// Will display letters of the phrase, wait for input then display next phrase...
 		
