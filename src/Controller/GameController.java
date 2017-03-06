@@ -6,15 +6,12 @@ import java.util.Collections;
 import Interfaces.Publishable;
 import Interfaces.Subscribable;
 import Models.Entity;
+import Models.Map.Map;
 import Models.Players.PlayableCharacter;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 public class GameController extends AnimationTimer implements Publishable<PlayableCharacter>{
 	
@@ -28,9 +25,13 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	private ArrayList<Subscribable<PlayableCharacter>> subscribers;
 	private ArrayList<Canvas> windows;
 	private Entity focusedEntity;
+	private Map arenaMap;
+	//temp vars
+	boolean prevHeld = false;
 	
-	private Stage error;
-	private Label playPos;
+	
+//	private Stage error;
+//	private Label playPos;
 	
 	public GameController(Canvas myCanvas, boolean storyMode) {
 		GameController.StoryMode = storyMode;
@@ -41,14 +42,14 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 		
 		addWindow(myCanvas);
 		
-		playPos = new Label();
-		
-		StackPane root = new StackPane(playPos);
-		Scene scene = new Scene(root, 300, 50);
-		
-		error = new Stage();
-		error.setScene(scene);
-		error.show();
+//		playPos = new Label();
+//		
+//		StackPane root = new StackPane(playPos);
+//		Scene scene = new Scene(root, 300, 50);
+//		
+//		error = new Stage();
+//		error.setScene(scene);
+//		error.show();
 	}
 	
 	// This entire thing will be our "Run" method. It gets called constantly and updates accordingly.
@@ -63,10 +64,9 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 			// All Entities are updated 
 			e.update(entities);
 		}
-		if(focusedEntity != null){
-			playPos.setText("Player Center X: " + focusedEntity.getXPos() + " Y: " + focusedEntity.getYPos());
-		}
-		
+//		if(focusedEntity != null){
+//			playPos.setText("Player Center X: " + focusedEntity.getXPos() + " Y: " + focusedEntity.getYPos());
+//		}
 		// Handles the graphical Rendering 
 		for(Canvas c : windows){
 			updateImage(c);
@@ -83,7 +83,6 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 			offsetY = focusedEntity.getDisplayableYPos();
 		}
 		for(Entity e : entities){
-			if(InputHandler.keyInputContains(KeyCode.F) && e.getTag().equals("Wall")) { continue; }
 			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (c.getWidth()/2),
 					e.getDisplayableYPos() - offsetY + (c.getHeight()/2), e.getWidth(), e.getHeight());
 		}	
@@ -98,6 +97,7 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 		Collections.sort(entities);
 	}
 	
+
 	public void removeEntity(Entity... items){
 		for(Entity i : items){
 			entities.remove(i);
@@ -135,6 +135,7 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	public static long getTimer(){
 		return timer;
 	}
+
 
 	@Override
 	public void attach(Subscribable<PlayableCharacter> sub) {

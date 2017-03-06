@@ -1,7 +1,7 @@
 package Models.NPCs;
 
 import java.util.ArrayList;
-import java.util.Random;
+
 import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
@@ -10,13 +10,14 @@ import Models.Upgrades.MedPack;
 import Models.Upgrades.Upgrade;
 import javafx.scene.image.Image;
 
-public class MedicNPC extends Entity implements Interactable {
+public class MedicNPC extends NPC implements Interactable {
 	
 	private String[] dialogue = {"You dont need my help right now.", "You are hurt! This will help."};
 	
 
-	public MedicNPC(Image i, int x, int y, int width, int height) {
-		super(i, x, y, width, height);
+	public MedicNPC(Image i, int x, int y) {
+		super(i, x, y,(int)i.getWidth(), (int)i.getHeight());
+		setDisplayLayer(7);
 	}
 
 	public String conversation(PlayableCharacter c) {
@@ -40,12 +41,12 @@ public class MedicNPC extends Entity implements Interactable {
 
 	@Override
 	public void hasCollided(Collision c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
+		//throw new UnsupportedOperationException("Not yet Implemented");
 	}
 
 	@Override
 	public void update(ArrayList<Entity> entities) {
-		// TODO Auto-generated method stub
+		//entity does not move. no need to update.
 
 	}
 

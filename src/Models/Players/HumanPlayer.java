@@ -16,7 +16,6 @@ public class HumanPlayer extends PlayableCharacter{
 	public HumanPlayer(Image i, int x, int y) {
 		super(i, x, y);
 		setTag("Human-" + ++humanID);
-//		setSpeed(5);
 	}
 	
 	@Override
@@ -30,7 +29,7 @@ public class HumanPlayer extends PlayableCharacter{
 			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
 				Attack h = attack();
 				if(h != null){
-					System.out.println(getTag() + " attacked");
+//					System.out.println(getTag() + " attacked");
 					entities.add(h);
 				}
 			}
@@ -47,7 +46,7 @@ public class HumanPlayer extends PlayableCharacter{
 				}
 			}
 		} else {
-			System.out.println("Human Player Tag is " + getTag());
+//			System.out.println("Human Player Tag is " + getTag());
 		}
 	}
 	
