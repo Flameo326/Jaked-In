@@ -224,6 +224,7 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 				gc.stop();
 				PlayerBox.resetHumanPlayers();
 				HumanPlayer.resetHumanID();
+				ComputerPlayer.resetComputerID();
 				displayWinner();
 			}
 		}
