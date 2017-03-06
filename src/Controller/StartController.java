@@ -17,6 +17,9 @@ public class StartController implements Initializable {
 	
     @FXML
     private Button storyBtn;
+    
+    @FXML
+    private Button loadBtn;
 
     @FXML
     private Button arenaBtn;
@@ -31,6 +34,14 @@ public class StartController implements Initializable {
     	StackPane root = loader.load();
     	Scene scene = new Scene(root, s.getWidth(), s.getHeight());
     	s.setScene(scene);
+    	
+    	StoryController controller = loader.getController();
+    	controller.start();
+    }
+    
+    @FXML
+    void loadBtnAction() {
+
     }
     
     public void arenaBtnAction() throws IOException{

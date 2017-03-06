@@ -10,7 +10,7 @@ import Models.Upgrades.MedPack;
 import Models.Upgrades.Upgrade;
 import javafx.scene.image.Image;
 
-public class MedicNPC extends Entity implements Interactable {
+public class MedicNPC extends NPC implements Interactable {
 	
 	private String[] dialogue = {"You dont need my help right now.", "You are hurt! This will help."};
 	

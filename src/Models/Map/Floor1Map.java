@@ -15,6 +15,7 @@ public class Floor1Map extends Map{
 		// TODO Auto-generated constructor stub
 	}
 	
+	
 	// For each Map, create a custom populateMap method which populates the map as neccesary
 	@Override
 	public void populateMap(ArrayList<Entity> rooms){

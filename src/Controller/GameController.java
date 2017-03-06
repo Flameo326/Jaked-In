@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -82,8 +83,14 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 			offsetY = focusedEntity.getDisplayableYPos();
 		}
 		for(Entity e : entities){
-			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (c.getWidth()/2),
-					e.getDisplayableYPos() - offsetY + (c.getHeight()/2), e.getWidth(), e.getHeight());
+			if(InputHandler.keyInputContains(KeyCode.F) && e.getTag().equals("Wall")) { continue; }
+//			if(e.getWidth() > 5 && e.getHeight() > 5){
+//			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (c.getWidth()/2),
+//					e.getDisplayableYPos() - offsetY + (c.getHeight()/2), e.getWidth()-5, e.getHeight()-5);
+//			} else {
+				g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (c.getWidth()/2),
+						e.getDisplayableYPos() - offsetY + (c.getHeight()/2), e.getWidth(), e.getHeight());
+//			}
 		}	
 	}
 
@@ -94,6 +101,12 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 			}
 		}
 		Collections.sort(entities);
+	}
+	
+	public void removeEntity(Entity... items){
+		for(Entity i : items){
+			entities.remove(i);
+		}
 	}
 	
 	public void addPlayer(PlayableCharacter p){
