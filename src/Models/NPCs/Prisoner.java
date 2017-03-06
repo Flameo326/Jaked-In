@@ -3,6 +3,7 @@ package Models.NPCs;
 import java.util.ArrayList;
 import java.util.Random;
 
+import Controller.StoryController;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
@@ -17,8 +18,8 @@ public class Prisoner extends NPC {
 			"I’m so glad to be free, it’s time to get back to the front lines!", // 4
 			"You killed my little girl!" }; // 5 attacks player
 
-	public Prisoner(Image i, int x, int y, int width, int height) {
-		super(i, x, y, width, height);
+	public Prisoner(Image i, StoryController st, int x, int y) {
+		super(i, st, x, y);
 
 	}
 

@@ -2,6 +2,7 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
+import Controller.StoryController;
 import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
@@ -15,8 +16,8 @@ public class MedicNPC extends NPC implements Interactable {
 	private String[] dialogue = {"You dont need my help right now.", "You are hurt! This will help."};
 	
 
-	public MedicNPC(Image i, int x, int y) {
-		super(i, x, y,(int)i.getWidth(), (int)i.getHeight());
+	public MedicNPC(Image i, StoryController st, int x, int y) {
+		super(i, st, x, y);
 		setDisplayLayer(7);
 	}
 

@@ -56,7 +56,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	
 	public void generateLevels(){
 		levels = new Map[7];
-		levels[0] = new Map(1200, 1200);
+		levels[0] = new Map(500, 1200);
 		levels[0].generateMap();
 		Map p = levels[0];
 		levels[1] = new Floor2Map(currentLevel, currentLevel);
@@ -78,19 +78,15 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	// Because java... pretty sure c++ can do that
 	public void startCutscene(Cutscene c){
 		stop();
-		
 		c.start();
 	}
 	
 	public void startGame(){
 //		new Introduction(this)
-		DialogCutscene s = new DialogCutscene(this, "Hello", "i am a potato", "Where is the ranch", 
+		DialogCutscene s = new DialogCutscene(this, .5, "Hello", "i am a potato", "Where is the ranch", 
 				"Is the potato a dog or the dog a potato. I do not know for I am a dolphin among fish and a "
-				+ "fish amoung dolhins. Who am I?");
-		s.setLetterSpeed(1);
-		s.setSpeed(5);
-//		startCutscene(s);
-		gc.start();
+						+ "fish amoung dolhins. Who am I?");
+		startCutscene(s);
 	}
 	
 	public void start(){
@@ -162,5 +158,4 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	public void update(Boolean b) {
 		if(b){ start(); }
 	}
-
 }
