@@ -19,13 +19,13 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	
 	// This boolean will indicate whether or not we are in story mode right now
 	// controls are different in story or arena
+	public static long timer;
 	public static boolean StoryMode;
 
 	private ArrayList<Entity> entities;
 	private ArrayList<PlayableCharacter> players;
 	private ArrayList<Subscribable<PlayableCharacter>> subscribers;
 	private ArrayList<Canvas> windows;
-//	private GraphicsContext g;
 	private Entity focusedEntity;
 	
 	private Stage error;
@@ -56,12 +56,11 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	// -- graphicaly updated every Frame
 	@Override
 	public void handle(long now) {
+		timer = now;
 		for(int i = 0; i < entities.size(); i++){
 			Entity e = entities.get(i);
-			// All Entities are updated even if they don't move
+			// All Entities are updated 
 			e.update(entities);
-			// Entity gets checked for collisions if it moved
-//			CollisionSystem.checkMovementCollisions(e, entities);
 		}
 		if(focusedEntity != null){
 			playPos.setText("Player Center X: " + focusedEntity.getXPos() + " Y: " + focusedEntity.getYPos());
@@ -74,7 +73,7 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 		notifySubscribers();
 	}
 
-	private void updateImage(Canvas c){
+	public void updateImage(Canvas c){
 		GraphicsContext g = c.getGraphicsContext2D();
 		g.clearRect(0, 0, c.getWidth(), c.getHeight());
 		int offsetX = 0, offsetY = 0;
@@ -105,6 +104,10 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 		}
 	}
 	
+	public void removePlayer(PlayableCharacter p){
+		players.remove(p);
+	}
+	
 	public void addWindow(Canvas c){
 		if(!windows.contains(c)){
 			windows.add(c);
@@ -129,7 +132,7 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 
 	@Override
 	public void notifySubscribers() {
-		for(PlayableCharacter p : players){
+		for(PlayableCharacter p : players.toArray(new PlayableCharacter[0])){
 			for(Subscribable<PlayableCharacter> s : subscribers){
 				s.update(p);
 			}

@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import Controller.CollisionSystem;
 import Models.Collision;
 import Models.Entity;
+import Models.Players.PlayableCharacter;
 
 public class ArenaMap extends Map{
 	
-	private ArrayList<Entity> baseEntities;
+	private ArrayList<PlayableCharacter> baseEntities;
 
-	public ArenaMap(int width, int height, ArrayList<Entity> baseEntities) {
+	public ArenaMap(int width, int height, ArrayList<PlayableCharacter> baseEntities) {
 		super(width, height);
 		this.baseEntities = baseEntities;
 		generateMap();
@@ -20,6 +21,8 @@ public class ArenaMap extends Map{
 	public void generateMap(){
 		getMapObjects().clear();
 		generateArenaWalls(getMapWidth(), getMapHeight());
+		// Would need to intially populate
+//		getMapObjects().add(new MedPack(SpriteSheet.getBlock(10, 10, Color.RED), 0, 0));
 	}
 	
 	public void generateArenaWalls(int width, int height){
@@ -64,6 +67,25 @@ public class ArenaMap extends Map{
 				// check for collision against 
 			}
 			getMapObjects().add(wall);
+		}
+	}
+	
+	public void checkCollision(Entity e){
+		e.setXPos(rand.nextInt(getMapWidth()) - getMapWidth()/2);
+		e.setYPos(rand.nextInt(getMapHeight()) - getMapHeight()/2);
+		boolean colliding = true;
+		
+		while(colliding){
+			colliding = false;
+			ArrayList<Collision> collisions = CollisionSystem.getCollision(e, getMapObjects().toArray(new Entity[0]));
+			for(Collision c : collisions){
+				if(c.hasCollided){
+					colliding = true;
+					e.setXPos(rand.nextInt(getMapWidth()) - getMapWidth()/2);
+					e.setYPos(rand.nextInt(getMapHeight()) - getMapHeight()/2);
+					break;
+				}
+			}
 		}
 	}
 

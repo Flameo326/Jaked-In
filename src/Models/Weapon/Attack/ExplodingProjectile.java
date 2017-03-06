@@ -31,7 +31,7 @@ public class ExplodingProjectile extends Projectile {
 			}
 			entities.remove(this);
 		}
-		move(getCurrDir().getX(), getCurrDir().getY());
+		move(entities);
 	}
 
 }

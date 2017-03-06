@@ -1,6 +1,8 @@
 package FXML;
 
 import SpriteSheet.SpriteSheet;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -15,6 +17,8 @@ import javafx.scene.image.Image;
 
 public class PlayerBox extends VBox{
 	
+	private static int HUMAN_PLAYERS = 0;
+	
 	private static final String[] PLAYER_TYPES = {"Human", "Computer"};
 //	private static final String[] WEAPON_TYPES = {"Projectile", "Melee"};
 	
@@ -24,7 +28,7 @@ public class PlayerBox extends VBox{
 	
 	private ChoiceBox<String> playerType;
 	
-	private HBox diffTypes;
+	private VBox diffTypes;
 	private CheckBox easyBox, mediumBox, hardBox;
 	
 	// Will display Text representing Weapon Type
@@ -62,17 +66,7 @@ public class PlayerBox extends VBox{
 		playerNavigation = new HBox(leftPlayerNav, playerImage, rightPlayerNav);
 		playerNavigation.setAlignment(Pos.CENTER);
 		playerNavigation.setSpacing(10);
-		
-		playerType = new ChoiceBox<>();
-		playerType.getItems().addAll(PLAYER_TYPES);
-		playerType.setValue(PLAYER_TYPES[0]);
-		playerType.setOnAction(e -> {
-			if(playerType.getValue().equals(PLAYER_TYPES[1])){
-				getChildren().add(2, diffTypes);
-			} else {
-				getChildren().remove(diffTypes);
-			}
-		});
+		getChildren().add(playerNavigation);
 		
 		easyBox = new CheckBox("Easy");
 		mediumBox = new CheckBox("Medium");
@@ -91,9 +85,44 @@ public class PlayerBox extends VBox{
 			easyBox.setSelected(false);
 		});
 		
-		diffTypes = new HBox(easyBox, mediumBox, hardBox);
+		diffTypes = new VBox(easyBox, mediumBox, hardBox);
 		diffTypes.setAlignment(Pos.CENTER);
 		diffTypes.setSpacing(10);
+		
+		playerType = new ChoiceBox<>();
+		
+		playerType.getItems().addAll(PLAYER_TYPES);
+		getChildren().add(playerType);
+		
+		if(HUMAN_PLAYERS <= 1){
+			playerType.setValue(PLAYER_TYPES[0]);
+			HUMAN_PLAYERS++;
+		} else {
+			playerType.setValue(PLAYER_TYPES[1]);
+			getChildren().add(diffTypes);
+		}
+		playerType.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				if(oldValue.intValue() == 0){
+					HUMAN_PLAYERS--;
+				}
+				if(newValue.intValue() == 1){
+					getChildren().add(2, diffTypes);
+				} else {
+					getChildren().remove(diffTypes);
+				}
+				if(newValue.intValue() == 0){
+					System.out.println("Here");
+					if(HUMAN_PLAYERS <= 1){
+						HUMAN_PLAYERS++;
+					} else {
+						playerType.getSelectionModel().select(oldValue.intValue());
+						HUMAN_PLAYERS++;
+					}
+				}
+			}
+		});
 		
 		weaponType = new Label();
 		
@@ -121,13 +150,6 @@ public class PlayerBox extends VBox{
 		weaponNavigation.setAlignment(Pos.CENTER);
 		weaponNavigation.setSpacing(10);
 		
-		// Player Image
-		// Player Type
-		// Player Diff if neccesary
-		// Weapon Type Name
-		// Weapon Image
-		getChildren().add(playerNavigation);
-		getChildren().add(playerType);
 		getChildren().add(weaponType);
 		getChildren().add(weaponNavigation);
 	}

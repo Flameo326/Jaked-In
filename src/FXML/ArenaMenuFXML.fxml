@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ArenaMenuController">
-   <center>
-      <HBox fx:id="playersBox" alignment="CENTER" prefHeight="100.0" spacing="10.0" BorderPane.alignment="CENTER" />
-   </center>
    <bottom>
       <StackPane prefHeight="51.0" prefWidth="592.0" BorderPane.alignment="CENTER">
          <children>
@@ -25,4 +25,20 @@
          </children>
       </VBox>
    </right>
+   <center>
+      <VBox fx:id="playerMenu" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="label1" alignment="CENTER" contentDisplay="CENTER" prefWidth="299.0" text="Set up Players" textAlignment="CENTER">
+               <font>
+                  <Font size="32.0" />
+               </font></Label>
+            <Label fx:id="label2" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="302.0" text="Maximum of 4 players " textAlignment="CENTER" />
+            <Label fx:id="label3" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="304.0" text="Maximum of 2 local Humans" textAlignment="CENTER" />
+            <HBox fx:id="playersBox" alignment="CENTER" prefHeight="299.0" prefWidth="300.0" spacing="10.0">
+               <padding>
+                  <Insets top="100.0" />
+               </padding></HBox>
+         </children>
+      </VBox>
+   </center>
 </BorderPane>

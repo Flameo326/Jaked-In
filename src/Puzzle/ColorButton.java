@@ -8,11 +8,13 @@ public class ColorButton extends Button {
 	private int color = 255;
 	private final ButtonColors buttonColor;
 	private final boolean isIncrementer;
+	private CombinedColor solution;
 	
-	public ColorButton(Image i, int x, int y, int width, int height, ButtonColors buttonColor, boolean isIncrementer) {
+	public ColorButton(Image i, int x, int y, int width, int height, ButtonColors buttonColor, boolean isIncrementer, CombinedColor b) {
 		super(i, x, y, width, height);
 		this.buttonColor = buttonColor;
 		this.isIncrementer = isIncrementer;
+		solution = b;
 	}
 	
 	private void changeColor(int colorChange){
@@ -28,10 +30,10 @@ public class ColorButton extends Button {
 	public void interact(PlayableCharacter c) {
 		if(isIncrementer){
 			changeColor(51);
-			CombinedColor.changeColor(buttonColor, color);
+			solution.changeColor(buttonColor, color);
 		}else{
 			changeColor(-51);
-			CombinedColor.changeColor(buttonColor, color);
+			solution.changeColor(buttonColor, color);
 		}
 	}
 	

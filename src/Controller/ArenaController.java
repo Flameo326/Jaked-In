@@ -1,7 +1,9 @@
 package Controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import Interfaces.Subscribable;
@@ -11,15 +13,27 @@ import Models.Map.Map;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
+import Models.Upgrades.MedPack;
+import Models.Upgrades.SpeedBoost;
+import Models.Upgrades.Upgrade;
 import SpriteSheet.SpriteSheet;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class ArenaController implements Initializable, Subscribable<PlayableCharacter> {
@@ -27,18 +41,12 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 	@FXML
 	private Canvas myCanvas;
 	private GameController gc;
+	private int width, height;
 	
-	// Do we need the map??
-	private Map arenaMap;
-	
-	// This is going to be the amount of players competing
-	// For now leave this at 2
-	private PlayableCharacter player1, player2;
-	private ArrayList<Entity> players;
-	
-	// How do we know when gc has ended?
-	// aka when one of the players has died?
-	// gc can't do it or it won't work for story...
+	private ArenaMap arenaMap;
+	private ArrayList<PlayableCharacter> players, deadPlayers;
+	private Random rand;
+	private long upgradeTime;
 	
 	public void addPlayer(PlayableCharacter p){
 		players.add(p);
@@ -47,38 +55,32 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 	}
 	
 	public void start(){
-		int size = players.size()*200;
-		
+		width = 600;
+		height = 500;
 		// Position Players
 		for(int i = 0; i < players.size(); i++){
 			Entity p = players.get(i);
 			switch(players.size()){
 			case 2:
 				p.setYPos(0);
-				p.setXPos(i == 0 ? -size/4 : size/4);
+				p.setXPos(i == 0 ? -width/4 : width/4);
+				break;
 			case 3:
-				// -150, 0
-				// 150, 0
-				// 0, 150
 				if(i > 1){
-					p.setYPos(size/4);
+					p.setYPos(height/4);
 					p.setXPos(0);
 				} else {
-					p.setYPos(-size/4);
-					p.setXPos(i == 0 ? -size/4 : size/4);
+					p.setYPos(-height/4);
+					p.setXPos(i == 0 ? -width/4 : width/4);
 				}
 				break;
 			case 4:
-				// -150, -150
-				// 150, -150
-				// -150, 150
-				// 150, 150
 				if(i > 1){
-					p.setYPos(size/4);
-					p.setXPos(i == 2 ? -size/4 : size/4);
+					p.setYPos(height/4);
+					p.setXPos(i == 2 ? -width/4 : width/4);
 				} else {
-					p.setYPos(-size/4);
-					p.setXPos(i == 0 ? -size/4 : size/4);
+					p.setYPos(-height/4);
+					p.setXPos(i == 0 ? -width/4 : width/4);
 				}
 				break;
 			default:
@@ -87,7 +89,7 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 		}
 		
 		// Generate Map
-		arenaMap = new ArenaMap(size, size, players);
+		arenaMap = new ArenaMap(width, height, players);
 		gc.addEntity(arenaMap.getMapObjects().toArray(new Entity[0]));
 		
 		// Start
@@ -97,25 +99,65 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 	public void stop(){
 		gc.stop();
 	}
+	
+	public void displayWinner(){
+		GraphicsContext g = myCanvas.getGraphicsContext2D();
+		g.setFill(Color.WHITE);
+		g.fillRect(width/4, height/8, width/2, height*3/4);
+		
+		g.setStroke(Color.BLACK);
+		g.strokeRect(width/4, height/8, width/2, height*3/4);
+		
+		g.setFont(new Font(32));
+		g.setFill(Color.BLACK);
+		g.setTextAlign(TextAlignment.CENTER);
+		
+		int yPos = height*3/8;
+		g.fillText("1.) " + players.get(0).getTag(), width/2, yPos);
+		yPos += 32;
+		
+		g.setFont(new Font(18));
+		for(int i = deadPlayers.size()-1; i > -1; i--){
+			Entity e = deadPlayers.get(i);
+			g.fillText(2 + (deadPlayers.size()-1-i) + ".) " + e.getTag(), width/2, yPos);
+			yPos += 18;
+		}
+		
+		int btnWidth = width*2/5;
+		int btnHeight =  height/16;
+		int btnX = width/2 - btnWidth/2;
+		int btnY = height*13/16 - btnHeight/2;
+		g.strokeRoundRect(btnX, btnY, btnWidth, btnHeight, 5, 5);
+		g.fillText("Back to Main Menu", btnX + btnWidth/2, btnY + btnHeight*3/4, btnWidth);
+		myCanvas.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+			int x = (int)e.getSceneX();
+			int y = (int)e.getSceneY();
+			if(x < btnX || x > btnX + btnWidth || y < btnY || y > btnY + btnHeight){
+				// Succesfuly clicked button
+				Stage s = (Stage)myCanvas.getScene().getWindow();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/StartFXML.fxml"));
+				BorderPane root = null;
+				try {
+					root = loader.load();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				Scene scene = new Scene(root, s.getScene().getWidth(), s.getScene().getHeight());
+				s.setScene(scene);
+				s.centerOnScreen();
+			}
+		});
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		players = new ArrayList<>();
-		
-//		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
-//		// Players
-//		player1 = new HumanPlayer(img, 0, 0);
-//		player2 = new ComputerPlayer(img, -100, -100);
-//		players.add(player1);
-//		players.add(player2);
+		deadPlayers = new ArrayList<>();
+		rand = new Random();
 		
 		gc = new GameController(myCanvas, false);
 		gc.attach(this);
-//		gc.addEntity(player1.getDisplayableEntities());
-//		gc.addEntity(player2.getDisplayableEntities());
-//		gc.addPlayer(player1);
-//		gc.addPlayer(player2);
-//		gc.setFocus(player1);
 		
 		// Resizes the Canvas to it's Stage Width and Height...
 		myCanvas.sceneProperty().addListener(new ChangeListener<Scene>(){
@@ -149,33 +191,40 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 
 	@Override
 	public void update(PlayableCharacter value) {
-		if(!value.isAlive()){
-			if(player1 == value){
-				// winner is player 2
-				System.out.println("Player 1 Won");
-			} else if(player2 == value){
-				// winner is player 1
-				System.out.println("Player 1 Won");
+		// from 3o seconds to 3 minuutes
+		if(GameController.timer >= upgradeTime){
+			// Get current time + 30 seconds to 3 minutes ahead
+			upgradeTime = GameController.timer + (rand.nextInt(12) + 1) * 5000000000l;
+			
+			Upgrade u;
+			switch(rand.nextInt(2)){
+			case 1:
+				u = new SpeedBoost(SpriteSheet.getBlock(15, 15, Color.MEDIUMPURPLE), 0, 0);
+				break;
+			default:
+				u = new MedPack(SpriteSheet.getBlock(10, 10, Color.RED), 0, 0);
+				break;
 			}
 			
+			arenaMap.checkCollision(u);
+			gc.addEntity(u);
+		}
+		
+		// Check for win
+		if(!value.isAlive()){
+			gc.removePlayer(value);
+			players.remove(value);
+			deadPlayers.add(value);
+			
 			// stop when a win condition is achieved
-			// in this case, it's when one player is killed
-			gc.stop();
+			// in this case, it's when one player is remaining
+			if(players.size() == 1){
+				gc.handle(GameController.timer);
+				gc.stop();
+				HumanPlayer.resetHumanID();
+				displayWinner();
+			}
 		}
 	}
-	
-	/*
-	 * We need to be able to determine Loss in Story and Arena
-	 *
-	 * Loss in Arena is either of the two players dying
-	 * 
-	 * Loss in Story is the players expiring their lives.
-	 * 
-	 * GC has access to Story/ Arena boolean
-	 * 
-	 * Subscriber and Publisher Model would be useful, but it sounds ugly
-	 * 
-	 * 
-	 */
 }
 
