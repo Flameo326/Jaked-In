@@ -41,7 +41,7 @@ public class HumanPlayer extends PlayableCharacter{
 			if(InputHandler.keyInputContains(InputHandler.Player2Attack)){
 				Attack h = attack();
 				if(h != null){
-					System.out.println(getTag() + " attacked");
+//					System.out.println(getTag() + " attacked");
 					entities.add(h);
 				}
 			}

@@ -9,13 +9,12 @@ import Models.Entity;
 import Models.Map.Map;
 import Models.Players.PlayableCharacter;
 import javafx.animation.AnimationTimer;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 public class GameController extends AnimationTimer implements Publishable<PlayableCharacter>{
 	
-	// This boolean will indicate wether or not we are in story mode right now
+	// This boolean will indicate whether or not we are in story mode right now
 	// controls are different in story or arena
 	private static long timer;
 	private static boolean StoryMode;
@@ -66,7 +65,7 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 		}
 //		if(focusedEntity != null){
 //			playPos.setText("Player Center X: " + focusedEntity.getXPos() + " Y: " + focusedEntity.getYPos());
-//		}
+//		} 
 		// Handles the graphical Rendering 
 		for(Canvas c : windows){
 			updateImage(c);
@@ -82,10 +81,13 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 			offsetX = focusedEntity.getDisplayableXPos();
 			offsetY = focusedEntity.getDisplayableYPos();
 		}
+
+		double screenWidth = (windows.get(0).getWidth()/2);
+		double screenHeight = (windows.get(0).getHeight()/2);
 		for(Entity e : entities){
-			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (c.getWidth()/2),
-					e.getDisplayableYPos() - offsetY + (c.getHeight()/2), e.getWidth(), e.getHeight());
-		}	
+			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + screenWidth,
+						e.getDisplayableYPos() - offsetY + screenHeight, e.getWidth(), e.getHeight());
+		}
 	}
 
 	public void addEntity(Entity... items) {
