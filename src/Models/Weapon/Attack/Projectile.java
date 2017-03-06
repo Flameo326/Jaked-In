@@ -82,7 +82,7 @@ public class Projectile extends Attack{
 //		String[] ourElements = getTag().split("-");
 		
 		switch(tagElements[0]){
-		case "Attack":
+//		case "Attack":
 		case "Wall":
 			bounces++;
 			if(c.xPenDepth < c.yPenDepth){
