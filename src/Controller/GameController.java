@@ -20,8 +20,8 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	
 	// This boolean will indicate wether or not we are in story mode right now
 	// controls are different in story or arena
-	public static long timer;
-	public static boolean StoryMode;
+	private static long timer;
+	private static boolean StoryMode;
 
 	private ArrayList<Entity> entities;
 	private ArrayList<PlayableCharacter> players;
@@ -84,13 +84,8 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 		}
 		for(Entity e : entities){
 			if(InputHandler.keyInputContains(KeyCode.F) && e.getTag().equals("Wall")) { continue; }
-//			if(e.getWidth() > 5 && e.getHeight() > 5){
-//			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (c.getWidth()/2),
-//					e.getDisplayableYPos() - offsetY + (c.getHeight()/2), e.getWidth()-5, e.getHeight()-5);
-//			} else {
-				g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (c.getWidth()/2),
-						e.getDisplayableYPos() - offsetY + (c.getHeight()/2), e.getWidth(), e.getHeight());
-//			}
+			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (c.getWidth()/2),
+					e.getDisplayableYPos() - offsetY + (c.getHeight()/2), e.getWidth(), e.getHeight());
 		}	
 	}
 
@@ -127,6 +122,18 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	
 	public void setFocus(Entity focusedEntity){
 		this.focusedEntity = focusedEntity;
+	}
+	
+	public static void setStoryMode(boolean b){
+		StoryMode = b;
+	}
+	
+	public static boolean getStoryMode(){
+		return StoryMode;
+	}
+	
+	public static long getTimer(){
+		return timer;
 	}
 
 	@Override

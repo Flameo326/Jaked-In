@@ -54,7 +54,7 @@ public abstract class Attack extends Entity {
 		}
 		
 		// In ArenaMode
-		if(!GameController.StoryMode){
+		if(!GameController.getStoryMode()){
 			if(!collidedChar.getTag().equals(getOwnedEntity().getTag())){
 				collidedChar.takeDamage(getDamage());
 				hasHit.add(collider);

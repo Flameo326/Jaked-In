@@ -2,12 +2,14 @@ package Models.Players;
 
 import java.util.ArrayList;
 
+import Controller.CollisionSystem;
 import Controller.InputHandler;
 import Interfaces.Attackable;
 import Interfaces.Damageable;
 import Interfaces.Dodgeable;
 import Models.Collision;
 import Models.Entity;
+import Models.Shape.Shape;
 import Models.Weapon.ProjectileWeapon;
 import Models.Weapon.Weapon;
 import Models.Weapon.Attack.Attack;
