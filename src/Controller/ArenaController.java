@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import FXML.PlayerBox;
 import Interfaces.Subscribable;
 import Models.Entity;
 import Models.Map.ArenaMap;
@@ -192,9 +193,9 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 	@Override
 	public void update(PlayableCharacter value) {
 		// from 3o seconds to 3 minuutes
-		if(GameController.timer >= upgradeTime){
+		if(GameController.getTimer() >= upgradeTime){
 			// Get current time + 30 seconds to 3 minutes ahead
-			upgradeTime = GameController.timer + (rand.nextInt(12) + 1) * 5000000000l;
+			upgradeTime = GameController.getTimer()+ (rand.nextInt(12) + 1) * 5000000000l;
 			
 			Upgrade u;
 			switch(rand.nextInt(2)){
@@ -219,8 +220,9 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 			// stop when a win condition is achieved
 			// in this case, it's when one player is remaining
 			if(players.size() == 1){
-				gc.handle(GameController.timer);
+				gc.handle(GameController.getTimer());
 				gc.stop();
+				PlayerBox.resetHumanPlayers();
 				HumanPlayer.resetHumanID();
 				displayWinner();
 			}
