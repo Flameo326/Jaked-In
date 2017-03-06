@@ -36,7 +36,7 @@ public class StartController implements Initializable {
     	s.setScene(scene);
     	
     	StoryController controller = loader.getController();
-    	controller.start();
+    	controller.startGame();
     }
     
     @FXML

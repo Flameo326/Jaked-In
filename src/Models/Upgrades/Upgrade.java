@@ -50,7 +50,7 @@ public abstract class Upgrade extends Entity implements Interactable, Collectabl
 			collect(collidedChar);
 			break;
 		case "Computer":
-			if(!GameController.StoryMode){
+			if(!GameController.getStoryMode()){
 				collect(collidedChar);
 			}
 			break;

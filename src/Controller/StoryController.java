@@ -4,8 +4,16 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Cutscene.Cutscene;
+import Cutscene.DialogCutscene;
 import Interfaces.Subscribable;
 import Models.Entity;
+import Models.Map.Floor1Map;
+import Models.Map.Floor2Map;
+import Models.Map.Floor3Map;
+import Models.Map.Floor4Map;
+import Models.Map.Floor5Map;
+import Models.Map.Floor6Map;
+import Models.Map.Floor7Map;
 import Models.Map.Map;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
@@ -26,24 +34,26 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	private Canvas myCanvas;
 	private GameController gc;
 	private PlayableCharacter player1;
+	// create variables for the levels and generate them during init
 	private Map[] levels;
 	private int currentLevel;
 	private int lives = 5;
+
 	
 	public StoryController(){
 		generateLevels();
-		gc.addEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
+//		gc.addEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
 	}
 	
 	public void generateLevels(){
 		levels = new Map[7];
-		levels[0] = new Floor1Map();
-		levels[1] = new Floor2Map();
-		levels[2] = new Floor3Map();
-		levels[3] = new Floor4Map();
-		levels[4] = new Floor5Map();
-		levels[5] = new Floor6Map();
-		levels[6] = new Floor7Map();
+		levels[0] = new Floor1Map(currentLevel, currentLevel);
+		levels[1] = new Floor2Map(currentLevel, currentLevel);
+		levels[2] = new Floor3Map(currentLevel, currentLevel);
+		levels[3] = new Floor4Map(currentLevel, currentLevel);
+		levels[4] = new Floor5Map(currentLevel, currentLevel);
+		levels[5] = new Floor6Map(currentLevel, currentLevel);
+		levels[6] = new Floor7Map(currentLevel, currentLevel);
 	}
 	
 	public void changeLevel(int i){
@@ -59,6 +69,17 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		stop();
 		
 		c.start();
+	}
+	
+	public void startGame(){
+//		new Introduction(this)
+		DialogCutscene s = new DialogCutscene(this, "Hello", "i am a potato", "Where is the ranch", 
+				"Is the potato a dog or the dog a potato. I do not know for I am a dolphin among fish and a "
+				+ "fish amoung dolhins. Who am I?");
+		s.setLetterSpeed(1);
+		s.setSpeed(5);
+		startCutscene(s);
+//		gc.start();
 	}
 	
 	public void start(){
@@ -77,12 +98,13 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	public void initialize(URL location, ResourceBundle resources) {
 		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
 		player1 = new HumanPlayer(img, 0, 0);
-		
 		gc = new GameController(myCanvas, true);
 		gc.attach(this);
 		gc.addEntity(player1.getDisplayableEntities());
 		gc.addPlayer(player1);
 		gc.setFocus(player1);
+
+
 		
 		// Resizes the Canvas to it's Stage Width and Height...
 		myCanvas.sceneProperty().addListener(new ChangeListener<Scene>(){

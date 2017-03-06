@@ -72,15 +72,16 @@ public class Projectile extends Attack{
 		super.hasCollided(c);
 		
 		Entity collider;
-		if(c.collidingEntity == this){
+		if(c.collidingEntity == this /*&& (c.yPenDepth > 0 && c.xPenDepth > 0)*/){
 			collider = c.collidedEntity;
 		} else { return; }
+		// This is wrong because Players can collide with it
+		// ???
 		
 		String[] tagElements = collider.getTag().split("-");
 //		String[] ourElements = getTag().split("-");
 		
 		switch(tagElements[0]){
-		// If I collide against these then just move away
 		case "Attack":
 		case "Wall":
 			bounces++;
@@ -91,39 +92,36 @@ public class Projectile extends Attack{
 				setYPos(getYPos() + (-getCurrDir().getY() * c.yPenDepth) * 2);
 				setCurrDir(Direction.getDir(getCurrDir().getX(), -getCurrDir().getY()));
 			}
+			
 //			int xDir = getCurrDir().getX(), yDir = getCurrDir().getY();
-//			if(c.xPenDepth < c.yPenDepth && c.xPenDepth > 0){
-//				if(getCurrDir().getX() == 1){
-//					xDir = -1;
-//					setXPos(getXPos() - (getShape().getMaxX() - collider.getShape().getMinX()) * 2);
-//				} else if(getCurrDir().getX() == -1) {
-//					xDir = 1;
-//					setXPos(getXPos() + (collider.getShape().getMaxX() - getShape().getMinX()) * 2);
-//				} else {
-//					xDir = c.collisionNormal.getX();
-//					setXPos(getXPos() + xDir == 1 ? c.xPenDepth : -c.xPenDepth);
-//				}
-//				if(getYPos() < collider.getShape().getMinY()){
-//					yDir = -1;
-//				} else if(getYPos() > collider.getShape().getMaxY()){
-//					yDir = 1;
-//				}
-//			} else if(c.yPenDepth > 0) {
-//				if(getCurrDir().getY() == 1){
-//					yDir = -1;
-//					setYPos(getYPos() - (getShape().getMaxY() - collider.getShape().getMinY()) * 2);
-//				} else if(getCurrDir().getY() == -1){
-//					yDir = 1;
-//					setYPos(getYPos() + (collider.getShape().getMaxY() - getShape().getMinY()) * 2);
-//				} else {
-//					yDir = c.collisionNormal.getY();
-//					setYPos(getYPos() + yDir == 1 ? c.yPenDepth : -c.yPenDepth);
-//				}
-//				if(getXPos() < collider.getShape().getMinX()){
-//					xDir = -1;
-//				} else if(getXPos() > collider.getShape().getMaxX()){
-//					xDir = 1;
-//				}
+
+//			//Determine which face we bounced off, i.e. the collision normal
+//			Collision prevC = CollisionSystem.AABBvsAABBShape(
+//					new Shape(getPrevXPos(), getPrevYPos(), getWidth(), getHeight()), collider.getShape());
+//
+//			if(prevC.xPenDepth > 0){
+//				setYPos(getYPos() + ( yDir == 1 ?
+//						-(getShape().getMaxY() - collider.getShape().getMinY()) :
+//						collider.getShape().getMaxY() - getShape().getMinY()) * 2);
+//				yDir = -yDir;
+//				
+//			} else if(prevC.yPenDepth > 0){
+//				setXPos(getXPos() + ( xDir == 1 ?
+//						-(getShape().getMaxX() - collider.getShape().getMinX()) :
+//						collider.getShape().getMaxX() - getShape().getMinX()) * 2);
+//				xDir = -xDir;
+//			}
+//			// otherwise we bounce off the axis we are farther from
+//			else if(prevC.xPenDepth < prevC.yPenDepth){
+//				setYPos(getYPos() + ( yDir == 1 ?
+//						-(getShape().getMaxY() - collider.getShape().getMinY()) :
+//						collider.getShape().getMaxY() - getShape().getMinY()) * 2);
+//				yDir = -yDir;
+//			} else {
+//				setXPos(getXPos() + ( xDir == 1 ?
+//						-(getShape().getMaxX() - collider.getShape().getMinX()) :
+//						collider.getShape().getMaxX() - getShape().getMinX()) * 2);
+//				xDir = -xDir;
 //			}
 //			setCurrDir(Direction.getDir(xDir, yDir));
 			break;
