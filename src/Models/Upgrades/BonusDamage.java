@@ -1,5 +1,25 @@
 package Models.Upgrades;
 
-public class BonusDamage {
+import Models.Players.PlayableCharacter;
+import javafx.scene.image.Image;
+
+public class BonusDamage extends Upgrade{
+
+	public BonusDamage(Image i, int x, int y) {
+		super(i, x, y);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void interact(PlayableCharacter c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void collect(PlayableCharacter c) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

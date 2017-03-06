@@ -16,9 +16,14 @@ public class MedicNPC extends NPC implements Interactable {
 	private String[] dialogue = {"You dont need my help right now.", "You are hurt! This will help."};
 	
 
+
+
+		
+
 	public MedicNPC(Image i, StoryController st, int x, int y) {
 		super(i, st, x, y);
-		setDisplayLayer(7);
+
+
 	}
 
 	public String conversation(PlayableCharacter c) {
