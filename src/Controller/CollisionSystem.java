@@ -12,17 +12,23 @@ public class CollisionSystem {
 	
 	public static void checkMovementCollisions(Entity e, ArrayList<Entity> entities){
 		// Test for collisions
-		Shape shapeE = e.getShape();
 		for(int y = 0; y < entities.size(); y++){
 			Entity collided = entities.get(y);
 			if(collided == e) { continue; }
-			Shape shapeC = collided.getShape();
 			
 			Collision c = getCollision(e, collided);
 			if(c.hasCollided){
 				e.hasCollided(c);
 				collided.hasCollided(c);
-			} 
+			} else {
+				Collision prevC = CollisionSystem.AABBvsAABBShape(
+						new Shape(e.getPrevXPos(), e.getPrevYPos(), e.getWidth(), e.getHeight()),
+						collided.getShape());
+				if(prevC.hasCollided){
+					e.hasCollided(prevC);
+					collided.hasCollided(prevC);
+				}
+			}
 		}
 	}
 	
@@ -177,7 +183,7 @@ public class CollisionSystem {
 		else {
 			int temp;
 			int distSqr = (temp = xDist - shapeB.getWidth()) * temp + (temp = yDist - shapeB.getHeight()) * temp;
-			collided = distSqr <= (temp = shapeA.getRadius()) * temp;
+			collided = distSqr < (temp = shapeA.getRadius()) * temp;
 		}
 		
 		return new Collision(a, b, collided, Direction.getDir(xDir, yDir), penXDepth, penYDepth);

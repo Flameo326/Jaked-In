@@ -13,7 +13,8 @@ public abstract class Attack extends Entity {
 	
 	protected HashSet<Entity> hasHit;
 	private final PlayableCharacter ownedEntity;
-	private int lifeTime, timer;
+	protected int lifeTime;
+	protected int timer;
 	private int damage;
 	
 	// This will be for Like Melee Weapons...
@@ -54,7 +55,7 @@ public abstract class Attack extends Entity {
 		}
 		
 		// In ArenaMode
-		if(!GameController.StoryMode){
+		if(!GameController.getStoryMode()){
 			if(!collidedChar.getTag().equals(getOwnedEntity().getTag())){
 				collidedChar.takeDamage(getDamage());
 				hasHit.add(collider);

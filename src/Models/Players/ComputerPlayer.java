@@ -74,5 +74,8 @@ public class ComputerPlayer extends PlayableCharacter{
 		return decisionLengthRange;
 	}
 
+	public static void resetComputerID(){
+		computerID = 0;
+	}
 
 }

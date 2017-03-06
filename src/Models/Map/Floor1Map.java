@@ -16,12 +16,12 @@ public class Floor1Map extends Map {
 
 	public Floor1Map(int width, int height) {
 		super(width, height);
-		// TODO Auto-generated constructor stub
 	}
 
 	// For each Map, create a custom populateMap method which populates the map
 	// as neccesary
 	@Override
+
 	public void populateMap(ArrayList<Entity> rooms) {
 		this.// why is this here?
 				npcs = new ArrayList<Entity>(rooms.size());
@@ -43,9 +43,10 @@ public class Floor1Map extends Map {
 	public NPC npcChoice(int roomX, int roomY, int width, int height) {
 		Random randy = new Random();
 		if (randy.nextInt(101) + 1 < 61) {
-			int selection = randy.nextInt(10) + 1;//choosing what npc is created
-			int x = randy.nextInt(width-30) + roomX + 15;
-			int y = randy.nextInt(height-30) + roomY + 15;
+			int selection = randy.nextInt(10) + 1;// choosing what npc is
+													// created
+			int x = randy.nextInt(width - 30) + roomX + 15;
+			int y = randy.nextInt(height - 30) + roomY + 15;
 			switch (selection) {
 			case 1:
 				// roomwidth-npcwidth+npcwidth/2

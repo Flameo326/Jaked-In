@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import Controller.InputHandler;
 import Enums.Direction;
 import Models.Entity;
-import Models.Weapon.MeleeWeapon;
 import Models.Weapon.Attack.Attack;
-import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 
 public class HumanPlayer extends PlayableCharacter{
 	
@@ -19,7 +16,6 @@ public class HumanPlayer extends PlayableCharacter{
 	public HumanPlayer(Image i, int x, int y) {
 		super(i, x, y);
 		setTag("Human-" + ++humanID);
-		//setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
 	}
 	
 	@Override
@@ -33,7 +29,7 @@ public class HumanPlayer extends PlayableCharacter{
 			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
 				Attack h = attack();
 				if(h != null){
-					System.out.println(getTag() + " attacked");
+//					System.out.println(getTag() + " attacked");
 					entities.add(h);
 				}
 			}
@@ -45,12 +41,12 @@ public class HumanPlayer extends PlayableCharacter{
 			if(InputHandler.keyInputContains(InputHandler.Player2Attack)){
 				Attack h = attack();
 				if(h != null){
-					System.out.println(getTag() + " attacked");
+//					System.out.println(getTag() + " attacked");
 					entities.add(h);
 				}
 			}
 		} else {
-			System.out.println("Human Player Tag is " + getTag());
+//			System.out.println("Human Player Tag is " + getTag());
 		}
 	}
 	
