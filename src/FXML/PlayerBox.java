@@ -211,5 +211,9 @@ public class PlayerBox extends VBox{
 		}
 		return "NO DIFFICULTY";
 	}
+	
+	public static void resetHumanPlayers(){
+		HUMAN_PLAYERS = 0;
+	}
 
 }

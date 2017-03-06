@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Cutscene.Cutscene;
+import Cutscene.DialogCutscene;
 import Interfaces.Subscribable;
 import Models.Entity;
 import Models.Map.Floor1Map;
@@ -41,7 +42,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	
 	public StoryController(){
 		generateLevels();
-		gc.addEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
+//		gc.addEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
 	}
 	
 	public void generateLevels(){
@@ -68,6 +69,17 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		stop();
 		
 		c.start();
+	}
+	
+	public void startGame(){
+//		new Introduction(this)
+		DialogCutscene s = new DialogCutscene(this, "Hello", "i am a potato", "Where is the ranch", 
+				"Is the potato a dog or the dog a potato. I do not know for I am a dolphin among fish and a "
+				+ "fish amoung dolhins. Who am I?");
+		s.setLetterSpeed(1);
+		s.setSpeed(5);
+		startCutscene(s);
+//		gc.start();
 	}
 	
 	public void start(){

@@ -17,8 +17,8 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	
 	// This boolean will indicate wether or not we are in story mode right now
 	// controls are different in story or arena
-	public static long timer;
-	public static boolean StoryMode;
+	private static long timer;
+	private static boolean StoryMode;
 
 	private ArrayList<Entity> entities;
 	private ArrayList<PlayableCharacter> players;
@@ -30,8 +30,8 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	boolean prevHeld = false;
 	
 	
-	private Stage error;
-	private Label playPos;
+//	private Stage error;
+//	private Label playPos;
 	
 	public GameController(Canvas myCanvas, boolean storyMode) {
 		GameController.StoryMode = storyMode;
@@ -42,14 +42,14 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 		
 		addWindow(myCanvas);
 		
-		playPos = new Label();
-		
-		StackPane root = new StackPane(playPos);
-		Scene scene = new Scene(root, 300, 50);
-		
-		error = new Stage();
-		error.setScene(scene);
-		error.show();
+//		playPos = new Label();
+//		
+//		StackPane root = new StackPane(playPos);
+//		Scene scene = new Scene(root, 300, 50);
+//		
+//		error = new Stage();
+//		error.setScene(scene);
+//		error.show();
 	}
 	
 	// This entire thing will be our "Run" method. It gets called constantly and updates accordingly.
@@ -64,9 +64,9 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 			// All Entities are updated 
 			e.update(entities);
 		}
-		if(focusedEntity != null){
-			playPos.setText("Player Center X: " + focusedEntity.getXPos() + " Y: " + focusedEntity.getYPos());
-		}
+//		if(focusedEntity != null){
+//			playPos.setText("Player Center X: " + focusedEntity.getXPos() + " Y: " + focusedEntity.getYPos());
+//		}
 		// Handles the graphical Rendering 
 		for(Canvas c : windows){
 			updateImage(c);
@@ -83,8 +83,8 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 			offsetY = focusedEntity.getDisplayableYPos();
 		}
 		for(Entity e : entities){
-				g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (c.getWidth()/2),
-						e.getDisplayableYPos() - offsetY + (c.getHeight()/2), e.getWidth(), e.getHeight());
+			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + (c.getWidth()/2),
+					e.getDisplayableYPos() - offsetY + (c.getHeight()/2), e.getWidth(), e.getHeight());
 		}	
 	}
 
@@ -122,6 +122,18 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	
 	public void setFocus(Entity focusedEntity){
 		this.focusedEntity = focusedEntity;
+	}
+	
+	public static void setStoryMode(boolean b){
+		StoryMode = b;
+	}
+	
+	public static boolean getStoryMode(){
+		return StoryMode;
+	}
+	
+	public static long getTimer(){
+		return timer;
 	}
 
 

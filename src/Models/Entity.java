@@ -16,6 +16,7 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 	private Shape shape;
 	private String tag;
 	private int speed = 1;
+	private int prevX, prevY;
 	private int displayLayer;
 	
 	public Entity(Image i, int x, int y){
@@ -36,6 +37,8 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 	
 	@Override
 	public void move(ArrayList<Entity> entities) {
+		prevX = getXPos();
+		prevY = getYPos();
 		setXPos(getXPos() + getCurrDir().getX() * getSpeed());
 		setYPos(getYPos() + getCurrDir().getY() * getSpeed());
 		CollisionSystem.checkMovementCollisions(this, entities);
@@ -95,21 +98,13 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 		return shape.getMinY();
 	}
 	
-//	public int getPreviousXPos(){
-//		return prevXPos;
-//	}
-//	
-//	public int getPreviousYPos(){
-//		return prevYPos;
-//	}
-//	
-//	public void setMoved(boolean b){
-//		moved = b;
-//	}
-//	
-//	public boolean hasMoved(){
-//		return moved;
-//	}
+	public int getPrevXPos(){
+		return prevX;
+	}
+	
+	public int getPrevYPos(){
+		return prevY;
+	}
 	
 	@Override
 	public int compareTo(Entity o) {
