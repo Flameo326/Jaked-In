@@ -3,6 +3,7 @@ package Controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Cutscene.Cutscene;
 import Interfaces.Subscribable;
 import Models.Entity;
 import Models.Map.Map;
@@ -25,11 +26,52 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	private Canvas myCanvas;
 	private GameController gc;
 	private PlayableCharacter player1;
-	private Map currentLevel;
-	// create variables for the levels and generate them during init
-	int level = 0;
+	private Map[] levels;
+	private int currentLevel;
+	private int lives = 5;
 	
+	public StoryController(){
+		generateLevels();
+		gc.addEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
+	}
 	
+	public void generateLevels(){
+		levels = new Map[7];
+		levels[0] = new Floor1Map();
+		levels[1] = new Floor2Map();
+		levels[2] = new Floor3Map();
+		levels[3] = new Floor4Map();
+		levels[4] = new Floor5Map();
+		levels[5] = new Floor6Map();
+		levels[6] = new Floor7Map();
+	}
+	
+	public void changeLevel(int i){
+		gc.removeEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
+		currentLevel = i;
+		gc.addEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
+	}
+	
+	// Cutscenes need to be instantiated with the StoryController
+	// Because we can not subscribe to them
+	// Because java... pretty sure c++ can do that
+	public void startCutscene(Cutscene c){
+		stop();
+		
+		c.start();
+	}
+	
+	public void start(){
+		gc.start();
+	}
+	
+	public void stop(){
+		gc.stop();
+	}
+	
+	public Canvas getCanvas(){
+		return myCanvas;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -60,9 +102,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 								myCanvas.heightProperty().bind(newValue.heightProperty());
 
 								// Create Map
-								currentLevel = new Map((int)newValue.getWidth(), (int)newValue.getHeight());
-								currentLevel.generateMap();
-								gc.addEntity(currentLevel.getMapObjects().toArray(new Entity[0]));
+								
 							}
 						}
 					});
@@ -75,19 +115,28 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		// KeyEvent to record input while playing
 		myCanvas.setOnKeyPressed((e) -> InputHandler.keyPress(e));
 		myCanvas.setOnKeyReleased((e) -> InputHandler.keyRelease(e));
-		
-		gc.start();
 	}
 
 	@Override
 	public void update(PlayableCharacter value) {
+		// we should have a menu like pressing escape or something
+		// woud it be here?...
 		if(!value.isAlive()){
 			System.out.println("Live lost"); 
-			
-			// stop when a win condition is achieved
-			// in this case, it's when one player is killed
-			gc.stop();
+			if(--lives <= 0){
+				// displayLoss();
+				gc.stop();
+			} else {
+				// beginning of level?
+				player1.setXPos(0);
+				player1.setYPos(0);
+			}
 		}
+	}
+
+	// Cutscenes will call this method to tell the Controller the Cutscene is over
+	public void update(Boolean b) {
+		if(b){ start(); }
 	}
 
 }
