@@ -17,7 +17,7 @@ public class MedicNPC extends NPC implements Interactable {
 
 	public MedicNPC(Image i, int x, int y) {
 		super(i, x, y,(int)i.getWidth(), (int)i.getHeight());
-		setDisplayLayer(7);
+		
 	}
 
 	public String conversation(PlayableCharacter c) {

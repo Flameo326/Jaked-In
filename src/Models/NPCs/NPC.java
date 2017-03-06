@@ -22,6 +22,8 @@ public abstract class NPC extends Entity implements Interactable{
 		} else { 
 			collider = c.collidingEntity;
 		}
+		System.out.println(collider);
+		System.out.println(collider.getTag());
 		String[] tagElements = collider.getTag().split("-");
 		switch(tagElements[0]){
 		case "Human":

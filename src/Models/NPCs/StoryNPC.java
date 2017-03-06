@@ -19,8 +19,8 @@ public class StoryNPC extends NPC {
 		"We heard that Tron hasn’t been seen in a long time. I hope Grinsler didn’t kill him",
 		"We stand with the users! Destory Watson once and for all!"};
 
-	public StoryNPC(Image i, int x, int y, int width, int height) {
-		super(i, x, y, width, height);
+	public StoryNPC(Image i, int x, int y) {
+		super(i, x, y,(int)i.getWidth(), (int)i.getHeight());
 		
 	}
 

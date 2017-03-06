@@ -39,15 +39,24 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	private int currentLevel;
 	private int lives = 5;
 
-	
 	public StoryController(){
-		generateLevels();
-//		gc.addEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
+		generateLevels();		
+	}	
+	
+	public void StoryController1(){
+		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
+		player1 = new HumanPlayer(img, 0, 0);
+		gc = new GameController(myCanvas, true);
+		gc.attach(this);
+		gc.addEntity(player1.getDisplayableEntities());
+		gc.addPlayer(player1);
+		gc.setFocus(player1);
+		gc.addEntity(levels[0].getMapObjects().toArray(new Entity[0]));
 	}
 	
 	public void generateLevels(){
 		levels = new Map[7];
-		levels[0] = new Floor1Map(currentLevel, currentLevel);
+		levels[0] = new Floor1Map(500, 1200);
 		levels[1] = new Floor2Map(currentLevel, currentLevel);
 		levels[2] = new Floor3Map(currentLevel, currentLevel);
 		levels[3] = new Floor4Map(currentLevel, currentLevel);
@@ -79,6 +88,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		s.setLetterSpeed(1);
 		s.setSpeed(5);
 		//startCutscene(s);
+
 		gc.start();
 	}
 	
@@ -96,16 +106,6 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
-		player1 = new HumanPlayer(img, 0, 0);
-		gc = new GameController(myCanvas, true);
-		gc.attach(this);
-		gc.addEntity(player1.getDisplayableEntities());
-		gc.addPlayer(player1);
-		gc.setFocus(player1);
-
-
-		
 		// Resizes the Canvas to it's Stage Width and Height...
 		myCanvas.sceneProperty().addListener(new ChangeListener<Scene>(){
 		
@@ -122,7 +122,8 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 							if(newValue != null){
 								myCanvas.widthProperty().bind(newValue.widthProperty());
 								myCanvas.heightProperty().bind(newValue.heightProperty());
-
+								
+								StoryController1();
 								// Create Map
 								
 							}
