@@ -1,19 +1,23 @@
 package Models.Upgrades;
 
+import java.util.Random;
+
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
 
 public class DamageReduction extends Upgrade{
+	
+	private int damageReduction = 0;
 
 	public DamageReduction(Image i, int x, int y) {
 		super(i, x, y);
-		// TODO Auto-generated constructor stub
+		Random rand = new Random();
+		damageReduction = rand.nextInt(11)+20;
 	}
 
 	@Override
 	public void collect(PlayableCharacter c) {
-		// TODO Auto-generated method stub
-		
+		c.setDamageReduction(damageReduction);
 	}
 
 }
