@@ -2,7 +2,6 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
-import Controller.InputHandler;
 import Controller.StoryController;
 import Cutscene.Cutscene;
 import Cutscene.DialogCutscene;
@@ -10,18 +9,16 @@ import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
+import SpriteSheet.SpriteSheet;
 
 public class AmbushNPC extends PlayableCharacter implements Interactable {
 	
 	private StoryController controller;
 	private PlayableCharacter enemy;
-//	private String dialogue = "GET HIM!";
 	private boolean interacted;
 
-	public AmbushNPC(Image i, StoryController controller, int x, int y) {
-		super(i, x, y);
+	public AmbushNPC(StoryController controller, int x, int y) {
+		super(SpriteSheet.getNPC(), x, y);
 		this.controller = controller;
 		setTag(getTag() + "-EnemyNPC");
 	}
@@ -34,7 +31,7 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 	public void interact(PlayableCharacter p) {
 		Cutscene c = new DialogCutscene(controller, .5, "GET HIM!");
 		controller.startCutscene(c);
-		
+		setImage(SpriteSheet.getEnemy());
 		setEnemy(p);
 		interacted = true;
 	}

@@ -1,13 +1,13 @@
 package Models.Upgrades;
 
 import Models.Players.PlayableCharacter;
-import javafx.scene.image.Image;
+import SpriteSheet.SpriteSheet;
 
 public class BonusDamage extends Upgrade{
 
 	// This class would have to access the weapon to modify the damage...
-	public BonusDamage(Image i, int x, int y) {
-		super(i, x, y);
+	public BonusDamage(int x, int y) {
+		super(SpriteSheet.getBonusDamage(), x, y);
 		// TODO Auto-generated constructor stub
 	}
 

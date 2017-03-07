@@ -197,10 +197,10 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 			Upgrade u;
 			switch(rand.nextInt(2)){
 			case 1:
-				u = new SpeedBoost(SpriteSheet.getBlock(15, 15, Color.MEDIUMPURPLE), 0, 0);
+				u = new SpeedBoost(0, 0);
 				break;
 			default:
-				u = new MedPack(SpriteSheet.getBlock(10, 10, Color.RED), 0, 0);
+				u = new MedPack(0, 0);
 				break;
 			}
 			
