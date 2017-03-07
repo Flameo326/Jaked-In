@@ -21,12 +21,34 @@ public class CollisionSystem {
 				e.hasCollided(c);
 				collided.hasCollided(c);
 			} else {
+				Shape shapeE = e.getShape();
+				int width;
+				int height;
+				int xPos;
+				int yPos;
+				if(shapeE.getCenterX() < e.getPrevXPos()){
+					width = e.getPrevXPos() + e.getWidth()/2 - shapeE.getMinX();
+					xPos = shapeE.getMinX() + width/2;
+				} else {
+					width = shapeE.getMaxX() -  e.getPrevXPos() - e.getWidth()/2;
+					xPos = shapeE.getMaxX() - width/2;
+				}
+				if(shapeE.getCenterY() < e.getPrevYPos()){
+					height = e.getPrevYPos() + e.getHeight()/2 - shapeE.getMinY();
+					yPos = shapeE.getMinY() + height/2;
+				} else {
+					height = shapeE.getMaxY() -  e.getPrevYPos() - e.getHeight()/2;
+					yPos = shapeE.getMaxY() - height/2;
+				}
 				Collision prevC = CollisionSystem.AABBvsAABBShape(
-						new Shape(e.getPrevXPos(), e.getPrevYPos(), e.getWidth(), e.getHeight()),
-						collided.getShape());
+						new Shape(xPos, yPos, width, height), collided.getShape());
+				// new Collision with the entities included
+				// neccesary for NPCs
+				Collision entityCollision = new Collision(e, collided, prevC.hasCollided,
+						prevC.collisionNormal, prevC.xPenDepth, prevC.yPenDepth);
 				if(prevC.hasCollided){
-					e.hasCollided(prevC);
-					collided.hasCollided(prevC);
+					e.hasCollided(entityCollision);
+					collided.hasCollided(entityCollision);
 				}
 			}
 		}

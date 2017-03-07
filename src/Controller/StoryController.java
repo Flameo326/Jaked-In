@@ -82,6 +82,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	}
 	
 	public void startGame(){
+		start();
 //		new Introduction(this)
 		DialogCutscene s = new DialogCutscene(this, .5, "Hello", "i am a potato", "Where is the ranch", 
 				"Is the potato a dog or the dog a potato. I do not know for I am a dolphin among fish and a "

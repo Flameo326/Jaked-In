@@ -1,11 +1,13 @@
 package Models.NPCs;
 
+import Controller.InputHandler;
 import Controller.StoryController;
 import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 
 public abstract class NPC extends Entity implements Interactable{
 	
@@ -29,7 +31,9 @@ public abstract class NPC extends Entity implements Interactable{
 		String[] tagElements = collider.getTag().split("-");
 		switch(tagElements[0]){
 		case "Human":
-			interact((PlayableCharacter)collider);
+			if(InputHandler.keyInputContains(KeyCode.F)){
+				interact((PlayableCharacter)collider);
+			}
 			break;
 		}
 	}
