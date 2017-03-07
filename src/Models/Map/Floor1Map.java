@@ -34,7 +34,7 @@ public class Floor1Map extends Map {
 	public Floor1Map(StoryController controller, int width, int height) {
 		super(width, height);
 		this.controller = controller;
-		generateMap();
+		
 	}
 
 	// For each Map, create a custom populateMap method which populates the map
