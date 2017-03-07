@@ -1,7 +1,6 @@
 package Models.Map;
 
 import java.util.ArrayList;
-
 import Controller.StoryController;
 import Models.Entity;
 import Models.NPCs.AllyNPC;
@@ -30,7 +29,6 @@ public class Floor2Map extends Floor1Map{
 		super(controller, width, height);
 		this.controller = controller;
 		generateMap();
-
 	}
 
 	@Override

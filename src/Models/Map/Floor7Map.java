@@ -21,6 +21,7 @@ public class Floor7Map extends Floor1Map{
 
 	public Floor7Map(StoryController controller, int width, int height) {
 		super(controller, width, height);
+		this.controller = controller;
 	}
 
 	@Override

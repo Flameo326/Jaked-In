@@ -29,7 +29,8 @@ public class Floor3Map extends Floor1Map{
 
 	public Floor3Map(StoryController controller, int width, int height) {
 		super(controller, width, height);
-		// TODO Auto-generated constructor stub
+		this.controller = controller;
+		generateMap();
 	}
 	
 	@Override
@@ -47,8 +48,8 @@ public class Floor3Map extends Floor1Map{
 		Entity lastRoom = rooms.get(rooms.size() - 1);
 		int x = rand.nextInt(lastRoom.getWidth() - 30) + lastRoom.getShape().getMinX() + 15;
 		int y = rand.nextInt(lastRoom.getHeight() - 30) + lastRoom.getShape().getMinY() + 15;
-		Doctor doc = new Doctor(SpriteSheet.getBorderedBlock(30, 30, Color.BLACK, 2), controller, x, y);
-		getMapObjects().add(doc);
+		
+		//getMapObjects().add();
 	}
 
 	public void populateNPC() {
