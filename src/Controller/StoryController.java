@@ -56,17 +56,17 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	public void generateLevels(){
 		levels = new Map[7];
 
-		levels[0] = new Floor1Map(this, 1200, 500);
+		levels[0] = new Floor1Map(this, 500, 500);
 
 //		levels[0] = new Map(500, 1200);
 //		levels[0].generateMap();
 
-		levels[1] = new Floor2Map(currentLevel, currentLevel);
-		levels[2] = new Floor3Map(currentLevel, currentLevel);
-		levels[3] = new Floor4Map(currentLevel, currentLevel);
-		levels[4] = new Floor5Map(currentLevel, currentLevel);
-		levels[5] = new Floor6Map(currentLevel, currentLevel);
-		levels[6] = new Floor7Map(currentLevel, currentLevel);
+		levels[1] = new Floor2Map(500, 500);
+		levels[2] = new Floor3Map(500, 500);
+		levels[3] = new Floor4Map(500, 500);
+		levels[4] = new Floor5Map(500, 500);
+		levels[5] = new Floor6Map(500, 500);
+		levels[6] = new Floor7Map(500, 500);
 	}
 	
 	public void changeLevel(int i){

@@ -22,7 +22,7 @@ public class DialogCutscene extends Cutscene {
 		this.phrases = phrases;
 		yPos = (int)(getCanvas().getHeight()*percent);
 		
-		getCanvas().snapshot(null, prevImage);
+		prevImage = getCanvas().snapshot(null, null);
 		
 		getGraphics().setTextAlign(TextAlignment.CENTER);
 	}
@@ -70,7 +70,7 @@ public class DialogCutscene extends Cutscene {
 		if(InputHandler.keyInputContains(KeyCode.SPACE)){
 			letterCount++;
 		}
-		if(InputHandler.keyInputContains(KeyCode.ENTER)){
+		if(InputHandler.keyInputContains(KeyCode.ENTER) ){
 			if(phraseCount >= phrases.length){
 				stop();
 			} else {
