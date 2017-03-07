@@ -11,6 +11,7 @@ public final class SpriteSheet {
 	
 	private static Image spriteSheet;
 	private static boolean isInit = false;
+	public static final Image medic = getSpriteSheetImage(0, 0, 30, 30);
 	
 	public static void init(){
 		spriteSheet = new Image("/Other/16x16_Sprite_Sheet.jpg");

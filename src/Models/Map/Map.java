@@ -19,6 +19,7 @@ public class Map {
 	private int mapWidth, mapHeight;
 	private int border = 10;
 	private boolean mapIsLinear;
+	private ArrayList<Entity> rooms;
 	
 	public Map(int width, int height){
 		mapWidth = width;
@@ -31,8 +32,13 @@ public class Map {
 	public void generateMap(){
 		mapObjects.clear();
 		ArrayList<Entity> rooms = generateRooms(150, mapWidth, .8, 1.2, 10);
+		this.rooms = rooms;
 		generatePaths(rooms);
 		populateMap(rooms);
+	}
+	
+	public ArrayList<Entity> getRooms(){
+		return rooms;
 	}
 	
 	public ArrayList<Entity> generateRooms(int minWidth, int maxWidth, double minHeightMultiplier, double maxHeightMultiplier, int roomAmo){

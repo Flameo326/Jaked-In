@@ -67,7 +67,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		switch(tagElements[0]){
 		case "Human":
 		case "Computer":
-		case "NPC":
+		//case "NPC":
 		case "Wall":
 			if(c.xPenDepth < c.yPenDepth){
 				setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);

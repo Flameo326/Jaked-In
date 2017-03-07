@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 
 public class StoryNPC extends NPC {
 	private static int storyLineCount = 0;
+	private boolean hasSpoken = false;
 	private static String[] storyLine = {"The ISOs are losing this war without you. You need to kill Watson to save them.",
 		"He had you killing ISOs in the Arena.",
 		"Now that you are back you can finally stop Watson",
@@ -18,6 +19,7 @@ public class StoryNPC extends NPC {
 		"Please free all of the prisoners. They will all be sent to the Arena if you don’t.",
 		"We heard that Tron hasn’t been seen in a long time. I hope Grinsler didn’t kill him",
 		"We stand with the users! Destory Watson once and for all!"};
+
 
 	public StoryNPC(Image i, StoryController st, int x, int y) {
 		super(i, st, x, y);
@@ -28,7 +30,13 @@ public class StoryNPC extends NPC {
 		if(storyLineCount > storyLine.length){
 			storyLineCount = storyLine.length-1;
 		}
-		return storyLine[storyLineCount++];
+		if(!hasSpoken){
+			hasSpoken = true;
+			return storyLine[storyLineCount++];
+		}else{
+			return storyLine[storyLineCount];
+		}
+		
 	}
 	
 	@Override

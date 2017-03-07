@@ -18,8 +18,10 @@ public class PowerUpNPC extends NPC {
 
 	private boolean hasSpoken = false;
 
+
 	public PowerUpNPC(Image i, StoryController st, int x, int y) {
 		super(i, st, x, y);
+
 	}
 
 	public void conversation(PlayableCharacter p) {
@@ -45,10 +47,10 @@ public class PowerUpNPC extends NPC {
 		conversation(c);
 	}
 
-	@Override
-	public void hasCollided(Collision c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
-	}
+//	@Override
+//	public void hasCollided(Collision c) {
+//		throw new UnsupportedOperationException("Not yet Implemented");
+//	}
 
 	@Override
 	public void update(ArrayList<Entity> entities) {
