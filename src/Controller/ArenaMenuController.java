@@ -138,7 +138,7 @@ public class ArenaMenuController implements Initializable{
     		switch(playBox.getWeaponType()){
     		case "Projectile":
     			Image img = SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3);
-    			p.setWeapon(new ProjectileWeapon(p, img, 1, 400, BulletType.NORMAL));
+    			p.setWeapon(new ProjectileWeapon(p, img, 10, 1, 400, BulletType.NORMAL));
     			break;
     		case "Melee":
     			p.setWeapon(new MeleeWeapon(p, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));

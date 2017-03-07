@@ -2,6 +2,7 @@ package Models.Players;
 
 import java.util.ArrayList;
 
+import Controller.GameController;
 import Controller.InputHandler;
 import Enums.BulletType;
 import Interfaces.Attackable;
@@ -9,6 +10,7 @@ import Interfaces.Damageable;
 import Interfaces.Dodgeable;
 import Models.Collision;
 import Models.Entity;
+import Models.Weapon.MeleeWeapon;
 import Models.Weapon.ProjectileWeapon;
 import Models.Weapon.Weapon;
 import Models.Weapon.Attack.Attack;
@@ -19,19 +21,21 @@ import javafx.scene.paint.Color;
 
 public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
 	
-	private Weapon weapon;
+	private ArrayList<Weapon> weapons;
+	private Weapon equippedWeapon, previousWeapon;
 	private Entity healthBar;
 	private int maxHealth, currentHealth;
-	private boolean isDodging;
+	private int currentWeapon;
+	private boolean isDodging, weaponHasChanged;
 
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
 		healthBar = new HealthBar(this);
+		weapons = new ArrayList<>();
 		setSpeed(3);
 		setDisplayLayer(7);
-		// Just Default it to a Standard Projectile Weapon for now
-		Image img = SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3);
-		setWeapon(new ProjectileWeapon(this, img, 20, 30000, BulletType.BOUNCE));
+		// Just Default it to a Standard Melee Weapon for now
+		addWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
 		
 		setMaxHealth(100);
 		setCurrentHealth(100);
@@ -43,6 +47,11 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 			for(Entity e : getDisplayableEntities()){
 				entities.remove(e);
 			}
+		} 
+		if(weaponHasChanged){
+			entities.remove(previousWeapon);
+			if(!entities.contains(equippedWeapon)) { entities.add(equippedWeapon); }
+			weaponHasChanged = false;
 		}
 	}
 	
@@ -65,7 +74,6 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		switch(tagElements[0]){
 		case "Human":
 		case "Computer":
-		//case "NPC":
 		case "Wall":
 			if(c.xPenDepth < c.yPenDepth){
 				setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);
@@ -110,6 +118,44 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		}
 	}
 	
+	public void addWeapon(Weapon w){
+		if(GameController.getStoryMode()){
+			if(weapons.isEmpty()){
+				setWeapon(w);
+			}
+			weapons.add(w);
+		} else {
+			setWeapon(w);
+		}
+	}
+	
+	public void removeWeapon(Weapon w){
+		if(!GameController.getStoryMode()){
+			setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
+		} else {
+			changeWeapon();
+			weapons.remove(w);
+		}
+	}
+	
+	public void changeWeapon(){
+		if(++currentWeapon >= weapons.size()){
+			currentWeapon = 0;
+		}
+		setWeapon(weapons.get(currentWeapon));
+	}
+	
+	public Weapon hasWeapon(Class val){
+		Weapon weapon = null;
+		for(Weapon w : weapons){
+			if(val.isInstance(w)) {
+				weapon = w;
+				break; 
+			}
+		}
+		return weapon;
+	}
+	
 	public boolean isAlive(){
 		return currentHealth > 0;
 	}
@@ -123,8 +169,12 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	}
 	
 	public void setWeapon(Weapon w){
-		if(w != null){	
-			weapon = w;
+		if(w != null){
+			if(equippedWeapon != null){
+				weaponHasChanged = true;
+				previousWeapon = equippedWeapon;
+			}
+			equippedWeapon = w;
 		}
 	}
 	
@@ -137,10 +187,10 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	}
 	
 	public Weapon getWeapon(){
-		return weapon;
+		return equippedWeapon;
 	}
 
 	public Entity[] getDisplayableEntities() {
-		return weapon != null ? new Entity[] {this, weapon, healthBar} : new Entity[] {this, healthBar};
+		return equippedWeapon != null ? new Entity[] {this, equippedWeapon, healthBar} : new Entity[] {this, healthBar};
 	}
 }

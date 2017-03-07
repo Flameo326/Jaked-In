@@ -11,12 +11,6 @@ public class ForceFieldReflection extends Upgrade{
 	}
 
 	@Override
-	public void interact(PlayableCharacter c) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void collect(PlayableCharacter c) {
 		// TODO Auto-generated method stub
 		
