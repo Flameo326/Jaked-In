@@ -11,20 +11,23 @@ import javafx.scene.paint.Color;
 public class ProjectileWeapon extends Weapon{
 	private final BulletType type;
 	private final int bulletLifeTime;
+	private int bullets;
 	
-	public ProjectileWeapon(PlayableCharacter e, Image i, int reloadTime, int bulletLifeTime, BulletType type){
+	public ProjectileWeapon(PlayableCharacter e, Image i, int bullets, int reloadTime, int bulletLifeTime, BulletType type){
 		super(e, i);
 		setAttackTime(reloadTime);
 		setTimer(getAttackTime());
 		this.type = type;
 		this.bulletLifeTime = bulletLifeTime;
+		this.bullets = bullets;
 	}
 
 	@Override
 	public Attack attack() {
 		Projectile p = null;
-		if(getTimer() > getAttackTime()){
+		if(getTimer() >= getAttackTime()){
 			setTimer(0);
+			
 			switch (type) {
 			case NORMAL:
 				Image img = SpriteSheet.getBlock(5, 5, Color.BLACK);
@@ -44,7 +47,18 @@ public class ProjectileWeapon extends Weapon{
 				break;
 			}
 			p.setLifeTime((int)(bulletLifeTime * 3.33));
+			if(--bullets <= 0){
+				getOwnedEntity().removeWeapon(this);
+			}
 		}
 		return p;
+	}
+	
+	public void addBullets(int val){
+		bullets += val;
+	}
+	
+	public BulletType getBulletType(){
+		return type;
 	}
 }

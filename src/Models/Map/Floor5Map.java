@@ -1,10 +1,21 @@
 package Models.Map;
 
-public class Floor5Map extends Map {
+import java.util.ArrayList;
 
-	public Floor5Map(int width, int height) {
-		super(width, height);
+import Controller.StoryController;
+import Models.Entity;
+
+public class Floor5Map extends Floor1Map{
+
+	public Floor5Map(StoryController controller, int width, int height) {
+		super(controller, width, height);
 		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public void generateDoors(ArrayList<Entity> rooms){
+		createExit(rooms.get(0));
+		createEntrance(rooms.get(rooms.size()-1));
 	}
 
 }

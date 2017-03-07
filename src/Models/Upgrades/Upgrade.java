@@ -10,9 +10,10 @@ import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
 
-public abstract class Upgrade extends Entity implements Interactable, Collectable{
+public abstract class Upgrade extends Entity implements Collectable{
 	
 	protected boolean isCollected;
+	private long timer;
 
 	public Upgrade(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
@@ -55,6 +56,10 @@ public abstract class Upgrade extends Entity implements Interactable, Collectabl
 			}
 			break;
 		}
+	}
+	
+	private void setTimer(int val){
+		timer = GameController.getTimer() + val * 1000000000l;
 	}
 
 }

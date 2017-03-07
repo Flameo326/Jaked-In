@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import Cutscene.Cutscene;
 import Cutscene.DialogCutscene;
+import Cutscene.Introduction;
 import Interfaces.Subscribable;
 import Models.Entity;
 import Models.Map.Floor1Map;
@@ -34,7 +35,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	private Canvas myCanvas;
 	private GameController gc;
 	private PlayableCharacter player1;
-	private Map[] levels;
+	private Floor1Map[] levels;
 	private int currentLevel;
 	private int lives = 5;
 
@@ -43,9 +44,10 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	}	
 	
 	public void StoryController1(){
+		gc = new GameController(myCanvas, true);
+		
 		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
 		player1 = new HumanPlayer(img, 0, 0);
-		gc = new GameController(myCanvas, true);
 		gc.attach(this);
 		gc.addEntity(player1.getDisplayableEntities());
 		gc.addPlayer(player1);
@@ -54,25 +56,41 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	}
 	
 	public void generateLevels(){
-		levels = new Map[7];
+		levels = new Floor1Map[7];
 
 		levels[0] = new Floor1Map(this, 500, 500);
 
-//		levels[0] = new Map(500, 1200);
-//		levels[0].generateMap();
-
-		levels[1] = new Floor2Map(500, 500);
-		levels[2] = new Floor3Map(500, 500);
-		levels[3] = new Floor4Map(500, 500);
-		levels[4] = new Floor5Map(500, 500);
-		levels[5] = new Floor6Map(500, 500);
-		levels[6] = new Floor7Map(500, 500);
+		levels[1] = new Floor2Map(this, 500, 500);
+		levels[2] = new Floor3Map(this, 500, 500);
+		levels[3] = new Floor4Map(this, 500, 500);
+		levels[4] = new Floor5Map(this, 500, 500);
+		levels[5] = new Floor6Map(this, 500, 500);
+		levels[6] = new Floor7Map(this, 500, 500);
 	}
 	
 	public void changeLevel(int i){
+		System.out.println(i);
+		stop();
 		gc.removeEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
+		int previousLevel = currentLevel;
 		currentLevel = i;
 		gc.addEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
+		// Went up
+		if(i - 1 == previousLevel){
+			player1.setXPos(levels[currentLevel].getExit().getXPos());
+			player1.setYPos(levels[currentLevel].getExit().getYPos());
+		} 
+		// Went down
+		else if(i + 1 == previousLevel){
+			player1.setXPos(levels[currentLevel].getEntrance().getXPos());
+			player1.setYPos(levels[currentLevel].getEntrance().getYPos());
+		}
+		// Used Elevelator
+		else {
+			player1.setXPos(levels[currentLevel].getExit().getXPos());
+			player1.setYPos(levels[currentLevel].getExit().getYPos());
+		}
+		start();
 	}
 	
 	// Cutscenes need to be instantiated with the StoryController
@@ -84,11 +102,11 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	}
 	
 	public void startGame(){
-//		new Introduction(this)
-		DialogCutscene s = new DialogCutscene(this, .5, "Hello", "i am a potato", "Where is the ranch", 
-				"Is the potato a dog or the dog a potato. I do not know for I am a dolphin among fish and a "
-				+ "fish amoung dolhins. Who am I?");
-		startCutscene(s);
+//		
+//		DialogCutscene s = new DialogCutscene(this, .5, "Hello", "i am a potato", "Where is the ranch", 
+//				"Is the potato a dog or the dog a potato. I do not know for I am a dolphin among fish and a "
+//				+ "fish amoung dolhins. Who am I?");
+		startCutscene(new Introduction(this));
 	}
 	
 	public void start(){
@@ -101,6 +119,10 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	
 	public Canvas getCanvas(){
 		return myCanvas;
+	}
+	
+	public int getCurrentLevel(){
+		return currentLevel;
 	}
 
 	@Override

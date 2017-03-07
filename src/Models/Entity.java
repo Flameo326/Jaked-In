@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 
 public abstract class Entity implements Collideable, Moveable, Comparable<Entity>{
 	
+	private ArrayList<Entity> colliders;
 	private Image img;
 	private Direction direction;
 	private Shape shape;
@@ -28,6 +29,7 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 	}
 	
 	public Entity(Image i, Shape shape){
+		colliders = new ArrayList<>();
 		setImage(i);
 		setShape(shape);
 		setTag("Entity");
@@ -104,6 +106,18 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 	
 	public int getPrevYPos(){
 		return prevY;
+	}
+	
+	public void resetColliders(){
+		colliders.clear();
+	}
+	
+	public void addCollider(Entity e){
+		colliders.add(e);
+	}
+	
+	public ArrayList<Entity> getColliders(){
+		return colliders;
 	}
 	
 	@Override

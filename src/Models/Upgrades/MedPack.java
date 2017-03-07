@@ -14,22 +14,14 @@ public class MedPack extends Upgrade {
 		HPIncrease = randy.nextInt(21) + 20;
 	}
 	
-	
-	
 	@Override 
 	public void collect(PlayableCharacter c){
 		c.heal(getHPIncrease());
 		isCollected = true;
 	}
 
-	@Override
-	public void interact(PlayableCharacter c) {
-		
-	}
-
 	public int getHPIncrease() {
 		return HPIncrease;
 	}
-
 
 }
