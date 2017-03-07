@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import Controller.StoryController;
 import Cutscene.Cutscene;
 import Cutscene.DialogCutscene;
-import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.MedPack;
@@ -16,12 +15,10 @@ import javafx.scene.paint.Color;
 
 public class PowerUpNPC extends NPC {
 
-	private boolean hasSpoken = false;
-
+	private boolean hasSpoken;
 
 	public PowerUpNPC(Image i, StoryController st, int x, int y) {
 		super(i, st, x, y);
-
 	}
 
 	public void conversation(PlayableCharacter p) {
@@ -44,13 +41,19 @@ public class PowerUpNPC extends NPC {
 
 	@Override
 	public void interact(PlayableCharacter c) {
-		conversation(c);
+		Cutscene convo;
+		
+		if (!hasSpoken) {//needs to be random powerup
+			Upgrade u = new MedPack(SpriteSheet.getBlock(1, 1, Color.ANTIQUEWHITE), 0, 0);
+			u.collect(c);
+			hasSpoken = true;
+			convo = new DialogCutscene(getController(), .5, "Here, take this. It will help you fight Watson");
+		}else{
+			convo = new DialogCutscene(getController(), .5, "I have nothing more to help you!");
+		}
+		
+		getController().startCutscene(convo);
 	}
-
-//	@Override
-//	public void hasCollided(Collision c) {
-//		throw new UnsupportedOperationException("Not yet Implemented");
-//	}
 
 	@Override
 	public void update(ArrayList<Entity> entities) {

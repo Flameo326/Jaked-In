@@ -3,6 +3,7 @@ package Models.Map;
 import java.util.ArrayList;
 import java.util.Random;
 
+import Controller.StoryController;
 import Models.Entity;
 import Models.NPCs.AllyNPC;
 import Models.NPCs.AmbushNPC;
@@ -21,27 +22,28 @@ import javafx.scene.paint.Color;
 
 public class Floor1Map extends Map {
 
+	// Also need a list of doors and exits
 	private Doctor doc;
 	private ArrayList<Entity> rooms;
 	private ArrayList<Entity> npcs;
 	private ArrayList<Entity> upgrades;
+	private StoryController controller;
 
-	public Floor1Map(int width, int height) {
+	public Floor1Map(StoryController controller, int width, int height) {
 		super(width, height);
+		this.controller = controller;
 		generateMap();
 	}
 
 	// For each Map, create a custom populateMap method which populates the map
 	// as neccesary
 	@Override
-
 	public void populateMap(ArrayList<Entity> rooms) {
 		this.npcs = new ArrayList<Entity>();
 		this.upgrades = new ArrayList<Entity>();
 		this.rooms = rooms;
 		populateNPC();
 		populateUpgrades();
-		
 	}
 	
 	public void populateLevelSpecificEntities(int roomX, int roomY, int width, int height){//need to complete
@@ -58,9 +60,7 @@ public class Floor1Map extends Map {
 				npcs.add(temp);
 			}
 		}
-		for (Entity e : npcs) {
-			getMapObjects().add(e);
-		}
+		getMapObjects().addAll(npcs);
 	}
 
 	public void populateUpgrades() {
@@ -70,9 +70,7 @@ public class Floor1Map extends Map {
 				upgrades.add(temp);
 			}
 		}
-		for (Entity e : upgrades) {
-			getMapObjects().add(e);
-		}
+		getMapObjects().addAll(upgrades);
 	}
 
 	public Entity npcChoice(int roomX, int roomY, int width, int height) {
@@ -84,17 +82,17 @@ public class Floor1Map extends Map {
 			int y = randy.nextInt(height - 30) + roomY + 15;
 			switch (selection) {
 			case 1:
-				return new AllyNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), x, y);
+				return new AllyNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), controller, x, y);
 			case 2:
-				return new AmbushNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), x, y);
+				return new AmbushNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), controller, x, y);
 			case 3:
-				return new AngryNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), x, y);
+				return new AngryNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), controller, x, y);
 			case 4:
-				return new MedicNPC(SpriteSheet.getBorderedBlock(30, 30, Color.RED, 2), x, y);
+				return new MedicNPC(SpriteSheet.getBorderedBlock(30, 30, Color.RED, 2), controller,  x, y);
 			case 5:
-				return new PowerUpNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), x, y);
+				return new PowerUpNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), controller, x, y);
 			default:
-				return new StoryNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), x, y);
+				return new StoryNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), controller, x, y);
 			}
 		} else {
 			return null;
