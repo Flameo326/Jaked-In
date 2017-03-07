@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Cutscene.Cutscene;
-import Cutscene.DialogCutscene;
 import Cutscene.Introduction;
 import Interfaces.Subscribable;
 import Models.Entity;
@@ -15,7 +14,6 @@ import Models.Map.Floor4Map;
 import Models.Map.Floor5Map;
 import Models.Map.Floor6Map;
 import Models.Map.Floor7Map;
-import Models.Map.Map;
 import Models.Map.MapGeneratorThread;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;

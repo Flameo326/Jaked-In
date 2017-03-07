@@ -1,15 +1,21 @@
 package Models.NPCs;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import Controller.StoryController;
 import Cutscene.Cutscene;
 import Cutscene.DialogCutscene;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
-import Models.Upgrades.MedPack;
+import Models.Upgrades.BonusDamage;
+import Models.Upgrades.DamageReduction;
+import Models.Upgrades.ForceFieldReflection;
+import Models.Upgrades.SpeedBoost;
 import Models.Upgrades.Upgrade;
+import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class SecurityWorker extends NPC {
 
@@ -35,7 +41,7 @@ public class SecurityWorker extends NPC {
 		if (counter < dialogue.length - 1) {
 			if (counter == 0) {
 				// change to random upgrade
-				Upgrade u = new MedPack(null, 0, 0);
+				Upgrade u = getRandomUpgrade();
 				u.collect(c);
 			}
 			convo = new DialogCutscene(getController(), .5, dialogue[counter++]);
@@ -49,6 +55,23 @@ public class SecurityWorker extends NPC {
 	@Override
 	public void update(ArrayList<Entity> entities) {
 
+	}
+	
+	public Upgrade getRandomUpgrade() {
+		Random randy = new Random();
+		int selection = randy.nextInt(4) + 1;
+
+		switch (selection) {
+		case 1:
+			return new BonusDamage(SpriteSheet.getBorderedBlock(10, 10, Color.BLANCHEDALMOND, 2), 0, 0);
+		case 2:
+			return new DamageReduction(SpriteSheet.getBorderedBlock(10, 10, Color.CORNSILK, 2),  0, 0);
+		case 3:
+			return new ForceFieldReflection(SpriteSheet.getBorderedBlock(10, 10, Color.YELLOW, 2), 0, 0);
+		default:
+			return new SpeedBoost(SpriteSheet.getBorderedBlock(10, 10, Color.PLUM, 2),  0, 0);
+
+		}
 	}
 
 }
