@@ -19,15 +19,15 @@ import Models.Upgrades.SpeedBoost;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.paint.Color;
 
-public class Floor4Map extends Map {
+public class Floor4Map extends Floor1Map{
 	
 	private ArrayList<Entity> rooms;
 	private ArrayList<Entity> npcs;
 	private ArrayList<Entity> upgrades;
 	private StoryController controller;
 
-	public Floor4Map(int width, int height) {
-		super(width, height);
+	public Floor4Map(StoryController controller, int width, int height) {
+		super(controller, width, height);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -119,6 +119,12 @@ public class Floor4Map extends Map {
 		} else {
 			return null;
 		}
+	}
+
+	public void generateDoors(ArrayList<Entity> rooms){
+		createExit(rooms.get(0));
+		createEntrance(rooms.get(rooms.size()-1));
+
 	}
 
 }

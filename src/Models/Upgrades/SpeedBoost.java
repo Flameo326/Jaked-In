@@ -9,16 +9,13 @@ public class SpeedBoost extends Upgrade{
 		super(i, x, y);
 	}
 	
+	// instead we could check if the boost is permanent, 
+	// if it is then isCollected is true,
+	// otherwise we call setTimer() and check to see when it has expired...
 	@Override 
-	public void collect(PlayableCharacter c){//need a player method for temp speed boost.
+	public void collect(PlayableCharacter c){
 		c.setSpeed(c.getSpeed() + 1);
 		isCollected = true;
 	}
-
-	@Override
-	public void interact(PlayableCharacter c) {
-		collect(c);
-	}
-
 
 }

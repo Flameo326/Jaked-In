@@ -27,22 +27,22 @@ public class AllyNPC extends PlayableCharacter implements Interactable {
 	
 	@Override
 	public void hasCollided(Collision c) {
-		Entity collider;
-		if(c.collidingEntity == this){
-			collider = c.collidedEntity;
-		} else { 
-			collider = c.collidingEntity;
-		}
-		System.out.println(collider);
-		System.out.println(collider.getTag());
-		String[] tagElements = collider.getTag().split("-");
-		switch(tagElements[0]){
-		case "Human":
-			if(InputHandler.keyInputContains(KeyCode.F)){
-				interact((PlayableCharacter)collider);
-			}
-			break;
-		}
+//		Entity collider;
+//		if(c.collidingEntity == this){
+//			collider = c.collidedEntity;
+//		} else { 
+//			collider = c.collidingEntity;
+//		}
+//		System.out.println(collider);
+//		System.out.println(collider.getTag());
+//		String[] tagElements = collider.getTag().split("-");
+//		switch(tagElements[0]){
+//		case "Human":
+//			if(InputHandler.keyInputContains(KeyCode.F)){
+//				interact((PlayableCharacter)collider);
+//			}
+//			break;
+//		}
 	}
 	
 	@Override

@@ -8,11 +8,13 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 public class DialogCutscene extends Cutscene {
 	
 	private WritableImage prevImage;
+	private Font textFont;
 	private String[] phrases;
 	private int phraseCount, letterCount;
 	private int yPos;
@@ -25,6 +27,7 @@ public class DialogCutscene extends Cutscene {
 		prevImage = getCanvas().snapshot(null, null);
 		
 		getGraphics().setTextAlign(TextAlignment.CENTER);
+		textFont = new Font(18);
 	}
 	
 	public void setYPos(double v){
@@ -32,7 +35,7 @@ public class DialogCutscene extends Cutscene {
 	}
 	
 	public void setFont(Font f){
-		getGraphics().setFont(f);
+		textFont = f;
 	}
 	
 	public void setText(String...text){
@@ -48,6 +51,7 @@ public class DialogCutscene extends Cutscene {
 		getGraphics().fillRect(0, 0, getCanvas().getWidth(), getCanvas().getHeight());
 
 		getGraphics().setFill(Color.BLACK);
+		getGraphics().setFont(textFont);
 		
 		letterCount++;
 		if(!(phraseCount >= phrases.length) && letterCount >= phrases[phraseCount].length()){
@@ -57,18 +61,15 @@ public class DialogCutscene extends Cutscene {
 		
 		int tempYPos = yPos;
 		for(int i = 0; i < phraseCount; i++){
-			getGraphics().fillText(phrases[i], getCanvas().getWidth()/2, tempYPos);
-			tempYPos += 12;
+			 tempYPos += (int) (displayText(phrases[i], (int)(getCanvas().getWidth()/2), tempYPos) * getGraphics().getFont().getSize());
 		}
 		if(!(phraseCount >= phrases.length)){
-			for(int i = 0; i < phrases[phraseCount].length()/90; i++){
-				getGraphics().fillText(phrases[phraseCount].substring(0, letterCount), getCanvas().getWidth()/2, tempYPos);
-			}
+			displayText(phrases[phraseCount].substring(0, letterCount), (int)(getCanvas().getWidth()/2), tempYPos);
 		}
 			// Will display letters of the phrase, wait for input then display next phrase...
 		
 		if(InputHandler.keyInputContains(KeyCode.SPACE)){
-			letterCount++;
+			letterCount += 5;
 		}
 		if(InputHandler.keyInputContains(KeyCode.ENTER) ){
 			if(phraseCount >= phrases.length){
@@ -77,6 +78,31 @@ public class DialogCutscene extends Cutscene {
 				phraseCount += 1;
 			}
 		}
+		getGraphics().setFont(new Font(18));
+		getGraphics().fillText("Press Enter to skip", getCanvas().getWidth()*6/7,
+				getCanvas().getHeight()-getGraphics().getFont().getSize());
+	}
+	
+	public int displayText(String val, int x, int y){
+		Text t = new Text(val);
+		t.setFont(getGraphics().getFont());
+		int width = (int) t.prefWidth(-1);
+		
+		int lineAmo = (int) (width/getCanvas().getWidth()+1);
+		String lines[] = new String[lineAmo];
+		
+		String words[] = val.split(" ");
+		int splitPoint = words.length/lineAmo;
+		for(int i = 0; i < lineAmo; i++){
+			lines[i] = "";
+			for(int e = 0; e < splitPoint; e++){
+				lines[i] += words[i*splitPoint+e] + " ";
+			}
+		}
+		for(int i = 0; i < lineAmo ; i++){
+			getGraphics().fillText(lines[i], x, y + i*getGraphics().getFont().getSize());
+		}
+		return lineAmo+1;
 	}
 
 }

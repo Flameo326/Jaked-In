@@ -11,8 +11,6 @@ import Models.NPCs.MedicNPC;
 import Models.NPCs.PowerUpNPC;
 import Models.NPCs.SecurityWorker;
 import Models.NPCs.StoryNPC;
-import Models.Stairs.StairsDown;
-import Models.Stairs.StairsUP;
 import Models.Upgrades.BonusDamage;
 import Models.Upgrades.DamageReduction;
 import Models.Upgrades.ForceFieldReflection;
@@ -21,7 +19,7 @@ import Models.Upgrades.SpeedBoost;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.paint.Color;
 
-public class Floor2Map extends Map {
+public class Floor2Map extends Floor1Map{
 
 	private ArrayList<Entity> rooms;
 	private ArrayList<Entity> npcs;
@@ -29,7 +27,7 @@ public class Floor2Map extends Map {
 	private StoryController controller;
 
 	public Floor2Map(StoryController controller, int width, int height) {
-		super(width, height);
+		super(controller, width, height);
 		this.controller = controller;
 		generateMap();
 
@@ -48,7 +46,6 @@ public class Floor2Map extends Map {
 	public void populateLevelSpecificEntities() {
 		ArrayList<Entity> levelSpecificNPCs = new ArrayList<>();
 		Entity lastRoom = rooms.get(rooms.size()-1);
-		Entity stairsRoom = rooms.get(rand.nextInt(rooms.size()-1));
 		int x = rand.nextInt(lastRoom.getWidth() - 30) + lastRoom.getShape().getMinX() + 15;
 		int y = rand.nextInt(lastRoom.getHeight() - 30) + lastRoom.getShape().getMinY() + 15;
 		SecurityWorker worker = new SecurityWorker(SpriteSheet.getBorderedBlock(30, 30, Color.BLACK, 2), controller, x, y);
@@ -74,6 +71,12 @@ public class Floor2Map extends Map {
 			}
 		}
 		getMapObjects().addAll(upgrades);
+	}
+	
+	@Override
+	public void generateDoors(ArrayList<Entity> rooms){
+		createExit(rooms.get(0));
+		createEntrance(rooms.get(rooms.size()-1));
 	}
 
 	public Entity npcChoice(int roomX, int roomY, int width, int height) {

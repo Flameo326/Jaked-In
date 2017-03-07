@@ -8,6 +8,7 @@ import Enums.Direction;
 import Models.Collision;
 import Models.Entity;
 import Models.Shape.Shape;
+import Puzzle.Door;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -35,6 +36,7 @@ public class Map {
 		this.rooms = rooms;
 		generatePaths(rooms);
 		populateMap(rooms);
+		generateDoors(rooms);
 	}
 	
 	public ArrayList<Entity> getRooms(){
@@ -144,6 +146,10 @@ public class Map {
 	}
 	
 	public void populateMap(ArrayList<Entity> rooms){
+		
+	}
+	
+	public void generateDoors(ArrayList<Entity> rooms){
 		
 	}
 	

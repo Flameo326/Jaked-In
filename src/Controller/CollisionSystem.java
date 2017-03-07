@@ -11,6 +11,7 @@ import Models.Shape.Shape;
 public class CollisionSystem {
 	
 	public static void checkMovementCollisions(Entity e, ArrayList<Entity> entities){
+		e.resetColliders();
 		// Test for collisions
 		for(int y = 0; y < entities.size(); y++){
 			Entity collided = entities.get(y);
@@ -18,6 +19,7 @@ public class CollisionSystem {
 			
 			Collision c = getCollision(e, collided);
 			if(c.hasCollided){
+				e.addCollider(collided);
 				e.hasCollided(c);
 				collided.hasCollided(c);
 			} else {
@@ -47,6 +49,7 @@ public class CollisionSystem {
 				Collision entityCollision = new Collision(e, collided, prevC.hasCollided,
 						prevC.collisionNormal, prevC.xPenDepth, prevC.yPenDepth);
 				if(prevC.hasCollided){
+					e.addCollider(collided);
 					e.hasCollided(entityCollision);
 					collided.hasCollided(entityCollision);
 				}

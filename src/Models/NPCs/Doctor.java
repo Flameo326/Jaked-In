@@ -14,8 +14,6 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Doctor extends NPC {
-	
-	private StoryController st;
 
 	private String[] dialogue = {
 			"I’m sorry for all of this. Watson forced me to work on you."
@@ -27,7 +25,6 @@ public class Doctor extends NPC {
 
 	public Doctor(Image i, StoryController st, int x, int y) {
 		super(i, st, x, y);
-		this.st = st;
 	}
 
 //	public void conversation(PlayableCharacter c) {
