@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Controller.StoryController;
-import Models.Collision;
+import Cutscene.Cutscene;
+import Cutscene.DialogCutscene;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
@@ -23,31 +24,25 @@ public class Prisoner extends NPC {
 
 	}
 
-	public String conversation(PlayableCharacter c) {
+//	public String conversation(PlayableCharacter c) {
+//		
+//	}
+
+	@Override
+	public void interact(PlayableCharacter c) {
 		Random randy = new Random();
 		int selection = randy.nextInt(dialogue.length);
 		if (selection == 5) {
 
 		}
-		return dialogue[selection];
 
-	}
-
-	@Override
-	public void interact(PlayableCharacter c) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void hasCollided(Collision c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
+		Cutscene convo = new DialogCutscene(getController(), .5, dialogue[selection]);
+		getController().startCutscene(convo);
 	}
 
 	@Override
 	public void update(ArrayList<Entity> entities) {
-		// TODO Auto-generated method stub
-
+		// do nothing
 	}
 
 }

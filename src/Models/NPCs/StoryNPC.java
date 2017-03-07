@@ -3,7 +3,8 @@ package Models.NPCs;
 import java.util.ArrayList;
 
 import Controller.StoryController;
-import Models.Collision;
+import Cutscene.Cutscene;
+import Cutscene.DialogCutscene;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
@@ -25,24 +26,35 @@ public class StoryNPC extends NPC {
 		super(i, st, x, y);
 	}
 
-	public String dialogue(){
+//	public String dialogue(){
+//		
+//		if(storyLineCount > storyLine.length){
+//			storyLineCount = storyLine.length-1;
+//		}
+//		if(!hasSpoken){
+//			hasSpoken = true;
+//			return storyLine[storyLineCount++];
+//		}else{
+//			return storyLine[storyLineCount];
+//		}
+//		
+//	}
+	
+	@Override
+	public void interact(PlayableCharacter c) {
+		Cutscene convo;
 		
 		if(storyLineCount > storyLine.length){
 			storyLineCount = storyLine.length-1;
 		}
 		if(!hasSpoken){
 			hasSpoken = true;
-			return storyLine[storyLineCount++];
+			convo = new DialogCutscene(getController(), .5, storyLine[storyLineCount++]);
 		}else{
-			return storyLine[storyLineCount];
+			convo = new DialogCutscene(getController(), .5, storyLine[storyLineCount]);
 		}
 		
-	}
-	
-	@Override
-	public void interact(PlayableCharacter c) {
-	
-
+		getController().startCutscene(convo);
 	}
 
 	@Override
