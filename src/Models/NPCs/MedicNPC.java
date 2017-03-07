@@ -2,8 +2,10 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
+import Controller.StoryController;
+import Cutscene.Cutscene;
+import Cutscene.DialogCutscene;
 import Interfaces.Interactable;
-import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.MedPack;
@@ -13,11 +15,9 @@ import javafx.scene.image.Image;
 public class MedicNPC extends NPC implements Interactable {
 	
 	private String[] dialogue = {"You dont need my help right now.", "You are hurt! This will help."};
-	
 
-	public MedicNPC(Image i, int x, int y) {
-		super(i, x, y,(int)i.getWidth(), (int)i.getHeight());
-		setDisplayLayer(7);
+	public MedicNPC(Image i, StoryController st, int x, int y) {
+		super(i, st, x, y);
 	}
 
 	public String conversation(PlayableCharacter c) {
@@ -30,18 +30,25 @@ public class MedicNPC extends NPC implements Interactable {
 		}
 	}
 
+	// Figure out how to make this work
+	// could maybe do it in the update method...
 	public String callPlayer() {
 		return "OVER HERE!!";
 	}
 
 	@Override
 	public void interact(PlayableCharacter c) {
-		conversation(c);
-	}
-
-	@Override
-	public void hasCollided(Collision c) {
-		//throw new UnsupportedOperationException("Not yet Implemented");
+		Cutscene convo;
+		
+		if (c.getMaxHealth() > c.getCurrentHealth()) {
+			Upgrade u = new MedPack(null, 0, 0);
+			u.collect(c);
+			convo = new DialogCutscene(getController(), .5, dialogue[1]);
+		} else {
+			convo = new DialogCutscene(getController(), .5, dialogue[0]);
+		}
+		
+		getController().startCutscene(convo);
 	}
 
 	@Override

@@ -2,13 +2,16 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
-import Models.Collision;
+import Controller.StoryController;
+import Cutscene.Cutscene;
+import Cutscene.DialogCutscene;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
 
 public class StoryNPC extends NPC {
 	private static int storyLineCount = 0;
+	private boolean hasSpoken = false;
 	private static String[] storyLine = {"The ISOs are losing this war without you. You need to kill Watson to save them.",
 		"He had you killing ISOs in the Arena.",
 		"Now that you are back you can finally stop Watson",
@@ -18,23 +21,40 @@ public class StoryNPC extends NPC {
 		"We heard that Tron hasn’t been seen in a long time. I hope Grinsler didn’t kill him",
 		"We stand with the users! Destory Watson once and for all!"};
 
-	public StoryNPC(Image i, int x, int y, int width, int height) {
-		super(i, x, y, width, height);
-		
+
+	public StoryNPC(Image i, StoryController st, int x, int y) {
+		super(i, st, x, y);
 	}
 
-	public String dialogue(){
+//	public String dialogue(){
+//		
+//		if(storyLineCount > storyLine.length){
+//			storyLineCount = storyLine.length-1;
+//		}
+//		if(!hasSpoken){
+//			hasSpoken = true;
+//			return storyLine[storyLineCount++];
+//		}else{
+//			return storyLine[storyLineCount];
+//		}
+//		
+//	}
+	
+	@Override
+	public void interact(PlayableCharacter c) {
+		Cutscene convo;
 		
 		if(storyLineCount > storyLine.length){
 			storyLineCount = storyLine.length-1;
 		}
-		return storyLine[storyLineCount++];
-	}
-	
-	@Override
-	public void interact(PlayableCharacter c) {
-	
-
+		if(!hasSpoken){
+			hasSpoken = true;
+			convo = new DialogCutscene(getController(), .5, storyLine[storyLineCount++]);
+		}else{
+			convo = new DialogCutscene(getController(), .5, storyLine[storyLineCount]);
+		}
+		
+		getController().startCutscene(convo);
 	}
 
 	@Override

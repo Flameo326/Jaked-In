@@ -2,7 +2,9 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
-import Models.Collision;
+import Controller.StoryController;
+import Cutscene.Cutscene;
+import Cutscene.DialogCutscene;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.MedPack;
@@ -13,38 +15,44 @@ import javafx.scene.paint.Color;
 
 public class PowerUpNPC extends NPC {
 
-	private boolean hasSpoken = false;
+	private boolean hasSpoken;
 
-	public PowerUpNPC(Image i, int x, int y, int width, int height) {
-		super(i, x, y, width, height);
+	public PowerUpNPC(Image i, StoryController st, int x, int y) {
+		super(i, st, x, y);
 	}
 
-	public String conversation(PlayableCharacter c) {
+	public void conversation(PlayableCharacter p) {
 		if (!hasSpoken) {//needs to be random powerup
 			Upgrade u = new MedPack(null, 0, 0);
-			u.collect(c);
+			u.collect(p);
 			hasSpoken = true;
-			return "Here, take this. It will help you fight Watson";
+			Cutscene c = new DialogCutscene(getController(), .5, "Here, take this. It will help you fight Watson");
+			getController().startCutscene(c);
 		}else{
-			return "I have nothing more to help you!";
+			Cutscene c = new DialogCutscene(getController(), .5, "I have nothing more to help you!");
+			getController().startCutscene(c);
 		}
 	}
 
+	// Need to figur out this 
 	public String callPlayer() {
 		return "OVER HERE!!";
 	}
 
 	@Override
 	public void interact(PlayableCharacter c) {
-		conversation(c);
+		Cutscene convo;
 		
+		if (!hasSpoken) {//needs to be random powerup
+			Upgrade u = new MedPack(SpriteSheet.getBlock(1, 1, Color.ANTIQUEWHITE), 0, 0);
+			u.collect(c);
+			hasSpoken = true;
+			convo = new DialogCutscene(getController(), .5, "Here, take this. It will help you fight Watson");
+		}else{
+			convo = new DialogCutscene(getController(), .5, "I have nothing more to help you!");
+		}
 		
-
-	}
-
-	@Override
-	public void hasCollided(Collision c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
+		getController().startCutscene(convo);
 	}
 
 	@Override

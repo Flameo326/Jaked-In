@@ -12,6 +12,8 @@ public class InputHandler {
 	public static KeyCode Player1Left = KeyCode.A;
 	public static KeyCode Player1Right = KeyCode.D;
 	public static KeyCode Player1Attack = KeyCode.SPACE;
+	public static KeyCode Interact = KeyCode.F;
+	public static KeyCode ChangeWeapon = KeyCode.C;
 	public static KeyCode Player2Up = KeyCode.UP;
 	public static KeyCode Player2Down = KeyCode.DOWN;
 	public static KeyCode Player2Left = KeyCode.LEFT;

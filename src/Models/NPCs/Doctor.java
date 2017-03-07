@@ -2,14 +2,14 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
-import Models.Collision;
+import Controller.StoryController;
+import Cutscene.Cutscene;
+import Cutscene.DialogCutscene;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.MedPack;
 import Models.Upgrades.Upgrade;
-import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 public class Doctor extends NPC {
 
@@ -21,37 +21,34 @@ public class Doctor extends NPC {
 			"Please, just leave me alone." };// 3
 	private int count = 0;
 
-	public Doctor(Image i, int x, int y, int width, int height) {
-		super(i, x, y, width, height);
+	public Doctor(Image i, StoryController st, int x, int y) {
+		super(i, st, x, y);
 		setTag("NPC-Doctor");
-
 	}
 
-	public String conversation(PlayableCharacter c) {
+//	public void conversation(PlayableCharacter c) {
+//		
+//	}
+
+	@Override
+	public void interact(PlayableCharacter c) {
+		Cutscene convo;
 		if (count != dialogue.length-1) {
 			if(count == 2){
 				Upgrade u = new MedPack(null, 0, 0);
 				u.collect(c);
 			}
-			return dialogue[count++];
+			convo = new DialogCutscene(getController(), .5, dialogue[count++]);
 		} else {
-			return dialogue[count];
+			convo = new DialogCutscene(getController(), .5, dialogue[count]);
 		}
-	}
-
-	@Override
-	public void interact(PlayableCharacter c) {
-		conversation(c);
+		
+		getController().startCutscene(convo);
 	}
 
 	@Override
 	public void update(ArrayList<Entity> entities) {
-
-	}
-
-	@Override
-	public void hasCollided(Collision c) {
-		throw new UnsupportedOperationException("Not yet Implemented");
+		// do nothign
 	}
 
 }

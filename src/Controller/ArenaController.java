@@ -14,6 +14,7 @@ import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.MedPack;
+import Models.Upgrades.ProjectileWeaponBullets;
 import Models.Upgrades.SpeedBoost;
 import Models.Upgrades.Upgrade;
 import SpriteSheet.SpriteSheet;
@@ -43,7 +44,7 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 	private ArenaMap arenaMap;
 	private ArrayList<PlayableCharacter> players, deadPlayers;
 	private Random rand;
-	private long upgradeTime;
+	private long upgradeTime, weaponTime;
 	
 	public void addPlayer(PlayableCharacter p){
 		players.add(p);
@@ -205,6 +206,22 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 			
 			arenaMap.checkCollision(u);
 			gc.addEntity(u);
+		}
+		if(GameController.getTimer() >= weaponTime){
+			weaponTime = GameController.getTimer()+ (rand.nextInt(12) + 1) * 15000000000l;
+			
+			Upgrade w;
+			switch(rand.nextInt(1)){
+//			case 1:
+//				w = new SpeedBoost(SpriteSheet.getBlock(15, 15, Color.MEDIUMPURPLE), 0, 0);
+//				break;
+			default:
+				w = new ProjectileWeaponBullets(SpriteSheet.getBlock(20, 10, Color.BLACK), 0, 0);
+				break;
+			}
+			
+			arenaMap.checkCollision(w);
+			gc.addEntity(w);
 		}
 		
 		// Check for win

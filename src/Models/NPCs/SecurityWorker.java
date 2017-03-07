@@ -2,6 +2,9 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
+import Controller.StoryController;
+import Cutscene.Cutscene;
+import Cutscene.DialogCutscene;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.MedPack;
@@ -17,27 +20,30 @@ public class SecurityWorker extends NPC {
 			"Why are you still here? You don’t have much time left. You must stop Watson", // 1
 			"You need to leave, I think I hear more guards coming" };// 2
 
-	public SecurityWorker(Image i, int x, int y, int width, int height) {
-		super(i, x, y, width, height);
-
+	public SecurityWorker(Image i, StoryController st, int x, int y) {
+		super(i, st, x, y);
 	}
+//
+//	public String conversation(PlayableCharacter c) {
+//		
+//	}
 
-	public String conversation(PlayableCharacter c) {
+	@Override
+	public void interact(PlayableCharacter c) {
+		Cutscene convo;
+		
 		if (counter < dialogue.length - 1) {
 			if (counter == 0) {
 				// change to random upgrade
 				Upgrade u = new MedPack(null, 0, 0);
 				u.collect(c);
 			}
-			return dialogue[counter++];
+			convo = new DialogCutscene(getController(), .5, dialogue[counter++]);
 		} else {
-			return dialogue[counter];
+			convo = new DialogCutscene(getController(), .5, dialogue[counter]);
 		}
-	}
-
-	@Override
-	public void interact(PlayableCharacter c) {
-		conversation(c);
+		 
+		getController().startCutscene(convo);
 	}
 
 	@Override

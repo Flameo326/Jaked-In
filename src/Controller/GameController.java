@@ -24,9 +24,8 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	private ArrayList<Subscribable<PlayableCharacter>> subscribers;
 	private ArrayList<Canvas> windows;
 	private Entity focusedEntity;
-	private Map arenaMap;
 	//temp vars
-	boolean prevHeld = false;
+//	boolean prevHeld = false;
 	
 	
 //	private Stage error;

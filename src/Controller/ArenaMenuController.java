@@ -3,15 +3,12 @@ package Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import Enums.BulletType;
 import FXML.PlayerBox;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
 import Models.Weapon.MeleeWeapon;
-import Models.Weapon.ProjectileWeapon;
-import SpriteSheet.SpriteSheet;
+import Models.Weapon.NormalProjectileWeapon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,10 +19,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ArenaMenuController implements Initializable{
@@ -53,6 +50,9 @@ public class ArenaMenuController implements Initializable{
 
     @FXML
     private Button removeButton;
+    
+    @FXML
+    private Button backBtn;
 
     @FXML
     void addBtnAction(ActionEvent event) {
@@ -62,6 +62,18 @@ public class ArenaMenuController implements Initializable{
     	} else {
     		// Add Error Message about maximum players
     	}
+    }
+    
+    @FXML
+    void backBtnAction() throws IOException {
+    	PlayerBox.resetHumanPlayers();
+    	Stage s = (Stage)backBtn.getScene().getWindow();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/StartFXML.fxml"));
+		BorderPane root = loader.load();
+		
+		Scene scene = new Scene(root, s.getScene().getWidth(), s.getScene().getHeight());
+		s.setScene(scene);
+		s.centerOnScreen();
     }
 
     @FXML
@@ -121,11 +133,10 @@ public class ArenaMenuController implements Initializable{
     		// Set weapon
     		switch(playBox.getWeaponType()){
     		case "Projectile":
-    			Image img = SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3);
-    			p.setWeapon(new ProjectileWeapon(p, img, 1, 400, BulletType.NORMAL));
+    			p.setWeapon(new NormalProjectileWeapon(p, 30));
     			break;
     		case "Melee":
-    			p.setWeapon(new MeleeWeapon(p, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
+    			p.setWeapon(new MeleeWeapon(p));
     			break;
 			default:
 				System.out.println("Weapon Type is " + playBox.getWeaponType());
