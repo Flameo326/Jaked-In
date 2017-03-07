@@ -18,6 +18,11 @@ public final class SpriteSheet {
 		isInit = true;
 	}
 	
+	public static Image getMedic(){
+		return getSpriteSheetImage(0, 0, 30, 30);
+	}
+	
+	
 	public static Image getSpriteSheetImage(int x, int y, int width, int height){
 		if(!isInit){
 			init();
@@ -70,6 +75,22 @@ public final class SpriteSheet {
 			}
 		}
 		return img;
+	}
+
+	public static Image getExplosiveProjectile() {
+		return SpriteSheet.getBlock(10, 10, Color.BLACK);
+	}
+
+	public static Image getNormalProjectile() {
+		return SpriteSheet.getBlock(5, 5, Color.BLACK);
+	}
+
+	public static Image getBouceProjectile() {
+		return SpriteSheet.getBlock(5, 5, Color.BLACK);
+	}
+
+	public static Image getMeleeWeapon() {
+		return SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3);
 	}
 
 }

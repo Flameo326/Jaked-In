@@ -11,12 +11,15 @@ import javafx.scene.image.Image;
 public class ComputerPlayer extends PlayableCharacter{
 	
 	private static int computerID = 0;
+	private int prevX = 0, prevY = 0;
+	private int level = 0;
 	
 	private Random rand;
 	private int decisionChoice, decisionLength, timer;
 	private int decisionLengthIncrement, decisionLengthRange;
 
-	public ComputerPlayer(Image i, int x, int y) {
+	
+	public ComputerPlayer(Image i, int x, int y, int level) {
 		super(i, x, y);
 		rand = new Random();
 		setTag("Computer-" + ++computerID);
@@ -29,14 +32,19 @@ public class ComputerPlayer extends PlayableCharacter{
 		super.update(entities);
 		// We can make the choices so it can move diagnolly
 		// We can also make it so that the length is more random, so like .1 seconds to 3 but by leaps of .1 or something
-		if(++timer > decisionLength){
-			timer = 0;
-			// Choose it's action
-			decisionChoice = rand.nextInt(8);
-			// Choose the length of time to do that action
-			// 1 - 10 by Quarter Second = .25 Secs - 2.5 Secs
-			decisionLength = (rand.nextInt(decisionLengthRange) + 1) * decisionLengthIncrement;
-			setCurrDir(Direction.values()[decisionChoice >= 4 ? decisionChoice+1 : decisionChoice]);
+		switch(level){
+		case 1:
+			if(++timer > decisionLength){
+				timer = 0;
+				// Choose it's action
+				decisionChoice = rand.nextInt(8);
+				// Choose the length of time to do that action
+				// 1 - 10 by Quarter Second = .25 Secs - 2.5 Secs
+				decisionLength = (rand.nextInt(decisionLengthRange) + 1) * decisionLengthIncrement;
+				setCurrDir(Direction.values()[decisionChoice >= 4 ? decisionChoice+1 : decisionChoice]);
+			}
+		
+		
 		}
 		if(rand.nextInt(60) == 0){
 			Attack h = attack();

@@ -58,8 +58,6 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		levels = new Floor1Map[7];
 
 		levels[0] = new Floor1Map(this, 500, 500);
-		levels[0].generateMap();
-
 		levels[1] = new Floor2Map(this, 500, 500);
 		levels[2] = new Floor3Map(this, 500, 500);
 		levels[3] = new Floor4Map(this, 500, 500);
@@ -67,6 +65,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		levels[5] = new Floor6Map(this, 500, 500);
 		levels[6] = new Floor7Map(this, 500, 500);
 		
+		levels[0].generateMap();
 		new Thread(new MapGeneratorThread(levels[1])).start();
 		new Thread(new MapGeneratorThread(levels[2])).start();
 		new Thread(new MapGeneratorThread(levels[3])).start();

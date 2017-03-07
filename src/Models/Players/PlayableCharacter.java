@@ -4,20 +4,16 @@ import java.util.ArrayList;
 
 import Controller.GameController;
 import Controller.InputHandler;
-import Enums.BulletType;
 import Interfaces.Attackable;
 import Interfaces.Damageable;
 import Interfaces.Dodgeable;
 import Models.Collision;
 import Models.Entity;
 import Models.Weapon.MeleeWeapon;
-import Models.Weapon.ProjectileWeapon;
 import Models.Weapon.Weapon;
 import Models.Weapon.Attack.Attack;
-import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 
 public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
 	
@@ -36,7 +32,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		setSpeed(3);
 		setDisplayLayer(7);
 		// Just Default it to a Standard Melee Weapon for now
-		addWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
+		addWeapon(new MeleeWeapon(this));
 		
 		setMaxHealth(100);
 		setCurrentHealth(100);
@@ -140,7 +136,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	
 	public void removeWeapon(Weapon w){
 		if(!GameController.getStoryMode()){
-			setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
+			setWeapon(new MeleeWeapon(this));
 		} else {
 			changeWeapon();
 			weapons.remove(w);

@@ -4,17 +4,13 @@ import java.util.ArrayList;
 
 import Controller.GameController;
 import Controller.InputHandler;
-import Enums.BulletType;
 import Enums.Direction;
 import Interfaces.Interactable;
 import Models.Entity;
-import Models.Weapon.MeleeWeapon;
-import Models.Weapon.ProjectileWeapon;
+import Models.Weapon.NormalProjectileWeapon;
 import Models.Weapon.Attack.Attack;
-import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 
 public class HumanPlayer extends PlayableCharacter{
 	
@@ -24,9 +20,7 @@ public class HumanPlayer extends PlayableCharacter{
 	public HumanPlayer(Image i, int x, int y) {
 		super(i, x, y);
 		setTag("Human-" + ++humanID);
-		
-		Image img = SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3);
-		addWeapon(new ProjectileWeapon(this, img, 100, 20, 30000, BulletType.BOUNCE));
+		addWeapon(new NormalProjectileWeapon(this, 30));
 	}
 	
 	@Override
