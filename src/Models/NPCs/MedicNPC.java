@@ -10,7 +10,9 @@ import Models.Entity;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.MedPack;
 import Models.Upgrades.Upgrade;
+import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class MedicNPC extends NPC implements Interactable {
 	
@@ -41,7 +43,7 @@ public class MedicNPC extends NPC implements Interactable {
 		Cutscene convo;
 		
 		if (c.getMaxHealth() > c.getCurrentHealth()) {
-			Upgrade u = new MedPack(null, 0, 0);
+			Upgrade u = new MedPack(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), 0, 0);
 			u.collect(c);
 			convo = new DialogCutscene(getController(), .5, dialogue[1]);
 		} else {

@@ -10,7 +10,9 @@ import Models.Players.PlayableCharacter;
 import javafx.scene.image.Image;
 
 public class StoryNPC extends NPC {
-	private static int storyLineCount = 0;
+	
+	private String dialogue = "";
+	private static int storyLineCount = -1;
 	private boolean hasSpoken = false;
 	private static String[] storyLine = {"The ISOs are losing this war without you. You need to kill Watson to save them.",
 		"He had you killing ISOs in the Arena.",
@@ -43,17 +45,17 @@ public class StoryNPC extends NPC {
 	@Override
 	public void interact(PlayableCharacter c) {
 		Cutscene convo;
-		
-		if(storyLineCount > storyLine.length){
-			storyLineCount = storyLine.length-1;
-		}
 		if(!hasSpoken){
 			hasSpoken = true;
-			convo = new DialogCutscene(getController(), .5, storyLine[storyLineCount++]);
-		}else{
-			convo = new DialogCutscene(getController(), .5, storyLine[storyLineCount]);
+			storyLineCount++;
+			if(storyLineCount > storyLine.length-1){
+				storyLineCount = storyLine.length-1;
+			}
+			dialogue = storyLine[storyLineCount];
 		}
 		
+		convo = new DialogCutscene(getController(), .5, dialogue);
+	
 		getController().startCutscene(convo);
 	}
 

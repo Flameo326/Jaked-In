@@ -7,9 +7,11 @@ import Cutscene.Cutscene;
 import Cutscene.DialogCutscene;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
-import Models.Upgrades.MedPack;
+import Models.Upgrades.SpeedBoost;
 import Models.Upgrades.Upgrade;
+import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class Doctor extends NPC {
 
@@ -32,9 +34,10 @@ public class Doctor extends NPC {
 	@Override
 	public void interact(PlayableCharacter c) {
 		Cutscene convo;
+		
 		if (count != dialogue.length-1) {
 			if(count == 2){
-				Upgrade u = new MedPack(null, 0, 0);
+				Upgrade u = new SpeedBoost(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), 0, 0);
 				u.collect(c);
 			}
 			convo = new DialogCutscene(getController(), .5, dialogue[count++]);
