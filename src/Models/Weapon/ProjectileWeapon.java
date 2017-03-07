@@ -28,7 +28,7 @@ public class ProjectileWeapon extends Weapon{
 			switch (type) {
 			case NORMAL:
 				Image img = SpriteSheet.getBlock(5, 5, Color.BLACK);
-				p = new Projectile(getOwnedEntity(), img, type);
+				p = new Projectile(getOwnedEntity(), SpriteSheet.getMedic(), type);
 				break;
 			case EXPLOSIVE:
 				Image img1 = SpriteSheet.getBlock(10, 10, Color.BLACK);

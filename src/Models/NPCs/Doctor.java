@@ -23,6 +23,7 @@ public class Doctor extends NPC {
 
 	public Doctor(Image i, int x, int y, int width, int height) {
 		super(i, x, y, width, height);
+		setTag("NPC-Doctor");
 
 	}
 

@@ -17,6 +17,11 @@ public final class SpriteSheet {
 		isInit = true;
 	}
 	
+	public static Image getMedic(){
+		return getSpriteSheetImage(0, 0, 30, 30);
+	}
+	
+	
 	public static Image getSpriteSheetImage(int x, int y, int width, int height){
 		if(!isInit){
 			init();

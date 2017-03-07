@@ -112,7 +112,7 @@ public class ArenaMenuController implements Initializable{
     			break;
     		case "Computer":
     			// Would need to get difficulty rating here
-    			p = new ComputerPlayer(playImage, 0, 0);
+    			p = new ComputerPlayer(playImage, 0, 0, 1);
     			break;
 			default:
 				System.out.println("Player Type is " + playBox.getPlayerType());
