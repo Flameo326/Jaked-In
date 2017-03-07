@@ -1,68 +1,28 @@
-package Models.Weapon.Attack;
+package Projectiles;
 
 import java.util.ArrayList;
-
-import Enums.BulletType;
 import Enums.Direction;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
-import SpriteSheet.SpriteSheet;
+import Models.Weapon.Attack.Attack;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
-public class Projectile extends Attack{
-	private final BulletType type;
-	private int bounces = 0;
-	private int bounceAmount = 4;
+public abstract class Projectile extends Attack{
+	protected int bounces = 0;
+	protected int bounceAmount = 0;
 	
-	public Projectile(PlayableCharacter e, Image i, BulletType type) {
-		super(e, i);
+	public Projectile(PlayableCharacter e, Image img, int speed) {
+		super(e, img);
 		setCurrDir(getOwnedEntity().getCurrDir());
-		setSpeed(type.getSpeed());
+		setSpeed(speed);
 		setTag(getTag() + "-Projectile");
-		this.type = type; 
 	}
-
-	// We can add a lifetime counter or something
-	@Override
+	
 	public void update(ArrayList<Entity> entities) {
 		if(++timer >= lifeTime || !hasHit.isEmpty()){
-			switch (type) {
-			case NORMAL:
-				entities.remove(this);
-				break;
-			case EXPLOSIVE:
-				for(int i = 0; i < 8; i++){
-					Projectile p = new Projectile(getOwnedEntity(), SpriteSheet.getBlock(5, 5, Color.BLACK), BulletType.NORMAL);
-					p.setXPos(this.getXPos());
-					p.setYPos(this.getYPos());
-					p.setCurrDir(Direction.values()[i < 4 ? i : i + 1]);
-					p.setLifeTime((int)(20));
-					p.setSpeed(p.getSpeed() + 3);
-					entities.add(p);
-				}
-				entities.remove(this);
-				break;
-			case BOUNCE:
-				entities.remove(this);
-				break;
-			default:
-				entities.remove(this);
-				break;
-			}
-		}
-		if(type == BulletType.BOUNCE && bounces > bounceAmount ){
-			Projectile p = new Projectile(getOwnedEntity(), SpriteSheet.getBlock(10, 10, Color.BLACK), BulletType.EXPLOSIVE);
-			p.setXPos(this.getXPos());
-			p.setYPos(this.getYPos());
-			p.setCurrDir(getCurrDir());
-			p.setLifeTime((int)(50));
-			p.setSpeed(1);
-			entities.add(p);
 			entities.remove(this);
 		}
-		
 		move(entities);
 	}
 	

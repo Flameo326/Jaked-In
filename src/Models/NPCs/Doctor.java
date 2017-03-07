@@ -25,6 +25,7 @@ public class Doctor extends NPC {
 
 	public Doctor(Image i, StoryController st, int x, int y) {
 		super(i, st, x, y);
+		setTag("NPC-Doctor");
 	}
 
 //	public void conversation(PlayableCharacter c) {
