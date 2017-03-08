@@ -20,6 +20,7 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 	public AmbushNPC(StoryController controller, int x, int y) {
 		super(SpriteSheet.getNPC(), x, y);
 		this.controller = controller;
+		setDisplayLayer(6);
 		setTag(getTag() + "-EnemyNPC");
 	}
 	

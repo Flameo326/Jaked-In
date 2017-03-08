@@ -30,7 +30,10 @@ public class StartController implements Initializable {
     
     public void storyBtnAction() throws IOException{
     	Stage s = (Stage)storyBtn.getScene().getWindow();
-    	
+    	newStory(s);
+    }
+    
+    public void newStory(Stage s) throws IOException{
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/StoryFXML.fxml"));
     	StackPane root = loader.load();
     	Scene scene = new Scene(root, s.getWidth(), s.getHeight());
@@ -42,15 +45,6 @@ public class StartController implements Initializable {
     
     @FXML
     void loadBtnAction() throws IOException {
-//    	Stage s = (Stage)storyBtn.getScene().getWindow();
-//    	
-//    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/StoryFXML.fxml"));
-//    	StackPane root = loader.load();
-//    	Scene scene = new Scene(root, s.getWidth(), s.getHeight());
-//    	s.setScene(scene);
-//    	
-//    	StoryController controller = loader.getController();
-//    	controller.load();
     	
     	Stage s = (Stage)storyBtn.getScene().getWindow();
     	Canvas c = new Canvas(s.getScene().getWidth(), s.getScene().getHeight());
@@ -63,13 +57,8 @@ public class StartController implements Initializable {
     		controller.setCanvas(c);
         	controller.createGameController();
     	} else {
-    		storyBtnAction();
+    		newStory(s);
     	}
-    	
-    	
-    	// I need to load the story controller
-    	// attach the canvas
-    	//
     }
     
     public void arenaBtnAction() throws IOException{
