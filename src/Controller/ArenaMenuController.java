@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Enums.Difficulties;
 import FXML.PlayerBox;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
@@ -126,7 +127,19 @@ public class ArenaMenuController implements Initializable{
     			break;
     		case "Computer":
     			// Would need to get difficulty rating here
-    			p = new ComputerPlayer(playImage, 0, 0, 1);
+    			System.out.println(playBox.getPlayerDifficulty());
+    			switch(playBox.getPlayerDifficulty()){
+				case "Hard":
+					p = new ComputerPlayer(playImage, 0, 0, Difficulties.HARD);
+					break;
+				case "Medium":
+					p = new ComputerPlayer(playImage, 0, 0, Difficulties.NORMAL);
+					break;
+				default:
+					p = new ComputerPlayer(playImage, 0, 0, Difficulties.EASY);
+					break;
+    			
+    			}
     			break;
 			default:
 				System.out.println("Player Type is " + playBox.getPlayerType());

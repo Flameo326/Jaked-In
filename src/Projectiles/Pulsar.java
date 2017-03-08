@@ -6,7 +6,6 @@ import java.util.HashSet;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
-import Models.Upgrades.BonusDamage;
 import Models.Upgrades.MedPack;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.paint.Color;

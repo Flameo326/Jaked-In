@@ -20,12 +20,13 @@ public class ComputerPlayer extends PlayableCharacter{
 	private int decisionLengthIncrement, decisionLengthRange;
 
 	
-	public ComputerPlayer(Image i, int x, int y, int level) {
+	public ComputerPlayer(Image i, int x, int y, Difficulties difficulty) {
 		super(i, x, y);
 		rand = new Random();
 		setTag("Computer-" + ++computerID);
 		setDecisionLengthIncrement(.1);
 		setDecisionLengthRange(30);
+		this.difficulty = difficulty;
 	}
 	
 	@Override
@@ -46,7 +47,7 @@ public class ComputerPlayer extends PlayableCharacter{
 				move(entities);
 			}
 		case NORMAL:
-			if(++timer > decisionLength){
+			if(timer > decisionLength){
 				timer = 0;
 				decisionLength = (rand.nextInt(decisionLengthRange) + 1) * decisionLengthIncrement;
 				decisionChoice = rand.nextInt(8);
@@ -56,12 +57,12 @@ public class ComputerPlayer extends PlayableCharacter{
 			do {
 				move(entities);
 				if(prevX == getXPos() && prevY == getYPos()){
-					timer = 0;
 					decisionLength = (rand.nextInt(decisionLengthRange) + 1) * decisionLengthIncrement;
 					decisionChoice = rand.nextInt(8);
 					setCurrDir(Direction.values()[decisionChoice >= 4 ? decisionChoice+1 : decisionChoice]);
 				}
 			} while(prevX == getXPos() && prevY == getYPos());
+			timer += Math.abs(prevX - getXPos()) + Math.abs(prevY - getYPos()); 
 			break;
 		case HARD:
 			break;
