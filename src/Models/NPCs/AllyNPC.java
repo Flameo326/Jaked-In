@@ -20,6 +20,7 @@ public class AllyNPC extends PlayableCharacter implements Interactable {
 	public AllyNPC(StoryController controller, int x, int y) {
 		super(SpriteSheet.getNPC(), x, y);
 		this.controller = controller;
+		setDisplayLayer(6);
 		setTag(getTag() + "-AllyNPC");
 	}
 	

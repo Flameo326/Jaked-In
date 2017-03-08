@@ -1,26 +1,19 @@
 package Controller;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import Interfaces.Publishable;
 import Interfaces.Subscribable;
 import Models.Entity;
-import Models.Map.Map;
 import Models.Players.PlayableCharacter;
 import javafx.animation.AnimationTimer;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class GameController extends AnimationTimer implements Publishable<PlayableCharacter>{
@@ -37,7 +30,6 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	private Entity focusedEntity;
 	//temp vars
 //	boolean prevHeld = false;
-	
 	
 //	private Stage error;
 //	private Label playPos;	
@@ -95,8 +87,12 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 		double screenWidth = (windows.get(0).getWidth()/2);
 		double screenHeight = (windows.get(0).getHeight()/2);
 		for(Entity e : entities){
-			g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + screenWidth,
+			if(InputHandler.keyInputContains(KeyCode.F) && e.getTag().equals("Wall")){
+			
+			} else {
+				g.drawImage(e.getImage(), e.getDisplayableXPos() - offsetX + screenWidth,
 						e.getDisplayableYPos() - offsetY + screenHeight, e.getWidth(), e.getHeight());
+			}
 		}
 	}
 
