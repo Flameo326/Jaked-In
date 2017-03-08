@@ -119,23 +119,28 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	}
 	
 	public void addWeapon(Weapon w){
-		if(GameController.getStoryMode()){
-			if(weapons.isEmpty()){
-				setWeapon(w);
-			}
-			weapons.add(w);
-		} else {
+		if(!GameController.getStoryMode() && weapons.size() == 2){
+			weapons.remove(1);
+		}
+		if(weapons.isEmpty() || !GameController.getStoryMode()){
 			setWeapon(w);
 		}
+		weapons.add(w);
+//		if(!GameController.getStoryMode()){
+////			weapons.clear();
+////			weapons.add(w);
+//			setWeapon(w);
+//		}
+		
 	}
 	
 	public void removeWeapon(Weapon w){
-		if(!GameController.getStoryMode()){
-			setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
-		} else {
+//		if(!GameController.getStoryMode()){
+//			setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
+//		} else {
 			changeWeapon();
 			weapons.remove(w);
-		}
+//		}
 	}
 	
 	public void changeWeapon(){

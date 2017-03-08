@@ -1,7 +1,14 @@
 package Models.Shape;
 
-public class Shape {
+import java.io.Serializable;
+
+public class Shape implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private int centerX, centerY;
 	
 	// Width and Height are deceptive, they can be one mre than the actual value because of floating point conversion

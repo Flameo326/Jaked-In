@@ -2,8 +2,6 @@ package Cutscene;
 
 import Controller.InputHandler;
 import Controller.StoryController;
-import javafx.scene.image.Image;
-import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -92,10 +90,11 @@ public class DialogCutscene extends Cutscene {
 		String lines[] = new String[lineAmo];
 		
 		String words[] = val.split(" ");
-		int splitPoint = words.length/lineAmo;
+		int splitPoint = Math.round(((float)words.length)/lineAmo);
 		for(int i = 0; i < lineAmo; i++){
 			lines[i] = "";
 			for(int e = 0; e < splitPoint; e++){
+				if(i*splitPoint+e >= words.length) { break; }
 				lines[i] += words[i*splitPoint+e] + " ";
 			}
 		}

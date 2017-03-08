@@ -19,14 +19,13 @@ import javafx.scene.paint.Color;
 public class HumanPlayer extends PlayableCharacter{
 	
 	private static int humanID = 0;
-	private long weaponTimer;
 
 	public HumanPlayer(Image i, int x, int y) {
 		super(i, x, y);
 		setTag("Human-" + ++humanID);
 		
-		Image img = SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3);
-		addWeapon(new ProjectileWeapon(this, img, 100, 20, 30000, BulletType.BOUNCE));
+//		Image img = SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3);
+//		addWeapon(new ProjectileWeapon(this, img, 100, 20, 30000, BulletType.BOUNCE));
 	}
 	
 	@Override
@@ -44,10 +43,9 @@ public class HumanPlayer extends PlayableCharacter{
 					entities.add(h);
 				}
 			}
-			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.ChangeWeapon)
-					&& GameController.getTimer() >= weaponTimer){
+			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.ChangeWeapon)){
 				changeWeapon();
-				weaponTimer = GameController.getTimer() + 500000000l;
+				InputHandler.keyrelease(InputHandler.ChangeWeapon);
 			}
 			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.Interact)){
 				checkForInteraction();

@@ -1,5 +1,6 @@
 package Models.Map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,8 +14,12 @@ import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-public class Map {
+public class Map implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Entity> mapObjects;
 	protected Random rand;
 	private int mapWidth, mapHeight;
@@ -102,7 +107,7 @@ public class Map {
 		ArrayList<Entity> walls = new ArrayList<>();
 		for(int i = 0; i < rooms.size(); i++){
 			Entity currentRoom = rooms.get(i);
-			System.out.println("Generating Room");
+//			System.out.println("Generating Room");
 			walls.addAll(generateWalls(currentRoom, walls));
 			
 			// If this is zero then 
@@ -156,6 +161,10 @@ public class Map {
 	public Entity createNewWall(int x, int y, int width, int height){
 		Image img = SpriteSheet.getBlock(width, height, Color.BLACK);
 		Entity e = new Entity(img, x, y, (int)img.getWidth(), (int)img.getHeight()){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 			@Override
 			public void update(ArrayList<Entity> entities) {
 				// Do Nothing
@@ -174,6 +183,10 @@ public class Map {
 		int width = rand.nextInt(maxWidth - minWidth + 1) + minWidth;
 		int height = (int)(rand.nextDouble() * (maxHeightMultiplier - minHeightMultiplier) + minHeightMultiplier * width);
 		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUA), 0, 0, width, height){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 			@Override
 			public void hasCollided(Collision c) {
 				// do nothing
@@ -192,6 +205,10 @@ public class Map {
 		int width = rand.nextInt(maxWidth - minWidth + 1) + minWidth;
 		int height = rand.nextInt(maxHeight - minHeight + 1) + minHeight;
 		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUAMARINE), 0, 0, width, height){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 			@Override
 			public void hasCollided(Collision c) {
 				// do nothing
@@ -216,22 +233,22 @@ public class Map {
 		int width = shape.getRoundedWidth() + border*2;
 		
 		// Top
-		System.out.println("Top");
+//		System.out.println("Top");
 		Entity wall = createNewWall(shape.getCenterX(), shape.getMinY()-border/2, width, border);
 		walls.addAll(checkWallCollision(wall));
 		
 		// Bot
-		System.out.println("Bot");
+//		System.out.println("Bot");
 		wall = createNewWall(shape.getCenterX(), shape.getMaxY()+border/2, width, border);
 		walls.addAll(checkWallCollision(wall));
 		
 		// Left
-		System.out.println("Left");
+//		System.out.println("Left");
 		wall = createNewWall(shape.getMinX()-border/2, shape.getCenterY(), border, height);
 		walls.addAll(checkWallCollision(wall));
 		
 		// Right 
-		System.out.println("Right");
+//		System.out.println("Right");
 		wall = createNewWall(shape.getMaxX()+border/2, shape.getCenterY(), border, height);
 		walls.addAll(checkWallCollision(wall));
 		return walls;
@@ -255,7 +272,7 @@ public class Map {
 			
 			walls.remove(wall);
 			// Trunctate the wall
-			System.out.println("Checking for Entity being placed on Wall");
+//			System.out.println("Checking for Entity being placed on Wall");
 			walls.addAll(0, truncateWallFromCollision(c));
 		}
 	}
@@ -319,32 +336,27 @@ public class Map {
 		shapeE = e.getShape();
 		shapeW = wall.getShape();
 		
-		System.out.println("Detecting collision between: ");
-		System.out.println("\tMin X: " + shapeW.getMinX() + 
-				" Min Y: " + shapeW.getMinY() + 
-				" Max X: " + shapeW.getMaxX() + 
-				" Max Y: " + shapeW.getMaxY());
-		System.out.println("And: ");
-		System.out.println("\tMin X: " + shapeE.getMinX() + 
-				" Min Y: " + shapeE.getMinY() + 
-				" Max X: " + shapeE.getMaxX() + 
-				" Max Y:" + shapeE.getMaxY());
+//		System.out.println("Detecting collision between: ");
+//		System.out.println("\tMin X: " + shapeW.getMinX() + 
+//				" Min Y: " + shapeW.getMinY() + 
+//				" Max X: " + shapeW.getMaxX() + 
+//				" Max Y: " + shapeW.getMaxY());
+//		System.out.println("And: ");
+//		System.out.println("\tMin X: " + shapeE.getMinX() + 
+//				" Min Y: " + shapeE.getMinY() + 
+//				" Max X: " + shapeE.getMaxX() + 
+//				" Max Y:" + shapeE.getMaxY());
 			
 		// Check if it's completely within the object and remove
 		if(c.xPenDepth >= shapeW.getWidth() && c.yPenDepth >= shapeW.getHeight()){
 			// the Wall is entirely inside the object.
 			walls.remove(wall);
-			System.out.println("Wall was removed");
-//		if(shapeE.getMinY() <= shapeW.getMinY() && shapeE.getMaxY() >= shapeW.getMaxY()
-//				&& shapeE.getMinX() <= shapeW.getMinX() && shapeE.getMaxX() >= shapeW.getMaxX()){
-//			// the Wall is entirely inside the object.
-//			walls.remove(wall);
 //			System.out.println("Wall was removed");
 		} else if(c.xPenDepth > 0 && c.yPenDepth > 0){
 			walls.remove(wall);
 			boolean split = false, hasWidth = false, hasHeight =  false;
 			if(wall.getWidth() <= 0 || wall.getHeight() <= 0) {
-				System.out.println("Wall did not have valid width or height");
+//				System.out.println("Wall did not have valid width or height");
 				walls.clear(); 
 				return walls; 
 			}
@@ -385,39 +397,39 @@ public class Map {
 				resizeWallHeight(wall2, yDir == 1 ? shapeE.getMaxY() : shapeE.getMinY() , yDir);
 			} 
 			
-			System.out.println("Result is: ");
+//			System.out.println("Result is: ");
 			if(split){
 				// If split, add the new 2 walls
 				walls.add(wall3);
 				walls.add(wall4);
-				System.out.println("Split");
-				System.out.println("\tMin X: " + wall3.getShape().getMinX() +
-						" Min Y: " + wall3.getShape().getMinY() + 
-						" Max X: " + wall3.getShape().getMaxX() +
-						" Max Y:" + wall3.getShape().getMaxY());
-				System.out.println("\tMin X: " + wall4.getShape().getMinX() + 
-						" Min Y: " + wall4.getShape().getMinY() + 
-						" Max X: " + wall4.getShape().getMaxX() +
-						" Max Y:" + wall4.getShape().getMaxY());
+//				System.out.println("Split");
+//				System.out.println("\tMin X: " + wall3.getShape().getMinX() +
+//						" Min Y: " + wall3.getShape().getMinY() + 
+//						" Max X: " + wall3.getShape().getMaxX() +
+//						" Max Y:" + wall3.getShape().getMaxY());
+//				System.out.println("\tMin X: " + wall4.getShape().getMinX() + 
+//						" Min Y: " + wall4.getShape().getMinY() + 
+//						" Max X: " + wall4.getShape().getMaxX() +
+//						" Max Y:" + wall4.getShape().getMaxY());
 			} 
 			if(hasHeight){
 				walls.add(wall2);
-				System.out.println("Height Wall: ");
-				System.out.println("\tMin X: " + wall2.getShape().getMinX() + 
-						" Min Y: " + wall2.getShape().getMinY() + 
-						" Max X: " + wall2.getShape().getMaxX() +
-						" Max Y:" + wall2.getShape().getMaxY());
+//				System.out.println("Height Wall: ");
+//				System.out.println("\tMin X: " + wall2.getShape().getMinX() + 
+//						" Min Y: " + wall2.getShape().getMinY() + 
+//						" Max X: " + wall2.getShape().getMaxX() +
+//						" Max Y:" + wall2.getShape().getMaxY());
 			} 
 			if(hasWidth){
 				walls.add(wall1);
-				System.out.println("Width Wall: ");
-				System.out.println("\tMin X: " + wall1.getShape().getMinX() + 
-						" Min Y: " + wall1.getShape().getMinY() + 
-						" Max X: " + wall1.getShape().getMaxX() +
-						" Max Y:" + wall1.getShape().getMaxY());
+//				System.out.println("Width Wall: ");
+//				System.out.println("\tMin X: " + wall1.getShape().getMinX() + 
+//						" Min Y: " + wall1.getShape().getMinY() + 
+//						" Max X: " + wall1.getShape().getMaxX() +
+//						" Max Y:" + wall1.getShape().getMaxY());
 			}
 		}
-		System.out.println();
+//		System.out.println();
 		return walls;
 	}
 	

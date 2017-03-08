@@ -155,7 +155,7 @@ public class ArenaMenuController implements Initializable{
     	// and start the controller when ready
     	Scene scene = new Scene(root, s.getWidth(), s.getHeight());
     	s.setScene(scene);
-    	controller.start();
+    	controller.gameStart();
     }
 
 	@Override

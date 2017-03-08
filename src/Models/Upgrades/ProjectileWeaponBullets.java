@@ -17,7 +17,7 @@ public class ProjectileWeaponBullets extends Upgrade{
 	@Override
 	public void collect(PlayableCharacter c) {
 		ProjectileWeapon currWeapon =  ((ProjectileWeapon)c.hasWeapon(ProjectileWeapon.class));
-		if(currWeapon != null && ((ProjectileWeapon)currWeapon).getBulletType() == BulletType.NORMAL){
+		if(currWeapon != null){
 			currWeapon.addBullets(30);
 		} else {
 			Image img = SpriteSheet.getBlock(5, 5, Color.BLACK);
