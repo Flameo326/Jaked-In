@@ -31,6 +31,7 @@ public abstract class Upgrade extends Entity implements Collectable{
 	
 	@Override
 	public void hasCollided(Collision c) {
+		if(isCollected) { return; }
 		Entity collider;
 		PlayableCharacter collidedChar;
 		
