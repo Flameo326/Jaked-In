@@ -40,7 +40,7 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	
 	
 //	private Stage error;
-//	private Label playPos;
+//	private Label playPos;	
 	
 	public GameController(Canvas myCanvas, boolean storyMode) {
 		GameController.StoryMode = storyMode;

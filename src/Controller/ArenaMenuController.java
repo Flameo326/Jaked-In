@@ -3,12 +3,14 @@ package Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import FXML.PlayerBox;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
+import Models.Weapon.BounceProjectileWeapon;
 import Models.Weapon.MeleeWeapon;
-import Models.Weapon.NormalProjectileWeapon;
+import Models.Weapon.PulsarProjectileWeapon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -112,7 +114,7 @@ public class ArenaMenuController implements Initializable{
     	for(Node n : playersBox.getChildren()){
     		PlayerBox playBox;
     		if(n instanceof PlayerBox){
-    			playBox = (PlayerBox)n;
+    			playBox = (PlayerBox) n;
     		} else { continue; }
     		
     		Image playImage = playBox.getPlayerImage();
@@ -133,7 +135,7 @@ public class ArenaMenuController implements Initializable{
     		// Set weapon
     		switch(playBox.getWeaponType()){
     		case "Projectile":
-    			p.setWeapon(new NormalProjectileWeapon(p, 30));
+    			p.setWeapon(new PulsarProjectileWeapon(p, 30));
     			break;
     		case "Melee":
     			p.setWeapon(new MeleeWeapon(p));
