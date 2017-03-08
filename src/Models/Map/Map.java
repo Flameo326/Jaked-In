@@ -1,5 +1,9 @@
 package Models.Map;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -32,27 +36,50 @@ public class Map implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Entity> mapObjects;
-	protected Random rand;
+	protected static Random rand = new Random();
 	private int mapWidth, mapHeight;
 	private int border = 10;
 	private boolean mapIsLinear;
 	private ArrayList<Entity> rooms;
 	
+	private BufferedWriter bf;
+	
 	public Map(int width, int height){
 		mapWidth = width;
 		mapHeight = height;
+		try {
+			bf = new BufferedWriter(new FileWriter("src/test.txt"));
+			bf.write(this.getClass().getSimpleName()+"\n");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		mapObjects = new ArrayList<>();
+		rand = new Random();
+	}
+	
+	public void setSeed(long l){
+		rand = new Random(l);
+	}
+	
+	public void setRandomSeed(){
 		rand = new Random();
 	}
 	
 	// This method can be overrode for different functionality
 	public void generateMap(){
-		mapObjects.clear();
-		ArrayList<Entity> rooms = generateRooms(150, mapWidth, .8, 1.2, 10);
-		this.rooms = rooms;
-		generatePaths(rooms);
-		populateMap(rooms);
-		generateDoors(rooms);
+		try{
+			
+			mapObjects.clear();
+			ArrayList<Entity> rooms = generateRooms(150, mapWidth, .8, 1.2, 10);
+			this.rooms = rooms;
+			generatePaths(rooms);
+			populateMap(rooms);
+			generateDoors(rooms);
+		} catch(IOException e){
+			
+		}
 	}
 	
 	public ArrayList<Entity> getRooms(){
@@ -114,13 +141,28 @@ public class Map implements Serializable{
 		return rooms;
 	}
 	
-	public void generatePaths(ArrayList<Entity> rooms){
+	/*
+	 * bf.append("We will not be checking these entities against a wall\n");
+		for(Entity wall : walls){
+			bf.append("\tMin X: " + wall.getShape().getMinX() + 
+					" Min Y: " + wall.getShape().getMinY() + 
+					" Max X: " + wall.getShape().getMaxX() + 
+					" Max Y: " + wall.getShape().getMaxY() + "\n");
+		}
+	 */
+	
+	public void generatePaths(ArrayList<Entity> rooms) throws IOException{
 		ArrayList<Entity> walls = new ArrayList<>();
+//		for(int i = 0; i < rooms.size(); i++){
+//			Entity currentRoom = rooms.get(i);
+//			bf.append("Generating Room");
+//			walls.addAll(generateWalls(currentRoom, walls));
+//		}
 		for(int i = 0; i < rooms.size(); i++){
 			Entity currentRoom = rooms.get(i);
-//			System.out.println("Generating Room");
+			bf.append("Generating Room\n");
 			walls.addAll(generateWalls(currentRoom, walls));
-			
+	
 			// If this is zero then 
 			ArrayList<Collision> c = CollisionSystem.getCollision(currentRoom, mapObjects.toArray(new Entity[0]));
 			Entity closest = null;
@@ -234,32 +276,34 @@ public class Map implements Serializable{
 		return e;
 	}
 	
-	public ArrayList<Entity> generateWalls(Entity e, ArrayList<Entity> mapWalls){
+	public ArrayList<Entity> generateWalls(Entity e, ArrayList<Entity> mapWalls) throws IOException{
 		// Check for walls that the object is colliding with
 		checkWalls(e, mapWalls);
 		
 		ArrayList<Entity> walls = new ArrayList<>();
+//		walls.addAll(checkWalls(e, mapWalls));
+		
 		Shape shape = e.getShape();
 		int height = shape.getRoundedHeight();
 		int width = shape.getRoundedWidth() + border*2;
 		
 		// Top
-//		System.out.println("Top");
+		bf.append("Top\n");
 		Entity wall = createNewWall(shape.getCenterX(), shape.getMinY()-border/2, width, border);
 		walls.addAll(checkWallCollision(wall));
 		
 		// Bot
-//		System.out.println("Bot");
+		bf.append("Bot\n");
 		wall = createNewWall(shape.getCenterX(), shape.getMaxY()+border/2, width, border);
 		walls.addAll(checkWallCollision(wall));
 		
 		// Left
-//		System.out.println("Left");
+		bf.append("Left\n");
 		wall = createNewWall(shape.getMinX()-border/2, shape.getCenterY(), border, height);
 		walls.addAll(checkWallCollision(wall));
 		
 		// Right 
-//		System.out.println("Right");
+		bf.append("Right\n");
 		wall = createNewWall(shape.getMaxX()+border/2, shape.getCenterY(), border, height);
 		walls.addAll(checkWallCollision(wall));
 		return walls;
@@ -271,10 +315,13 @@ public class Map implements Serializable{
 	 * If it has collided against a wallit will split the wall up depending on its direction.
 	 * The new wall(s) will now have a gap that does not collide with the entity
 	 * @param e - The Entity that may be colliding against walls
+	 * @throws IOException 
 	 */
-	public void checkWalls(Entity e, ArrayList<Entity> walls){
-		for(int i = 0; i < walls.size(); i++){
-			Entity wall = walls.get(i);
+	public void checkWalls(Entity e, ArrayList<Entity> walls) throws IOException{
+//		ArrayList<Entity> newWalls = new ArrayList<>();
+		int size = walls.size();
+		for(int i = 0; i < size; i++){
+			Entity wall = walls.get(0);
 			
 			// If wall is not actually wall then continue on.
 			if(!wall.getTag().equals("Wall")) { continue; }
@@ -283,9 +330,10 @@ public class Map implements Serializable{
 			
 			walls.remove(wall);
 			// Trunctate the wall
-//			System.out.println("Checking for Entity being placed on Wall");
-			walls.addAll(0, truncateWallFromCollision(c));
+			bf.append("Checking for Entity being placed on Wall\n");
+			walls.addAll(truncateWallFromCollision(c));
 		}
+//		return newWalls;
 	}
 	
 	/**
@@ -299,15 +347,13 @@ public class Map implements Serializable{
 	 * If the wall can not possibly fit then no walls will be returned
 	 * @param wall - A wall
 	 * @return An ArrayList containing the walls that do not collide against entities in the map
+	 * @throws IOException 
 	 */
-	public ArrayList<Entity> checkWallCollision(Entity wall){
+	public ArrayList<Entity> checkWallCollision(Entity wall) throws IOException{
 		ArrayList<Entity> walls = new ArrayList<Entity>();
 		walls.add(wall);
 		for(int i = 0; i < mapObjects.size(); i++){
 			Entity e = mapObjects.get(i);
-			
-			// Don't care about other walls
-//			if(e.getTag().equals("Wall")) { continue; }
 			
 			ArrayList<Collision> collisions = CollisionSystem.getCollision(e, walls.toArray(new Entity[0]));
 			walls.clear();
@@ -327,8 +373,9 @@ public class Map implements Serializable{
 	 * If the returned ArrayList is empty then no walls can exist from the collision
 	 * @param c
 	 * @return - An ArrayList containing the walls that come from the collision.
+	 * @throws IOException 
 	 */
-	public ArrayList<Entity> truncateWallFromCollision(Collision c){
+	public ArrayList<Entity> truncateWallFromCollision(Collision c) throws IOException{
 		ArrayList<Entity> walls = new ArrayList<>();
 		Entity wall, e;
 		Shape shapeW, shapeE;
@@ -347,27 +394,27 @@ public class Map implements Serializable{
 		shapeE = e.getShape();
 		shapeW = wall.getShape();
 		
-//		System.out.println("Detecting collision between: ");
-//		System.out.println("\tMin X: " + shapeW.getMinX() + 
-//				" Min Y: " + shapeW.getMinY() + 
-//				" Max X: " + shapeW.getMaxX() + 
-//				" Max Y: " + shapeW.getMaxY());
-//		System.out.println("And: ");
-//		System.out.println("\tMin X: " + shapeE.getMinX() + 
-//				" Min Y: " + shapeE.getMinY() + 
-//				" Max X: " + shapeE.getMaxX() + 
-//				" Max Y:" + shapeE.getMaxY());
+		bf.append("Detecting collision between: \n");
+		bf.append("\tMin X: " + shapeW.getMinX() + 
+				" Min Y: " + shapeW.getMinY() + 
+				" Max X: " + shapeW.getMaxX() + 
+				" Max Y: " + shapeW.getMaxY() + "\n");
+		bf.append("And: \n");
+		bf.append("\tMin X: " + shapeE.getMinX() + 
+				" Min Y: " + shapeE.getMinY() + 
+				" Max X: " + shapeE.getMaxX() + 
+				" Max Y:" + shapeE.getMaxY() +"\n");
 			
 		// Check if it's completely within the object and remove
 		if(c.xPenDepth >= shapeW.getWidth() && c.yPenDepth >= shapeW.getHeight()){
 			// the Wall is entirely inside the object.
 			walls.remove(wall);
-//			System.out.println("Wall was removed");
+			bf.append("Wall was removed\n");
 		} else if(c.xPenDepth > 0 && c.yPenDepth > 0){
 			walls.remove(wall);
 			boolean split = false, hasWidth = false, hasHeight =  false;
 			if(wall.getWidth() <= 0 || wall.getHeight() <= 0) {
-//				System.out.println("Wall did not have valid width or height");
+				bf.append("Wall did not have valid width or height\n");
 				walls.clear(); 
 				return walls; 
 			}
@@ -389,7 +436,8 @@ public class Map implements Serializable{
 				resizeWallWidth(wall4, shapeE.getMaxX(), 1);
 			} 
 			// Check if Wall extends outside Entity
-			else if(c.xPenDepth < shapeW.getRoundedWidth()){
+			else if(c.xPenDepth < shapeW.getRoundedWidth()  && 
+					shapeW.getRoundedWidth() - c.xPenDepth >= 2){
 				hasWidth = true;
 				resizeWallWidth(wall1, xDir == 1 ? shapeE.getMaxX() : shapeE.getMinX(), xDir);
 			} 
@@ -403,44 +451,45 @@ public class Map implements Serializable{
 				resizeWallHeight(wall4, shapeE.getMaxY(), 1);
 			} 
 			// Check if Wall extends outside Entity
-			else if(c.yPenDepth < shapeW.getRoundedHeight()) {
+			else if(c.yPenDepth < shapeW.getRoundedHeight() && 
+					shapeW.getRoundedHeight() - c.yPenDepth >= 2) {
 				hasHeight = true;
 				resizeWallHeight(wall2, yDir == 1 ? shapeE.getMaxY() : shapeE.getMinY() , yDir);
 			} 
 			
-//			System.out.println("Result is: ");
+			bf.append("Result is: \n");
 			if(split){
 				// If split, add the new 2 walls
 				walls.add(wall3);
 				walls.add(wall4);
-//				System.out.println("Split");
-//				System.out.println("\tMin X: " + wall3.getShape().getMinX() +
-//						" Min Y: " + wall3.getShape().getMinY() + 
-//						" Max X: " + wall3.getShape().getMaxX() +
-//						" Max Y:" + wall3.getShape().getMaxY());
-//				System.out.println("\tMin X: " + wall4.getShape().getMinX() + 
-//						" Min Y: " + wall4.getShape().getMinY() + 
-//						" Max X: " + wall4.getShape().getMaxX() +
-//						" Max Y:" + wall4.getShape().getMaxY());
+				bf.append("Split\n");
+				bf.append("\tMin X: " + wall3.getShape().getMinX() +
+						" Min Y: " + wall3.getShape().getMinY() + 
+						" Max X: " + wall3.getShape().getMaxX() +
+						" Max Y:" + wall3.getShape().getMaxY() +"\n");
+				bf.append("\tMin X: " + wall4.getShape().getMinX() + 
+						" Min Y: " + wall4.getShape().getMinY() + 
+						" Max X: " + wall4.getShape().getMaxX() +
+						" Max Y:" + wall4.getShape().getMaxY() +"\n");
 			} 
 			if(hasHeight){
 				walls.add(wall2);
-//				System.out.println("Height Wall: ");
-//				System.out.println("\tMin X: " + wall2.getShape().getMinX() + 
-//						" Min Y: " + wall2.getShape().getMinY() + 
-//						" Max X: " + wall2.getShape().getMaxX() +
-//						" Max Y:" + wall2.getShape().getMaxY());
+				bf.append("Height Wall: \n");
+				bf.append("\tMin X: " + wall2.getShape().getMinX() + 
+						" Min Y: " + wall2.getShape().getMinY() + 
+						" Max X: " + wall2.getShape().getMaxX() +
+						" Max Y:" + wall2.getShape().getMaxY() +"\n");
 			} 
 			if(hasWidth){
 				walls.add(wall1);
-//				System.out.println("Width Wall: ");
-//				System.out.println("\tMin X: " + wall1.getShape().getMinX() + 
-//						" Min Y: " + wall1.getShape().getMinY() + 
-//						" Max X: " + wall1.getShape().getMaxX() +
-//						" Max Y:" + wall1.getShape().getMaxY());
+				bf.append("Width Wall: \n");
+				bf.append("\tMin X: " + wall1.getShape().getMinX() + 
+						" Min Y: " + wall1.getShape().getMinY() + 
+						" Max X: " + wall1.getShape().getMaxX() +
+						" Max Y:" + wall1.getShape().getMaxY() +"\n");
 			}
 		}
-//		System.out.println();
+		bf.append("\n");
 		return walls;
 	}
 	
@@ -453,21 +502,21 @@ public class Map implements Serializable{
 		} else if(dir == -1){
 			width =  pointOfIntersect - shapeW.getMinX();
 			xPos = shapeW.getMinX() + width/2;
-		} else { /* not Valid */ }
+		} else { throw new IllegalArgumentException("Direction can not be 0" + dir); }
 		wall.setXPos(xPos);
 		wall.setWidth(width);
 	}
 	
 	private void resizeWallHeight(Entity wall, int pointOfIntersect, int dir){
 		Shape shapeW = wall.getShape();
-		int height = shapeW.getWidth(), yPos = shapeW.getCenterX();
+		int height = shapeW.getHeight(), yPos = shapeW.getCenterY();
 		if(dir == 1){
 			height = shapeW.getMaxY() - pointOfIntersect;
 			yPos = shapeW.getMaxY() - height/2;
 		} else if(dir == -1){
 			height =  pointOfIntersect - shapeW.getMinY();
 			yPos = shapeW.getMinY() + height/2;
-		} else { /* not Valid */ }
+		} else { throw new IllegalArgumentException("Direction can not be 0" + dir); }
 		wall.setYPos(yPos);
 		wall.setHeight(height);
 	}
