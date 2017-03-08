@@ -1,5 +1,6 @@
 package Controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,12 +21,14 @@ import Models.Upgrades.Upgrade;
 import SpriteSheet.SpriteSheet;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -52,7 +55,7 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 		gc.addPlayer(p);
 	}
 	
-	public void start(){
+	public void gameStart(){
 		width = 600;
 		height = 500;
 		// Position Players
@@ -89,7 +92,10 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 		// Generate Map
 		arenaMap = new ArenaMap(width, height, players);
 		gc.addEntity(arenaMap.getMapObjects().toArray(new Entity[0]));
-		
+		start();
+	}
+	
+	public void start(){
 		// Start
 		gc.start();
 	}
@@ -133,17 +139,20 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 			if(x < btnX || x > btnX + btnWidth || y < btnY || y > btnY + btnHeight){
 				// Succesfuly clicked button
 				Stage s = (Stage)myCanvas.getScene().getWindow();
+				if(s == null) { return; }
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/StartFXML.fxml"));
-				BorderPane root = null;
+				
 				try {
-					root = loader.load();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+					BorderPane root = loader.load();
+					Scene scene = new Scene(root, s.getScene().getWidth(), s.getScene().getHeight());
+					s.setScene(scene);
+					s.centerOnScreen();
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
 				}
 				
-				Scene scene = new Scene(root, s.getScene().getWidth(), s.getScene().getHeight());
-				s.setScene(scene);
-				s.centerOnScreen();
+				
 			}
 		});
 	}
@@ -189,6 +198,7 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 
 	@Override
 	public void update(PlayableCharacter value) {
+		if(InputHandler.keyInputContains(KeyCode.ESCAPE)) { displayEscapeMenu(); }
 		// from 3o seconds to 3 minuutes
 		if(GameController.getTimer() >= upgradeTime){
 			// Get current time + 30 seconds to 3 minutes ahead
@@ -197,10 +207,10 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 			Upgrade u;
 			switch(rand.nextInt(2)){
 			case 1:
-				u = new SpeedBoost(SpriteSheet.getBlock(15, 15, Color.MEDIUMPURPLE), 0, 0);
+				u = new SpeedBoost(0, 0);
 				break;
 			default:
-				u = new MedPack(SpriteSheet.getBlock(10, 10, Color.RED), 0, 0);
+				u = new MedPack(0, 0);
 				break;
 			}
 			
@@ -241,5 +251,68 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 				displayWinner();
 			}
 		}
+	}
+	
+	public void displayEscapeMenu(){
+		int width = (int) myCanvas.getWidth();
+		int height = (int) myCanvas.getHeight();
+		GraphicsContext g = myCanvas.getGraphicsContext2D();
+		stop();
+		
+		g.setFill(Color.WHITE);
+		g.fillRect(width/4, height/8, width/2, height*3/4);
+		
+		g.setStroke(Color.BLACK);
+		g.strokeRect(width/4, height/8, width/2, height*3/4);
+		
+		g.setFont(new Font(32));
+		g.setFill(Color.BLACK);
+		g.setTextAlign(TextAlignment.CENTER);
+		
+		int btnWidth = width*2/5;
+		int btnHeight =  height/16;
+		int btnX = width/2 - btnWidth/2;
+		
+		int resumeY = height*5/16 - btnHeight/2;
+		g.strokeRoundRect(btnX, resumeY+btnHeight/2, btnWidth, btnHeight, 5, 5);
+		g.fillText("Resume", btnX + btnWidth/2, resumeY+btnHeight/2 + btnHeight*3/4, btnWidth);
+		
+		int backY = resumeY + btnHeight*2;
+		g.strokeRoundRect(btnX, backY+btnHeight/2, btnWidth, btnHeight, 5, 5);
+		g.fillText("Back to Main Menu", btnX + btnWidth/2, backY+btnHeight/2 + btnHeight*3/4, btnWidth);
+		
+		myCanvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent e) {
+				int x = (int)e.getSceneX();
+				int y = (int)e.getSceneY();
+				if(x > btnX && x < btnX + btnWidth){
+					// Resume button
+					if(y > resumeY && y < resumeY + btnHeight){
+						// Succesfuly clicked button
+						myCanvas.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+						start();
+					} 
+					// back button called
+					else if(y > backY && y < backY + btnHeight){
+						myCanvas.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+						PlayerBox.resetHumanPlayers();
+						
+						Stage s = (Stage)myCanvas.getScene().getWindow();
+						if(s == null) { return; }
+						FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/StartFXML.fxml"));
+						try {
+							BorderPane root = loader.load();
+							Scene scene = new Scene(root, s.getScene().getWidth(), s.getScene().getHeight());
+							s.setScene(scene);
+							s.centerOnScreen();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				}
+			}
+		});
 	}
 }

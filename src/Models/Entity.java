@@ -1,18 +1,29 @@
 package Models;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import Controller.CollisionSystem;
 import Enums.Direction;
 import Interfaces.Collideable;
 import Interfaces.Moveable;
 import Models.Shape.Shape;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
-public abstract class Entity implements Collideable, Moveable, Comparable<Entity>{
+public abstract class Entity implements Collideable, Moveable, Comparable<Entity>, Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Entity> colliders;
-	private Image img;
+	private transient Image img;
 	private Direction direction;
 	private Shape shape;
 	private String tag;
@@ -131,6 +142,16 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 		} else {
 			return 1;
 		}
+	}
+	
+	private void writeObject(ObjectOutputStream out) throws IOException{
+		out.defaultWriteObject();
+		ImageIO.write(SwingFXUtils.fromFXImage(img, null), "jpg", out);
+	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException{
+		in.defaultReadObject();
+		img = SwingFXUtils.toFXImage(ImageIO.read(in), null);
 	}
 
 }

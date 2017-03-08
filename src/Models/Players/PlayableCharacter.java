@@ -23,6 +23,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	private int maxHealth, currentHealth;
 	private int currentWeapon;
 	private boolean isDodging, weaponHasChanged;
+	private int damageReduction = 0;
 
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
@@ -92,6 +93,14 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	@Override
 	public void takeDamage(int val) {
 		if(!isDodging){
+			if(val > damageReduction){
+				val -= damageReduction;
+				damageReduction = 0;
+			}else{
+				damageReduction -= val;
+				val = 0;
+			}
+			
 			currentHealth -= val;
 			System.out.println(getTag() + " has " + getCurrentHealth() + "/" + getMaxHealth());
 		}
@@ -115,14 +124,13 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	}
 	
 	public void addWeapon(Weapon w){
-		if(GameController.getStoryMode()){
-			if(weapons.isEmpty()){
-				setWeapon(w);
-			}
-			weapons.add(w);
-		} else {
+		if(!GameController.getStoryMode() && weapons.size() == 2){
+			weapons.remove(1);
+		}
+		if(weapons.isEmpty() || !GameController.getStoryMode()){
 			setWeapon(w);
 		}
+		weapons.add(w);
 	}
 	
 	public void removeWeapon(Weapon w){
@@ -188,5 +196,13 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 
 	public Entity[] getDisplayableEntities() {
 		return equippedWeapon != null ? new Entity[] {this, equippedWeapon, healthBar} : new Entity[] {this, healthBar};
+	}
+
+	public int getDamageReduction() {
+		return damageReduction;
+	}
+
+	public void setDamageReduction(int damageReduction) {
+		this.damageReduction = damageReduction;
 	}
 }

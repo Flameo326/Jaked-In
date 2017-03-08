@@ -29,8 +29,18 @@ public class InputHandler {
 		}
 	}
 	
+	public static void keyPress(KeyCode e){
+		if(!keyInput.contains(e)){
+			keyInput.add(e);
+		}
+	}
+	
 	public static void keyRelease(KeyEvent e){
 		keyInput.remove(e.getCode());
+	}
+	
+	public static void keyrelease(KeyCode e){
+		keyInput.remove(e);
 	}
 	
 	public static boolean keyInputContains(KeyCode k){

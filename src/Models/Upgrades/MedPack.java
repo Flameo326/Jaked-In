@@ -1,15 +1,16 @@
 package Models.Upgrades;
 
 import java.util.Random;
+
 import Models.Players.PlayableCharacter;
-import javafx.scene.image.Image;
+import SpriteSheet.SpriteSheet;
 
 public class MedPack extends Upgrade {
 	
 	private final int HPIncrease;
 
-	public MedPack(Image i, int x, int y) {
-		super(i, x, y);
+	public MedPack(int x, int y) {
+		super(SpriteSheet.getMedPack(), x, y);
 		Random randy = new Random();
 		HPIncrease = randy.nextInt(21) + 20;
 	}

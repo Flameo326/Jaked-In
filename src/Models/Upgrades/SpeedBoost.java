@@ -1,12 +1,12 @@
 package Models.Upgrades;
 
 import Models.Players.PlayableCharacter;
-import javafx.scene.image.Image;
+import SpriteSheet.SpriteSheet;
 
 public class SpeedBoost extends Upgrade{
 
-	public SpeedBoost(Image i, int x, int y) {
-		super(i, x, y);
+	public SpeedBoost(int x, int y) {
+		super(SpriteSheet.getSpeedBoost(), x, y);
 	}
 	
 	// instead we could check if the boost is permanent, 

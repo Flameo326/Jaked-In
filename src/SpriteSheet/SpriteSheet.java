@@ -16,12 +16,7 @@ public final class SpriteSheet {
 	public static void init(){
 		spriteSheet = new Image("/Other/16x16_Sprite_Sheet.jpg");
 		isInit = true;
-	}
-	
-	public static Image getMedic(){
-		return getSpriteSheetImage(0, 0, 30, 30);
-	}
-	
+	}	
 	
 	public static Image getSpriteSheetImage(int x, int y, int width, int height){
 		if(!isInit){
@@ -93,4 +88,52 @@ public final class SpriteSheet {
 		return SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3);
 	}
 
+	public static Image getAllyNPC() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public static Image getMedic(){
+		return SpriteSheet.getBorderedBlock(30, 30, Color.RED, 2);
+	}
+
+	public static Image getNPC() {
+		return SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2);
+	}
+	
+	public static Image getDoctor(){
+		return SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 2);
+	}
+
+	public static Image getSpeedBoost() {
+		return SpriteSheet.getBorderedBlock(10, 10, Color.MEDIUMPURPLE, 2);
+	}
+
+	public static Image getMedPack() {
+		return SpriteSheet.getBorderedBlock(10, 10, Color.RED, 2);
+	}
+
+	public static Image getPrisoner() {
+		return SpriteSheet.getBorderedBlock(30, 30, Color.DARKGRAY, 2);
+	}
+
+	public static Image getSecurityWorker() {
+		return SpriteSheet.getBorderedBlock(30, 30, Color.BLUE, 2);
+	}
+	
+	public static Image getBonusDamage() {
+		return SpriteSheet.getBorderedBlock(10, 10, Color.DARKORANGE, 2);
+	}
+	
+	public static Image getDamageReduction() {
+		return SpriteSheet.getBorderedBlock(10, 10, Color.GOLD, 2);
+	}
+	
+	public static Image getForceField() {
+		return SpriteSheet.getBorderedBlock(10, 10, Color.YELLOW, 2);
+	}
+
+	public static Image getEnemy(){
+		return SpriteSheet.getBorderedBlock(30, 30, Color.DARKRED, 2);
+	}
 }

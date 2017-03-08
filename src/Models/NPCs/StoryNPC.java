@@ -7,7 +7,7 @@ import Cutscene.Cutscene;
 import Cutscene.DialogCutscene;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
-import javafx.scene.image.Image;
+import SpriteSheet.SpriteSheet;
 
 public class StoryNPC extends NPC {
 	
@@ -24,8 +24,8 @@ public class StoryNPC extends NPC {
 		"We stand with the users! Destory Watson once and for all!"};
 
 
-	public StoryNPC(Image i, StoryController st, int x, int y) {
-		super(i, st, x, y);
+	public StoryNPC(StoryController st, int x, int y) {
+		super(SpriteSheet.getNPC(), st, x, y);
 	}
 
 //	public String dialogue(){

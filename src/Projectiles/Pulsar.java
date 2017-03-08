@@ -2,9 +2,12 @@ package Projectiles;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.BonusDamage;
+import Models.Upgrades.MedPack;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.paint.Color;
 
@@ -29,7 +32,7 @@ public class Pulsar extends Projectile {
 				move(entities);
 			}
 		}
-		entities.add(new BonusDamage(SpriteSheet.getBlock(2, 2, Color.RED), getXPos(), getYPos()));
+		entities.add(new MedPack(getXPos(), getYPos()));
 		return hasHit;
 	}
 
