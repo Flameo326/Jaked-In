@@ -14,7 +14,7 @@ import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.MedPack;
-import Models.Upgrades.ProjectileWeaponBullets;
+import Models.Upgrades.NormalWeaponBullets;
 import Models.Upgrades.SpeedBoost;
 import Models.Upgrades.Upgrade;
 import SpriteSheet.SpriteSheet;
@@ -216,7 +216,7 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 //				w = new SpeedBoost(SpriteSheet.getBlock(15, 15, Color.MEDIUMPURPLE), 0, 0);
 //				break;
 			default:
-				w = new ProjectileWeaponBullets(SpriteSheet.getBlock(20, 10, Color.BLACK), 0, 0);
+				w = new NormalWeaponBullets(SpriteSheet.getBlock(20, 10, Color.BLACK), 0, 0);
 				break;
 			}
 			

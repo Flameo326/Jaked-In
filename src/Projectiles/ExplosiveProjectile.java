@@ -24,7 +24,9 @@ public class ExplosiveProjectile extends Projectile {
 				p.setLifeTime((int)(20));
 				p.setSpeed(p.getSpeed() + 3);
 				entities.add(p);
+				entities.remove(this);
 			}
+//			entities.remove(this);
 		}
 		move(entities);
 	}
