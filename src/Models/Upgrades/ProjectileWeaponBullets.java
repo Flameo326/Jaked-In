@@ -13,8 +13,9 @@ public class ProjectileWeaponBullets extends Upgrade{
 
 	@Override
 	public void collect(PlayableCharacter c) {
-		if(c.getWeapon() instanceof NormalProjectileWeapon){
-			((NormalProjectileWeapon)c.getWeapon()).addBullets(30);
+		NormalProjectileWeapon currWeapon =  (NormalProjectileWeapon) c.hasWeapon(NormalProjectileWeapon.class);
+		if(currWeapon != null){
+			currWeapon.addBullets(30);
 		} else {
 			c.addWeapon(new NormalProjectileWeapon(c, 25));
 		}

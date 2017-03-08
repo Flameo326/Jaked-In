@@ -15,7 +15,6 @@ import javafx.scene.input.KeyCode;
 public class HumanPlayer extends PlayableCharacter{
 	
 	private static int humanID = 0;
-	private long weaponTimer;
 
 	public HumanPlayer(Image i, int x, int y) {
 		super(i, x, y);
@@ -38,10 +37,9 @@ public class HumanPlayer extends PlayableCharacter{
 					entities.add(h);
 				}
 			}
-			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.ChangeWeapon)
-					&& GameController.getTimer() >= weaponTimer){
+			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.ChangeWeapon)){
 				changeWeapon();
-				weaponTimer = GameController.getTimer() + 500000000l;
+				InputHandler.keyrelease(InputHandler.ChangeWeapon);
 			}
 			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.Interact)){
 				checkForInteraction();

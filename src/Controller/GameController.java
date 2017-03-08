@@ -1,5 +1,7 @@
 package Controller;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -9,8 +11,17 @@ import Models.Entity;
 import Models.Map.Map;
 import Models.Players.PlayableCharacter;
 import javafx.animation.AnimationTimer;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 public class GameController extends AnimationTimer implements Publishable<PlayableCharacter>{
 	
