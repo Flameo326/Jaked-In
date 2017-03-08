@@ -88,6 +88,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	}
 	
 	public void createGameController(){
+		player1.setSpeed(5);
 		gc = new GameController(myCanvas, true);
 		gc.attach(this);
 		gc.addEntity(player1.getDisplayableEntities());
@@ -148,7 +149,8 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 
 	@Override
 	public void update(PlayableCharacter value) {
-		myCanvas.getGraphicsContext2D().fillText(currentLevel+"", myCanvas.getWidth()*5/6, 10);
+		myCanvas.getGraphicsContext2D().setFont(new Font(18));
+		myCanvas.getGraphicsContext2D().fillText("Level " +(currentLevel+1), myCanvas.getWidth()*7/8, myCanvas.getHeight()/16);
 		if(InputHandler.keyInputContains(KeyCode.ESCAPE)) { displayEscapeMenu(); }
 		// we should have a menu like pressing escape or something
 		// woud it be here?...
@@ -159,8 +161,8 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 				gc.stop();
 			} else {
 				// beginning of level?
-				player1.setXPos(0);
-				player1.setYPos(0);
+				player1.setXPos(levels[currentLevel].getEntrance().getXPos());
+				player1.setYPos(levels[currentLevel].getEntrance().getYPos());
 			}
 		}
 	}
@@ -244,6 +246,9 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 					}
 					// Save button clicked
 					else if(y > saveY && y < saveY + btnHeight){
+						g.clearRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight);
+						g.strokeRoundRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight, 5, 5);
+						g.fillText("Saving", btnX + btnWidth/2, saveY+btnHeight/2 + btnHeight*3/4, btnWidth);
 						try {
 							save();
 							g.clearRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight);
