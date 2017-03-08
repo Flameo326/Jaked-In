@@ -8,7 +8,7 @@ import Cutscene.Cutscene;
 import Cutscene.DialogCutscene;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
-import javafx.scene.image.Image;
+import SpriteSheet.SpriteSheet;
 
 public class Prisoner extends NPC {
 
@@ -19,8 +19,8 @@ public class Prisoner extends NPC {
 			"I’m so glad to be free, it’s time to get back to the front lines!", // 4
 			"You killed my little girl!" }; // 5 attacks player
 
-	public Prisoner(Image i, StoryController st, int x, int y) {
-		super(i, st, x, y);
+	public Prisoner(StoryController st, int x, int y) {
+		super(SpriteSheet.getPrisoner(), st, x, y);
 
 	}
 
@@ -30,8 +30,8 @@ public class Prisoner extends NPC {
 
 	@Override
 	public void interact(PlayableCharacter c) {
-		Random randy = new Random();
-		int selection = randy.nextInt(dialogue.length);
+		Random rand = new Random();
+		int selection = rand.nextInt(dialogue.length);
 		if (selection == 5) {
 
 		}

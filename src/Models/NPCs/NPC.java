@@ -1,15 +1,18 @@
 package Models.NPCs;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-import Controller.InputHandler;
 import Controller.StoryController;
 import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
-import Models.Players.PlayableCharacter;
+import Models.Upgrades.BonusDamage;
+import Models.Upgrades.DamageReduction;
+import Models.Upgrades.ForceFieldReflection;
+import Models.Upgrades.SpeedBoost;
+import Models.Upgrades.Upgrade;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 
 public abstract class NPC extends Entity implements Interactable{
 	
@@ -49,6 +52,23 @@ public abstract class NPC extends Entity implements Interactable{
 
 	public StoryController getController(){
 		return controller;
+	}
+	
+	public Upgrade getRandomUpgrade() {
+		Random rand = new Random();
+		int selection = rand.nextInt(4) + 1;
+
+		switch (selection) {
+		case 1:
+			return new BonusDamage(0, 0);
+		case 2:
+			return new DamageReduction(0, 0);
+		case 3:
+			return new ForceFieldReflection(0, 0);
+		default:
+			return new SpeedBoost(0, 0);
+
+		}
 	}
 	
 }

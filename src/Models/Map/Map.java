@@ -5,11 +5,22 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Controller.CollisionSystem;
+import Controller.StoryController;
 import Enums.Direction;
 import Models.Collision;
 import Models.Entity;
+import Models.NPCs.AllyNPC;
+import Models.NPCs.AmbushNPC;
+import Models.NPCs.AngryNPC;
+import Models.NPCs.MedicNPC;
+import Models.NPCs.PowerUpNPC;
+import Models.NPCs.StoryNPC;
 import Models.Shape.Shape;
-import Puzzle.Door;
+import Models.Upgrades.BonusDamage;
+import Models.Upgrades.DamageReduction;
+import Models.Upgrades.ForceFieldReflection;
+import Models.Upgrades.MedPack;
+import Models.Upgrades.SpeedBoost;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -609,6 +620,55 @@ public class Map implements Serializable{
 	
 	public int getMapHeight(){
 		return mapHeight;
+	}
+	
+	public Entity npcChoice(StoryController controller, int roomX, int roomY, int width, int height) {
+		if (rand.nextInt(100) + 1 < 61) {
+			int selection = rand.nextInt(6) + 1;// choosing what npc is
+													// created
+			int x = rand.nextInt(width - 30) + roomX + 15;
+			int y = rand.nextInt(height - 30) + roomY + 15;
+			switch (selection) {
+			case 1:
+				return new AllyNPC(controller, x, y);
+			case 2:
+				return new AmbushNPC(controller, x, y);
+			case 3:
+				return new AngryNPC(controller, x, y);
+			case 4:
+				return new MedicNPC(controller,  x, y);
+			case 5:
+				return new PowerUpNPC(controller, x, y);
+			default:
+				return new StoryNPC(controller, x, y);
+			}
+		} else {
+			return null;
+		}
+	}
+	
+	public Entity upgradeChoice(StoryController controller, int roomX, int roomY, int width, int height){
+		if (rand.nextInt(100) + 1 < 51) {
+			int selection = rand.nextInt(5) + 1;// choosing what Upgrade is
+													// created
+			int x = rand.nextInt(width - 30) + roomX + 15;
+			int y = rand.nextInt(height - 30) + roomY + 15;
+			switch (selection) {
+			case 1:
+				return new BonusDamage(x, y);
+			case 2:
+				return new DamageReduction(x, y);
+			case 3:
+				return new ForceFieldReflection(x, y);
+			case 4:
+				return new MedPack(x, y);
+			default:
+				return new SpeedBoost(x, y);
+			
+			}
+		} else {
+			return null;
+		}
 	}
 
 }

@@ -1,20 +1,10 @@
 package Models.Map;
 
 import java.util.ArrayList;
+
 import Controller.StoryController;
 import Models.Entity;
-import Models.NPCs.AllyNPC;
-import Models.NPCs.AmbushNPC;
-import Models.NPCs.AngryNPC;
-import Models.NPCs.MedicNPC;
-import Models.NPCs.PowerUpNPC;
 import Models.NPCs.SecurityWorker;
-import Models.NPCs.StoryNPC;
-import Models.Upgrades.BonusDamage;
-import Models.Upgrades.DamageReduction;
-import Models.Upgrades.ForceFieldReflection;
-import Models.Upgrades.MedPack;
-import Models.Upgrades.SpeedBoost;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.paint.Color;
 
@@ -53,7 +43,7 @@ public class Floor2Map extends Floor1Map{
 
 	public void populateNPC() {
 		for (Entity e : rooms) {
-			Entity temp = npcChoice(e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight());
+			Entity temp = npcChoice(controller, e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight());
 			if (temp != null) {
 				npcs.add(temp);
 			}
@@ -63,7 +53,7 @@ public class Floor2Map extends Floor1Map{
 
 	public void populateUpgrades() {
 		for (Entity e : rooms) {
-			Entity temp = upgradeChoice(e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight());
+			Entity temp = upgradeChoice(controller, e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight());
 			if (temp != null) {
 				upgrades.add(temp);
 			}
@@ -77,54 +67,4 @@ public class Floor2Map extends Floor1Map{
 		createEntrance(rooms.get(rooms.size()-1));
 	}
 
-	public Entity npcChoice(int roomX, int roomY, int width, int height) {
-
-		if (rand.nextInt(100) + 1 < 61) {
-			int selection = rand.nextInt(6) + 1;// choosing what npc is
-												// created
-			int x = rand.nextInt(width - 30) + roomX + 15;
-			int y = rand.nextInt(height - 30) + roomY + 15;
-			switch (selection) {
-			case 1:
-				return new AllyNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), controller, x, y);
-			case 2:
-				return new AmbushNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), controller, x, y);
-			case 3:
-				return new AngryNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), controller, x, y);
-			case 4:
-				return new MedicNPC(SpriteSheet.getBorderedBlock(30, 30, Color.RED, 2), controller, x, y);
-			case 5:
-				return new PowerUpNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), controller, x, y);
-			default:
-				return new StoryNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), controller, x, y);
-			}
-		} else {
-			return null;
-		}
-	}
-
-	public Entity upgradeChoice(int roomX, int roomY, int width, int height) {
-
-		if (rand.nextInt(100) + 1 < 51) {
-			int selection = rand.nextInt(5) + 1;// choosing what Upgrade is
-												// created
-			int x = rand.nextInt(width - 30) + roomX + 15;
-			int y = rand.nextInt(height - 30) + roomY + 15;
-			switch (selection) {
-			case 1:
-				return new BonusDamage(SpriteSheet.getBorderedBlock(10, 10, Color.BLANCHEDALMOND, 2), x, y);
-			case 2:
-				return new DamageReduction(SpriteSheet.getBorderedBlock(10, 10, Color.CORNSILK, 2), x, y);
-			case 3:
-				return new ForceFieldReflection(SpriteSheet.getBorderedBlock(10, 10, Color.YELLOW, 2), x, y);
-			case 4:
-				return new MedPack(SpriteSheet.getBorderedBlock(10, 10, Color.RED, 2), x, y);
-			default:
-				return new SpeedBoost(SpriteSheet.getBorderedBlock(10, 10, Color.PLUM, 2), x, y);
-
-			}
-		} else {
-			return null;
-		}
-	}
 }

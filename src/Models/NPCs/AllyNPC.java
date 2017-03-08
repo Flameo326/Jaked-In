@@ -2,7 +2,6 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
-import Controller.InputHandler;
 import Controller.StoryController;
 import Cutscene.Cutscene;
 import Cutscene.DialogCutscene;
@@ -10,8 +9,7 @@ import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
+import SpriteSheet.SpriteSheet;
 
 public class AllyNPC extends PlayableCharacter implements Interactable {
 
@@ -19,8 +17,8 @@ public class AllyNPC extends PlayableCharacter implements Interactable {
 	private PlayableCharacter ally;
 	private boolean interacted;
 	
-	public AllyNPC(Image i, StoryController controller, int x, int y) {
-		super(i, x, y);
+	public AllyNPC(StoryController controller, int x, int y) {
+		super(SpriteSheet.getNPC(), x, y);
 		this.controller = controller;
 		setTag(getTag() + "-AllyNPC");
 	}

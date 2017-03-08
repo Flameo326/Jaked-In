@@ -2,7 +2,6 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
-import Controller.InputHandler;
 import Controller.StoryController;
 import Cutscene.Cutscene;
 import Cutscene.DialogCutscene;
@@ -10,8 +9,7 @@ import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
+import SpriteSheet.SpriteSheet;
 
 public class AngryNPC extends PlayableCharacter implements Interactable {
 	
@@ -20,8 +18,8 @@ public class AngryNPC extends PlayableCharacter implements Interactable {
 	private PlayableCharacter enemy;
 	private boolean interacted;
 
-	public AngryNPC(Image i, StoryController controller, int x, int y) {
-		super(i, x, y);
+	public AngryNPC(StoryController controller, int x, int y) {
+		super(SpriteSheet.getNPC(), x, y);
 		this.controller = controller;
 		setTag(getTag() + "-EnemyNPC");
 	}
@@ -34,7 +32,7 @@ public class AngryNPC extends PlayableCharacter implements Interactable {
 	public void interact(PlayableCharacter p) {
 		Cutscene c = new DialogCutscene(controller, .5, "You killed my Family!");
 		controller.startCutscene(c);
-		
+		setImage(SpriteSheet.getEnemy());
 		setEnemy(p);
 		interacted = true;
 	}
