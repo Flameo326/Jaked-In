@@ -3,15 +3,12 @@ package Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import Enums.BulletType;
 import FXML.PlayerBox;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
 import Models.Weapon.MeleeWeapon;
-import Models.Weapon.ProjectileWeapon;
-import SpriteSheet.SpriteSheet;
+import Models.Weapon.NormalProjectileWeapon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +23,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ArenaMenuController implements Initializable{
@@ -128,7 +124,7 @@ public class ArenaMenuController implements Initializable{
     			break;
     		case "Computer":
     			// Would need to get difficulty rating here
-    			p = new ComputerPlayer(playImage, 0, 0);
+    			p = new ComputerPlayer(playImage, 0, 0, 1);
     			break;
 			default:
 				System.out.println("Player Type is " + playBox.getPlayerType());
@@ -137,11 +133,10 @@ public class ArenaMenuController implements Initializable{
     		// Set weapon
     		switch(playBox.getWeaponType()){
     		case "Projectile":
-    			Image img = SpriteSheet.getBorderedBlock(5, 5, Color.WHITE, 3);
-    			p.setWeapon(new ProjectileWeapon(p, img, 10, 1, 400, BulletType.NORMAL));
+    			p.setWeapon(new NormalProjectileWeapon(p, 30));
     			break;
     		case "Melee":
-    			p.setWeapon(new MeleeWeapon(p, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
+    			p.setWeapon(new MeleeWeapon(p));
     			break;
 			default:
 				System.out.println("Weapon Type is " + playBox.getWeaponType());

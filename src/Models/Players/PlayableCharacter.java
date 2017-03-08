@@ -4,20 +4,16 @@ import java.util.ArrayList;
 
 import Controller.GameController;
 import Controller.InputHandler;
-import Enums.BulletType;
 import Interfaces.Attackable;
 import Interfaces.Damageable;
 import Interfaces.Dodgeable;
 import Models.Collision;
 import Models.Entity;
 import Models.Weapon.MeleeWeapon;
-import Models.Weapon.ProjectileWeapon;
 import Models.Weapon.Weapon;
 import Models.Weapon.Attack.Attack;
-import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 
 public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
 	
@@ -27,6 +23,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	private int maxHealth, currentHealth;
 	private int currentWeapon;
 	private boolean isDodging, weaponHasChanged;
+	private int damageReduction = 0;
 
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
@@ -35,7 +32,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		setSpeed(3);
 		setDisplayLayer(7);
 		// Just Default it to a Standard Melee Weapon for now
-		addWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
+		addWeapon(new MeleeWeapon(this));
 		
 		setMaxHealth(100);
 		setCurrentHealth(100);
@@ -96,6 +93,14 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	@Override
 	public void takeDamage(int val) {
 		if(!isDodging){
+			if(val > damageReduction){
+				val -= damageReduction;
+				damageReduction = 0;
+			}else{
+				damageReduction -= val;
+				val = 0;
+			}
+			
 			currentHealth -= val;
 			System.out.println(getTag() + " has " + getCurrentHealth() + "/" + getMaxHealth());
 		}
@@ -126,21 +131,15 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 			setWeapon(w);
 		}
 		weapons.add(w);
-//		if(!GameController.getStoryMode()){
-////			weapons.clear();
-////			weapons.add(w);
-//			setWeapon(w);
-//		}
-		
 	}
 	
 	public void removeWeapon(Weapon w){
-//		if(!GameController.getStoryMode()){
-//			setWeapon(new MeleeWeapon(this, SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3)));
-//		} else {
+		if(!GameController.getStoryMode()){
+			setWeapon(new MeleeWeapon(this));
+		} else {
 			changeWeapon();
 			weapons.remove(w);
-//		}
+		}
 	}
 	
 	public void changeWeapon(){
@@ -197,5 +196,13 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 
 	public Entity[] getDisplayableEntities() {
 		return equippedWeapon != null ? new Entity[] {this, equippedWeapon, healthBar} : new Entity[] {this, healthBar};
+	}
+
+	public int getDamageReduction() {
+		return damageReduction;
+	}
+
+	public void setDamageReduction(int damageReduction) {
+		this.damageReduction = damageReduction;
 	}
 }

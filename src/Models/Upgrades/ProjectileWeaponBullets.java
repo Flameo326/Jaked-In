@@ -1,11 +1,8 @@
 package Models.Upgrades;
 
-import Enums.BulletType;
 import Models.Players.PlayableCharacter;
-import Models.Weapon.ProjectileWeapon;
-import SpriteSheet.SpriteSheet;
+import Models.Weapon.NormalProjectileWeapon;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 public class ProjectileWeaponBullets extends Upgrade{
 
@@ -16,12 +13,11 @@ public class ProjectileWeaponBullets extends Upgrade{
 
 	@Override
 	public void collect(PlayableCharacter c) {
-		ProjectileWeapon currWeapon =  ((ProjectileWeapon)c.hasWeapon(ProjectileWeapon.class));
+		NormalProjectileWeapon currWeapon =  (NormalProjectileWeapon) c.hasWeapon(NormalProjectileWeapon.class);
 		if(currWeapon != null){
 			currWeapon.addBullets(30);
 		} else {
-			Image img = SpriteSheet.getBlock(5, 5, Color.BLACK);
-			c.addWeapon(new ProjectileWeapon(c, img, 25, 60, 300, BulletType.NORMAL));
+			c.addWeapon(new NormalProjectileWeapon(c, 25));
 		}
 		isCollected = true;
 	}

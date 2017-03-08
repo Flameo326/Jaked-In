@@ -1,7 +1,6 @@
 package Models.Map;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import Controller.StoryController;
 import Models.Entity;
@@ -24,7 +23,6 @@ import javafx.scene.paint.Color;
 public class Floor1Map extends Map {
 
 	// Also need a list of doors and exits
-	private Doctor doc;
 	private ArrayList<Entity> rooms;
 	private ArrayList<Entity> npcs;
 	private ArrayList<Entity> upgrades;
@@ -46,13 +44,17 @@ public class Floor1Map extends Map {
 		this.rooms = rooms;
 		populateNPC();
 		populateUpgrades();
+		populateLevelSpecificEntities();
 	}
 	
-	public void populateLevelSpecificEntities(int roomX, int roomY, int width, int height){//need to complete
-		ArrayList<Entity> levelSpecificEntities = new ArrayList<>(); 
-		Random randy = new Random();
-		int x = randy.nextInt(width - 30) + roomX + 15;
-		int y = randy.nextInt(height - 30) + roomY + 15;
+	public void populateLevelSpecificEntities(){
+		ArrayList<Entity> levelSpecificNPCs = new ArrayList<>();
+		Entity lastRoom = rooms.get(rooms.size()-1);
+		int x = rand.nextInt(lastRoom.getWidth() - 30) + lastRoom.getShape().getMinX() + 15;
+		int y = rand.nextInt(lastRoom.getHeight() - 30) + lastRoom.getShape().getMinY() + 15;
+		Doctor doc = new Doctor(SpriteSheet.getBorderedBlock(30, 30, Color.BLACK, 2), controller, x, y);
+		levelSpecificNPCs.add(doc);
+		getMapObjects().addAll(levelSpecificNPCs);
 	}
 
 	public void populateNPC() {
@@ -76,12 +78,11 @@ public class Floor1Map extends Map {
 	}
 
 	public Entity npcChoice(int roomX, int roomY, int width, int height) {
-		Random randy = new Random();
-		if (randy.nextInt(100) + 1 < 61) {
-			int selection = randy.nextInt(6) + 1;// choosing what npc is
+		if (rand.nextInt(100) + 1 < 61) {
+			int selection = rand.nextInt(6) + 1;// choosing what npc is
 													// created
-			int x = randy.nextInt(width - 30) + roomX + 15;
-			int y = randy.nextInt(height - 30) + roomY + 15;
+			int x = rand.nextInt(width - 30) + roomX + 15;
+			int y = rand.nextInt(height - 30) + roomY + 15;
 			switch (selection) {
 			case 1:
 				return new AllyNPC(SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2), controller, x, y);
@@ -102,12 +103,11 @@ public class Floor1Map extends Map {
 	}
 	
 	public Entity upgradeChoice(int roomX, int roomY, int width, int height){
-		Random randy = new Random();
-		if (randy.nextInt(100) + 1 < 51) {
-			int selection = randy.nextInt(5) + 1;// choosing what npc is
+		if (rand.nextInt(100) + 1 < 51) {
+			int selection = rand.nextInt(5) + 1;// choosing what Upgrade is
 													// created
-			int x = randy.nextInt(width - 30) + roomX + 15;
-			int y = randy.nextInt(height - 30) + roomY + 15;
+			int x = rand.nextInt(width - 30) + roomX + 15;
+			int y = rand.nextInt(height - 30) + roomY + 15;
 			switch (selection) {
 			case 1:
 				return new BonusDamage(SpriteSheet.getBorderedBlock(10, 10, Color.BLANCHEDALMOND, 2), x, y);
@@ -159,5 +159,6 @@ public class Floor1Map extends Map {
 	public Entity getExit(){
 		return exit;
 	}
+
 
 }
