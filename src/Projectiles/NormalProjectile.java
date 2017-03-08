@@ -8,5 +8,5 @@ public class NormalProjectile extends Projectile {
 	public NormalProjectile(PlayableCharacter e) {
 		super(e, SpriteSheet.getNormalProjectile(), 5);
 	}
-
+	
 }

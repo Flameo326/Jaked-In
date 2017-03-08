@@ -53,18 +53,11 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 		for(int i = 0; i < speed; i++){
 			prevX = getXPos();
 			prevY = getYPos();
-			setXPos(getXPos() + getCurrDir().getX()/* * getSpeed()*/);
-			setYPos(getYPos() + getCurrDir().getY()/* * getSpeed()*/);
+			setXPos(getXPos() + getCurrDir().getX());
+			setYPos(getYPos() + getCurrDir().getY());
 			CollisionSystem.checkMovementCollisions(this, entities);
 		}
-		
-//		prevX = getXPos();
-//		prevY = getYPos();
-//		setXPos(getXPos() + getCurrDir().getX() * getSpeed());
-//		setYPos(getYPos() + getCurrDir().getY() * getSpeed());
-//		CollisionSystem.checkMovementCollisions(this, entities);
-		
-	}	
+	}
 	
 	public void setImage(Image i){
 		if(i != null){

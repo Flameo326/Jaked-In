@@ -31,9 +31,8 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	//temp vars
 //	boolean prevHeld = false;
 	
-	
-	private Stage error;
-	private Label playPos;
+//	private Stage error;
+//	private Label playPos;	
 	
 	public GameController(Canvas myCanvas, boolean storyMode) {
 		GameController.StoryMode = storyMode;
@@ -44,14 +43,14 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 		
 		addWindow(myCanvas);
 		
-		playPos = new Label();
-		
-		StackPane root = new StackPane(playPos);
-		Scene scene = new Scene(root, 300, 50);
-		
-		error = new Stage();
-		error.setScene(scene);
-		error.show();
+//		playPos = new Label();
+//		
+//		StackPane root = new StackPane(playPos);
+//		Scene scene = new Scene(root, 300, 50);
+//		
+//		error = new Stage();
+//		error.setScene(scene);
+//		error.show();
 	}
 	
 	// This entire thing will be our "Run" method. It gets called constantly and updates accordingly.
@@ -66,9 +65,9 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 			// All Entities are updated 
 			e.update(entities);
 		}
-		if(focusedEntity != null){
-			playPos.setText("Player Center X: " + focusedEntity.getXPos() + " Y: " + focusedEntity.getYPos());
-		} 
+//		if(focusedEntity != null){
+//			playPos.setText("Player Center X: " + focusedEntity.getXPos() + " Y: " + focusedEntity.getYPos());
+//		} 
 		// Handles the graphical Rendering 
 		for(Canvas c : windows){
 			updateImage(c);

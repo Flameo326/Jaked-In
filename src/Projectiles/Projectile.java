@@ -88,4 +88,11 @@ public abstract class Projectile extends Attack{
 		}
 	}
 
+	public int getBounceAmount() {
+		return bounceAmount;
+	}
+	
+	public void setBounceAmount(int bounceAmount) {
+		this.bounceAmount = bounceAmount;
+	}
 }

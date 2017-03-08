@@ -7,9 +7,9 @@ import SpriteSheet.SpriteSheet;
 
 public class BounceProjectile extends Projectile {
 	
-	public BounceProjectile(PlayableCharacter e) {
+	public BounceProjectile(PlayableCharacter e, int BounceAmount) {
 		super(e, SpriteSheet.getBouceProjectile(), 8);
-		// TODO Auto-generated constructor stub
+		setBounceAmount(bounceAmount);
 	}
 
 	@Override
@@ -24,6 +24,7 @@ public class BounceProjectile extends Projectile {
 			entities.add(p);
 			entities.remove(this);
 		}
+		move(entities);
 	}
 
 }
