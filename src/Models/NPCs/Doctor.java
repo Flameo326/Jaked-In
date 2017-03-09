@@ -13,22 +13,22 @@ import SpriteSheet.SpriteSheet;
 
 public class Doctor extends NPC {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String[] dialogue = {
 			"I’m sorry for all of this. Watson forced me to work on you."
-					+ " Take this key card it will get you down to the Tech Wing, I wish I could do more", // 0
+					+ "\nGo down to the Tech Wing. There is a security worker there who can help you.\n\nI wish I could do more", // 0
 			"I already told you that I am sorry, what more do you want?", // 1
 			"Fine take this power up and go away!", // 2
 			"Please, just leave me alone." };// 3
 	private int count = 0;
 
 	public Doctor(StoryController st, int x, int y) {
-		super(SpriteSheet.getDoctor(), st, x, y);
-		setTag("NPC-Doctor");
+		super(SpriteSheet.getMedic(), st, x, y);
+		setTag(getTag() + "-Doctor");
 	}
-
-//	public void conversation(PlayableCharacter c) {
-//		
-//	}
 
 	@Override
 	public void interact(PlayableCharacter c) {

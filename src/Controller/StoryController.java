@@ -21,6 +21,7 @@ import Models.Map.Floor4Map;
 import Models.Map.Floor5Map;
 import Models.Map.Floor6Map;
 import Models.Map.Floor7Map;
+import Models.Map.Map;
 import Models.Map.MapGeneratorThread;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
@@ -34,6 +35,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
@@ -55,10 +57,23 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	private transient GameController gc;
 	private HumanPlayer player1;
 	private Floor1Map[] levels;
+	private long seed;
 	private int currentLevel;
 	private int lives;
 	
 	public void newStory(){
+		seed = Map.setRandomSeed();
+		generateLevels();	
+		lives = 5;
+		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
+		player1 = new HumanPlayer(img, 0, 0);
+		
+		createGameController();
+	}
+	
+	public void newStory(long l){
+		seed = l;
+		Map.setSeed(l);
 		generateLevels();	
 		lives = 5;
 		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
@@ -149,8 +164,10 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 
 	@Override
 	public void update(PlayableCharacter value) {
-		myCanvas.getGraphicsContext2D().setFont(new Font(18));
+		myCanvas.getGraphicsContext2D().setFont(new Font(20));
+		myCanvas.getGraphicsContext2D().setFill(Color.WHITE);
 		myCanvas.getGraphicsContext2D().fillText("Level " +(currentLevel+1), myCanvas.getWidth()*7/8, myCanvas.getHeight()/16);
+		
 		if(InputHandler.keyInputContains(KeyCode.ESCAPE)) { displayEscapeMenu(); }
 		// we should have a menu like pressing escape or something
 		// woud it be here?...
@@ -267,26 +284,21 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	}
 	
 	public void changeLevel(int i){
-//		System.out.println(i);
 		stop();
 		gc.removeEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
 		int previousLevel = currentLevel;
 		currentLevel = i;
 		gc.addEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
+		
 		// Went up
-		if(i - 1 == previousLevel){
+		if(i > previousLevel){
 			player1.setXPos(levels[currentLevel].getExit().getXPos());
 			player1.setYPos(levels[currentLevel].getExit().getYPos());
 		} 
 		// Went down
-		else if(i + 1 == previousLevel){
+		else if(i < previousLevel){
 			player1.setXPos(levels[currentLevel].getEntrance().getXPos());
 			player1.setYPos(levels[currentLevel].getEntrance().getYPos());
-		}
-		// Used Elevelator
-		else {
-			player1.setXPos(levels[currentLevel].getExit().getXPos());
-			player1.setYPos(levels[currentLevel].getExit().getYPos());
 		}
 		start();
 	}
@@ -301,19 +313,35 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	
 	public void save() throws FileNotFoundException, IOException{
 		ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream("src/Other/text.txt"));
+		write.writeLong(seed);
 		write.writeObject(this);
 		write.close();
 	}
 	
 	public static StoryController load(){
 		StoryController controller = null;
-		try{
+		long seed = 0;
+		
+		// Attempt to read the object
+		// If we can not get the file or seed then null is returned
+		// If we faile to grab the Controller but seed is known, 
+		// --- construct a new controller based on that seed
+		// If we get the controller then that is the controller we return
+		try {
 			ObjectInputStream read = new ObjectInputStream(new FileInputStream("src/Other/text.txt"));
-			controller = (StoryController) read.readObject();
+			seed = read.readLong();
+			
+			try{
+				controller = (StoryController) read.readObject();
+			} catch(Exception e){	
+				controller = new StoryController();
+				controller.newStory(seed);
+			}
+			
 			read.close();
-		} catch(Exception e){
-			e.printStackTrace();
-		}
+		} catch (IOException e1) {}
+		
+		
 		return controller;
 	}
 }

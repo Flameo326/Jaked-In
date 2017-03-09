@@ -6,11 +6,14 @@ import SpriteSheet.SpriteSheet;
 
 public class MeleeWeapon extends Weapon{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public MeleeWeapon(PlayableCharacter e) {
 		super(e, SpriteSheet.getMeleeWeapon());
 		setAttackTime(3 * 30);
-		// Otherwise yoou can't attack right off the bat... 
-		// Maybe some simpler way to fix?
 		setTimer(getAttackTime());
 	}
 

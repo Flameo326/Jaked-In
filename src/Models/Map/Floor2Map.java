@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import Controller.StoryController;
 import Models.Entity;
 import Models.NPCs.SecurityWorker;
-import SpriteSheet.SpriteSheet;
-import javafx.scene.paint.Color;
 
 public class Floor2Map extends Floor1Map{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Entity> rooms;
 	private ArrayList<Entity> npcs;
 	private ArrayList<Entity> upgrades;
@@ -31,16 +33,18 @@ public class Floor2Map extends Floor1Map{
 		populateLevelSpecificEntities();
 	}
 
+	@Override
 	public void populateLevelSpecificEntities() {
 		ArrayList<Entity> levelSpecificNPCs = new ArrayList<>();
 		Entity lastRoom = rooms.get(rooms.size()-1);
 		int x = rand.nextInt(lastRoom.getWidth() - 30) + lastRoom.getShape().getMinX() + 15;
 		int y = rand.nextInt(lastRoom.getHeight() - 30) + lastRoom.getShape().getMinY() + 15;
-		SecurityWorker worker = new SecurityWorker(SpriteSheet.getBorderedBlock(30, 30, Color.BLACK, 2), controller, x, y);
+		SecurityWorker worker = new SecurityWorker(controller, x, y);
 		levelSpecificNPCs.add(worker);
 		getMapObjects().addAll(levelSpecificNPCs);
 	}
 
+	@Override
 	public void populateNPC() {
 		for (Entity e : rooms) {
 			Entity temp = npcChoice(controller, e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight());
@@ -51,6 +55,7 @@ public class Floor2Map extends Floor1Map{
 		getMapObjects().addAll(npcs);
 	}
 
+	@Override
 	public void populateUpgrades() {
 		for (Entity e : rooms) {
 			Entity temp = upgradeChoice(controller, e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight());

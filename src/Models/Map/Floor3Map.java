@@ -7,6 +7,10 @@ import Models.Entity;
 
 public class Floor3Map extends Floor1Map{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Entity> rooms;
 	private ArrayList<Entity> npcs;
 	private ArrayList<Entity> upgrades;
@@ -29,6 +33,7 @@ public class Floor3Map extends Floor1Map{
 		populateLevelSpecificEntities();
 	}
 
+	@Override
 	public void populateLevelSpecificEntities() {
 
 //		Entity lastRoom = rooms.get(rooms.size() - 1);
@@ -38,6 +43,7 @@ public class Floor3Map extends Floor1Map{
 		//getMapObjects().add();
 	}
 
+	@Override
 	public void populateNPC() {
 		for (Entity e : rooms) {
 			Entity temp = npcChoice(controller, e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight());
@@ -48,6 +54,7 @@ public class Floor3Map extends Floor1Map{
 		getMapObjects().addAll(npcs);
 	}
 
+	@Override
 	public void populateUpgrades() {
 		for (Entity e : rooms) {
 			Entity temp = upgradeChoice(controller, e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight());
@@ -58,6 +65,7 @@ public class Floor3Map extends Floor1Map{
 		getMapObjects().addAll(upgrades);
 	}
 
+	@Override
 	public void generateDoors(ArrayList<Entity> rooms){
 		createExit(rooms.get(0));
 		createEntrance(rooms.get(rooms.size()-1));

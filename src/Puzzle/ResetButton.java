@@ -12,8 +12,8 @@ public class ResetButton extends Button implements Interactable, Publishable<But
 	
 	private  ArrayList<Subscribable<Button>> subscribers = new ArrayList<>();
 
-	public ResetButton(Image i, int x, int y, int width, int height) {
-		super(i, x, y, width, height);
+	public ResetButton(Image i, int x, int y) {
+		super(i, x, y);
 	}
 
 	@Override

@@ -12,10 +12,14 @@ import SpriteSheet.SpriteSheet;
 
 public class PowerUpNPC extends NPC {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean hasSpoken;
 
 	public PowerUpNPC(StoryController st, int x, int y) {
-		super(SpriteSheet.getNPC(), st, x, y);
+		super(SpriteSheet.getRandomNPC(), st, x, y);
 	}
 
 	public void conversation(PlayableCharacter p) {

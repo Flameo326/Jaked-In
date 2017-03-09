@@ -11,6 +11,10 @@ import javafx.scene.image.Image;
 
 public abstract class Attack extends Entity {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected HashSet<Entity> hasHit;
 	private final PlayableCharacter ownedEntity;
 	protected int lifeTime;
@@ -19,12 +23,12 @@ public abstract class Attack extends Entity {
 	
 	// This will be for Like Melee Weapons...
 	public Attack(PlayableCharacter e, Image i) {
-		super(i, e.getXPos(), e.getYPos(), (int)i.getWidth(), (int)i.getHeight());
+		super(i, e.getXPos(), e.getYPos());
 		ownedEntity = e;
 		hasHit = new HashSet<Entity>();
 		setTag("Attack-" + ownedEntity.getTag());
 		setDisplayLayer(5);
-		setDamage(5);
+		setDamage(e.getBonusDamage());
 	}
 	
 	// Position the hitBox in the direction that the object was moving

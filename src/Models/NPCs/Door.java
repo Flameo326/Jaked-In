@@ -9,6 +9,10 @@ import javafx.scene.image.Image;
 
 public class Door extends NPC{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean isExit, hasInteracted;
 
 	public Door(Image i, StoryController st, int x, int y, boolean isExit) {

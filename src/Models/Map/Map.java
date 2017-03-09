@@ -1,6 +1,5 @@
 package Models.Map;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,10 +20,14 @@ import Models.NPCs.PowerUpNPC;
 import Models.NPCs.StoryNPC;
 import Models.Shape.Shape;
 import Models.Upgrades.BonusDamage;
+import Models.Upgrades.BounceWeaponPickup;
 import Models.Upgrades.DamageReduction;
+import Models.Upgrades.ExplosiveWeaponPickup;
 import Models.Upgrades.ForceFieldReflection;
 import Models.Upgrades.MedPack;
+import Models.Upgrades.ProjectileWeaponPickup;
 import Models.Upgrades.SpeedBoost;
+import Models.Upgrades.Upgrade;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -59,12 +62,14 @@ public class Map implements Serializable{
 		rand = new Random();
 	}
 	
-	public void setSeed(long l){
+	public static void setSeed(long l){
 		rand = new Random(l);
 	}
 	
-	public void setRandomSeed(){
-		rand = new Random();
+	public static long setRandomSeed(){
+		long seed = new Random().nextLong();
+		rand = new Random(seed);
+		return seed;
 	}
 	
 	// This method can be overrode for different functionality
@@ -77,6 +82,7 @@ public class Map implements Serializable{
 			generatePaths(rooms);
 			populateMap(rooms);
 			generateDoors(rooms);
+			
 		} catch(IOException e){
 			
 		}
@@ -90,7 +96,7 @@ public class Map implements Serializable{
 		ArrayList<Entity> rooms = new ArrayList<>(roomAmo);
 		
 		// Create first starting room
-		Entity currentRoom = createNewRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
+		Entity currentRoom = createNewRandomRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
 		rooms.add(currentRoom);
 		int radius = 0;
 		if(!mapIsLinear){
@@ -98,7 +104,7 @@ public class Map implements Serializable{
 		}
 		room: for(int i = 1; i < roomAmo; i++){
 			Entity previousRoom = rooms.get(rooms.size()-1);
-			currentRoom = createNewRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
+			currentRoom = createNewRandomRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
 			
 			int maxDist = Math.max(currentRoom.getWidth(), currentRoom.getHeight());
 			if(mapIsLinear){
@@ -141,23 +147,8 @@ public class Map implements Serializable{
 		return rooms;
 	}
 	
-	/*
-	 * bf.append("We will not be checking these entities against a wall\n");
-		for(Entity wall : walls){
-			bf.append("\tMin X: " + wall.getShape().getMinX() + 
-					" Min Y: " + wall.getShape().getMinY() + 
-					" Max X: " + wall.getShape().getMaxX() + 
-					" Max Y: " + wall.getShape().getMaxY() + "\n");
-		}
-	 */
-	
 	public void generatePaths(ArrayList<Entity> rooms) throws IOException{
 		ArrayList<Entity> walls = new ArrayList<>();
-//		for(int i = 0; i < rooms.size(); i++){
-//			Entity currentRoom = rooms.get(i);
-//			bf.append("Generating Room");
-//			walls.addAll(generateWalls(currentRoom, walls));
-//		}
 		for(int i = 0; i < rooms.size(); i++){
 			Entity currentRoom = rooms.get(i);
 			bf.append("Generating Room\n");
@@ -212,8 +203,8 @@ public class Map implements Serializable{
 	}
 	
 	public Entity createNewWall(int x, int y, int width, int height){
-		Image img = SpriteSheet.getBlock(width, height, Color.BLACK);
-		Entity e = new Entity(img, x, y, (int)img.getWidth(), (int)img.getHeight()){
+		Image img = SpriteSheet.getBlock(width, height, Color.LIGHTGRAY);
+		Entity e = new Entity(img, x, y){
 			/**
 			 * 
 			 */
@@ -232,10 +223,15 @@ public class Map implements Serializable{
 		return e;
 	}
 	
-	public Entity createNewRoom(int minWidth, int maxWidth, double minHeightMultiplier, double maxHeightMultiplier){
+	public Entity createNewRandomRoom(int minWidth, int maxWidth, double minHeightMultiplier, double maxHeightMultiplier){
 		int width = rand.nextInt(maxWidth - minWidth + 1) + minWidth;
 		int height = (int)(rand.nextDouble() * (maxHeightMultiplier - minHeightMultiplier) + minHeightMultiplier * width);
-		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUA), 0, 0, width, height){
+		return createNewRoom(0, 0, width, height);
+	}
+	
+	public Entity createNewRoom(int x, int y, int width, int height){
+		// Change this
+		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUA), x, y){
 			/**
 			 * 
 			 */
@@ -257,7 +253,7 @@ public class Map implements Serializable{
 	public Entity createNewPath(int minWidth, int minHeight, int maxWidth, int maxHeight){
 		int width = rand.nextInt(maxWidth - minWidth + 1) + minWidth;
 		int height = rand.nextInt(maxHeight - minHeight + 1) + minHeight;
-		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUAMARINE), 0, 0, width, height){
+		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUAMARINE), 0, 0){
 			/**
 			 * 
 			 */
@@ -696,9 +692,9 @@ public class Map implements Serializable{
 		}
 	}
 	
-	public Entity upgradeChoice(StoryController controller, int roomX, int roomY, int width, int height){
+	public Upgrade upgradeChoice(StoryController controller, int roomX, int roomY, int width, int height){
 		if (rand.nextInt(100) + 1 < 51) {
-			int selection = rand.nextInt(5) + 1;// choosing what Upgrade is
+			int selection = rand.nextInt(8) + 1;// choosing what Upgrade is
 													// created
 			int x = rand.nextInt(width - 30) + roomX + 15;
 			int y = rand.nextInt(height - 30) + roomY + 15;
@@ -711,6 +707,12 @@ public class Map implements Serializable{
 				return new ForceFieldReflection(x, y);
 			case 4:
 				return new MedPack(x, y);
+			case 5:
+				return new BounceWeaponPickup(x, y);
+			case 6:
+				return new ExplosiveWeaponPickup(x, y);
+			case 7:
+				return new ProjectileWeaponPickup(x, y);
 			default:
 				return new SpeedBoost(x, y);
 			

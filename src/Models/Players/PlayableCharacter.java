@@ -2,7 +2,6 @@ package Models.Players;
 
 import java.util.ArrayList;
 
-import Controller.GameController;
 import Controller.InputHandler;
 import Interfaces.Attackable;
 import Interfaces.Damageable;
@@ -17,23 +16,25 @@ import javafx.scene.input.KeyCode;
 
 public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
 	
-	private ArrayList<Weapon> weapons;
-	private Weapon equippedWeapon, previousWeapon;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Weapon equippedWeapon, previousWeapon, mainWeapon, secondWeapon;
 	private Entity healthBar;
 	private int maxHealth, currentHealth;
-	private int currentWeapon;
 	private boolean isDodging, weaponHasChanged;
-	private int damageReduction = 0;
 	ArrayList<PlayableCharacter> Enemys = new ArrayList<>();
+	private int damageReduction, bonusDamage;
 
 	public PlayableCharacter(Image i, int x, int y) {
-		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
+		super(i, x, y);
 		healthBar = new HealthBar(this);
-		weapons = new ArrayList<>();
 		setSpeed(3);
 		setDisplayLayer(7);
 		// Just Default it to a Standard Melee Weapon for now
-		addWeapon(new MeleeWeapon(this));
+		secondWeapon = new MeleeWeapon(this);
+		equippedWeapon = secondWeapon;
 		
 		setMaxHealth(100);
 		setCurrentHealth(100);
@@ -125,40 +126,20 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	}
 	
 	public void addWeapon(Weapon w){
-		if(!GameController.getStoryMode() && weapons.size() == 2){
-			weapons.remove(1);
-		}
-		if(weapons.isEmpty() || !GameController.getStoryMode()){
-			setWeapon(w);
-		}
-		weapons.add(w);
+		mainWeapon = w;
+		setWeapon(w);
 	}
 	
-	public void removeWeapon(Weapon w){
-		if(!GameController.getStoryMode()){
-			setWeapon(new MeleeWeapon(this));
-		} else {
-			changeWeapon();
-			weapons.remove(w);
-		}
+	public void removeWeapon(){
+		setWeapon(secondWeapon);
 	}
 	
 	public void changeWeapon(){
-		if(++currentWeapon >= weapons.size()){
-			currentWeapon = 0;
+		if(equippedWeapon == secondWeapon && mainWeapon != null){
+			setWeapon(mainWeapon);
+		} else {
+			setWeapon(secondWeapon);
 		}
-		setWeapon(weapons.get(currentWeapon));
-	}
-	
-	public Weapon hasWeapon(Class val){
-		Weapon weapon = null;
-		for(Weapon w : weapons){
-			if(val.isInstance(w)) {
-				weapon = w;
-				break; 
-			}
-		}
-		return weapon;
 	}
 	
 	public boolean isAlive(){
@@ -175,10 +156,8 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	
 	public void setWeapon(Weapon w){
 		if(w != null){
-			if(equippedWeapon != null){
-				weaponHasChanged = true;
-				previousWeapon = equippedWeapon;
-			}
+			weaponHasChanged = true;
+			previousWeapon = equippedWeapon;
 			equippedWeapon = w;
 		}
 	}
@@ -209,5 +188,13 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	
 	public ArrayList<PlayableCharacter> getEnemys() {
 		return Enemys;
+	}
+	
+	public int getBonusDamage(){
+		return bonusDamage;
+	}
+	
+	public void setBonusDamage(int val){
+		bonusDamage = val;
 	}
 }

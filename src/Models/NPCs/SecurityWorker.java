@@ -9,10 +9,13 @@ import Models.Entity;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.Upgrade;
 import SpriteSheet.SpriteSheet;
-import javafx.scene.image.Image;
 
 public class SecurityWorker extends NPC {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int counter = 0;
 	private String[] dialogue = {
 			"Watson is on the 7th floor. I hope you take him out"
@@ -20,7 +23,7 @@ public class SecurityWorker extends NPC {
 			"Why are you still here? You don’t have much time left. You must stop Watson", // 1
 			"You need to leave, I think I hear more guards coming" };// 2
 
-	public SecurityWorker(Image i, StoryController st, int x, int y) {
+	public SecurityWorker(StoryController st, int x, int y) {
 		super(SpriteSheet.getSecurityWorker(), st, x, y);
 	}
 

@@ -156,7 +156,7 @@ public class ArenaMenuController implements Initializable{
     			p.setWeapon(new MeleeWeapon(p));
     			break;
 			default:
-				System.out.println("Weapon Type is " + playBox.getWeaponType());
+				// Default is melee don't do anything
     		}
     		controller.addPlayer(p);
     		players.add(p);

@@ -14,21 +14,15 @@ import SpriteSheet.SpriteSheet;
 
 public class MedicNPC extends NPC implements Interactable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String[] dialogue = {"You dont need my help right now.", "You are hurt! This will help."};
 
 	public MedicNPC(StoryController st, int x, int y) {
 		super(SpriteSheet.getMedic(), st, x, y);
 	}
-
-//	public String conversation(PlayableCharacter c) {
-//		if (c.getMaxHealth() > c.getCurrentHealth()) {
-//			Upgrade u = new MedPack(0, 0);
-//			u.collect(c);
-//			return dialogue[1];
-//		} else {
-//			return dialogue[0];
-//		}
-//	}
 
 	// Figure out how to make this work
 	// could maybe do it in the update method...

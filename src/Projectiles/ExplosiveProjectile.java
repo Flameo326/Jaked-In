@@ -9,9 +9,13 @@ import SpriteSheet.SpriteSheet;
 
 public class ExplosiveProjectile extends Projectile {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ExplosiveProjectile(PlayableCharacter e) {
 		super(e, SpriteSheet.getExplosiveProjectile(), 3);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
