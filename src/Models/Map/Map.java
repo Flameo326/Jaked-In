@@ -59,12 +59,14 @@ public class Map implements Serializable{
 		rand = new Random();
 	}
 	
-	public void setSeed(long l){
+	public static void setSeed(long l){
 		rand = new Random(l);
 	}
 	
-	public void setRandomSeed(){
-		rand = new Random();
+	public static long setRandomSeed(){
+		long seed = new Random().nextLong();
+		rand = new Random(seed);
+		return seed;
 	}
 	
 	// This method can be overrode for different functionality
@@ -77,6 +79,12 @@ public class Map implements Serializable{
 			generatePaths(rooms);
 			populateMap(rooms);
 			generateDoors(rooms);
+			
+			// create room
+//			super.generate
+//			ArrayList<Entity> singleRoom;
+//			generatePaths(singleRoom);
+			
 		} catch(IOException e){
 			
 		}
@@ -90,7 +98,7 @@ public class Map implements Serializable{
 		ArrayList<Entity> rooms = new ArrayList<>(roomAmo);
 		
 		// Create first starting room
-		Entity currentRoom = createNewRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
+		Entity currentRoom = createNewRandomRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
 		rooms.add(currentRoom);
 		int radius = 0;
 		if(!mapIsLinear){
@@ -98,7 +106,7 @@ public class Map implements Serializable{
 		}
 		room: for(int i = 1; i < roomAmo; i++){
 			Entity previousRoom = rooms.get(rooms.size()-1);
-			currentRoom = createNewRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
+			currentRoom = createNewRandomRoom(minWidth, maxWidth, minHeightMultiplier, maxHeightMultiplier);
 			
 			int maxDist = Math.max(currentRoom.getWidth(), currentRoom.getHeight());
 			if(mapIsLinear){
@@ -141,23 +149,8 @@ public class Map implements Serializable{
 		return rooms;
 	}
 	
-	/*
-	 * bf.append("We will not be checking these entities against a wall\n");
-		for(Entity wall : walls){
-			bf.append("\tMin X: " + wall.getShape().getMinX() + 
-					" Min Y: " + wall.getShape().getMinY() + 
-					" Max X: " + wall.getShape().getMaxX() + 
-					" Max Y: " + wall.getShape().getMaxY() + "\n");
-		}
-	 */
-	
 	public void generatePaths(ArrayList<Entity> rooms) throws IOException{
 		ArrayList<Entity> walls = new ArrayList<>();
-//		for(int i = 0; i < rooms.size(); i++){
-//			Entity currentRoom = rooms.get(i);
-//			bf.append("Generating Room");
-//			walls.addAll(generateWalls(currentRoom, walls));
-//		}
 		for(int i = 0; i < rooms.size(); i++){
 			Entity currentRoom = rooms.get(i);
 			bf.append("Generating Room\n");
@@ -212,7 +205,7 @@ public class Map implements Serializable{
 	}
 	
 	public Entity createNewWall(int x, int y, int width, int height){
-		Image img = SpriteSheet.getBlock(width, height, Color.BLACK);
+		Image img = SpriteSheet.getBlock(width, height, Color.LIGHTGRAY);
 		Entity e = new Entity(img, x, y, (int)img.getWidth(), (int)img.getHeight()){
 			/**
 			 * 
@@ -232,10 +225,14 @@ public class Map implements Serializable{
 		return e;
 	}
 	
-	public Entity createNewRoom(int minWidth, int maxWidth, double minHeightMultiplier, double maxHeightMultiplier){
+	public Entity createNewRandomRoom(int minWidth, int maxWidth, double minHeightMultiplier, double maxHeightMultiplier){
 		int width = rand.nextInt(maxWidth - minWidth + 1) + minWidth;
 		int height = (int)(rand.nextDouble() * (maxHeightMultiplier - minHeightMultiplier) + minHeightMultiplier * width);
-		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUA), 0, 0, width, height){
+		return createNewRoom(0, 0, width, height);
+	}
+	
+	public Entity createNewRoom(int x, int y, int width, int height){
+		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUA), x, y, width, height){
 			/**
 			 * 
 			 */

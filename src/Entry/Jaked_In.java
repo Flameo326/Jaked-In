@@ -1,5 +1,6 @@
 package Entry;
 
+import SpriteSheet.SpriteSheet;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 public class Jaked_In extends Application {
 
 	public static void main(String[] args) {
+		SpriteSheet.init();
 		Application.launch(args);
 	}
 

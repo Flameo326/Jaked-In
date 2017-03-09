@@ -1,5 +1,7 @@
 package SpriteSheet;
 
+import java.util.Random;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -9,19 +11,66 @@ import javafx.scene.paint.Color;
 // This Class handles all the Graphics stuff
 public final class SpriteSheet {
 	
+	/*
+	 * AllyNPC will be default NPC with color
+	 * Ambush "
+	 * Angry "
+	 * Doctor will be medic
+	 * Door will be Orange/ Bronw, 40 x 40
+	 * Medic will be Medic
+	 * PowerUp "
+	 * Prisoner will be Orange  shirt NPC
+	 * Security Worker will be Police Like
+	 * Story NPC will be Scientist
+	 * 
+	 * Computer will either be Enemy or Player with color
+	 * Player will be Player with Color
+	 * 
+	 * Mine will be mine
+	 * Spawner will Look like teleport?
+	 * Turret will be blockish gray
+	 * 
+	 * Bonus Damage will be fist in air
+	 * DamageReduction will be Shield
+	 * ForceField will be ForceField
+	 * Medpack will look like health
+	 * Bullet Packs will look like corresponding bullets
+	 * - Bounce
+	 * - Explosive
+	 * - Normal - Triple circle
+	 * - Phase? Green opacity on outside
+	 * Spped Boost will be shoes
+	 * 
+	 * Color button will be R, G, or B. with Plus or Minue
+	 * Door is going to be red Door
+	 * 
+	 */
+	
 	private static Image spriteSheet;
-	private static boolean isInit = false;
-	public static final Image medic = getSpriteSheetImage(0, 0, 30, 30);
+	
+	// watson as the Image
+	private static Image watson;
+	
+	// Default NPC and defaultPlayer will be the normal look but with color variations
+	private static Image defaultNPC, defaultPlayer; 
+	
+	
+	private static Image explosiveProjectile, normalProjectile, bounceProjectile;
+	private static Image meleeAttack;
+	
+	private static Image medic, ally, enemy;
+	private static Image door;
+	
+	// may be used for rooms and Paths?
+	// otherwise it would be the standard colors but with darker edges
+	private static Image roomTile, pathTile;
 	
 	public static void init(){
 		spriteSheet = new Image("/Other/16x16_Sprite_Sheet.jpg");
-		isInit = true;
+//		medic 
 	}	
 	
 	public static Image getSpriteSheetImage(int x, int y, int width, int height){
-		if(!isInit){
-			init();
-		}
 		PixelReader pr = spriteSheet.getPixelReader();
 		WritableImage img = new WritableImage(width, height);
 		img.getPixelWriter().setPixels(0, 0, width, height, pr, x, y);
@@ -96,14 +145,21 @@ public final class SpriteSheet {
 	public static Image getMedic(){
 		return SpriteSheet.getBorderedBlock(30, 30, Color.RED, 2);
 	}
+	
+	public static Image getRandomNPC(){
+		Random rand = new Random();
+		return getNPCWithColor(Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
+	}
 
-	public static Image getNPC() {
+	// General NPC Format with possible coloring for clothes?
+	public static Image getNPCWithColor(Color c) {
 		return SpriteSheet.getBorderedBlock(30, 30, Color.DARKTURQUOISE, 2);
 	}
 	
-	public static Image getDoctor(){
-		return SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 2);
-	}
+	// Will just be Medic
+//	public static Image getDoctor(){
+//		return SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 2);
+//	}
 
 	public static Image getSpeedBoost() {
 		return SpriteSheet.getBorderedBlock(10, 10, Color.MEDIUMPURPLE, 2);
@@ -135,5 +191,9 @@ public final class SpriteSheet {
 
 	public static Image getEnemy(){
 		return SpriteSheet.getBorderedBlock(30, 30, Color.DARKRED, 2);
+	}
+	
+	public static Image getWatson(){
+		return watson;
 	}
 }
