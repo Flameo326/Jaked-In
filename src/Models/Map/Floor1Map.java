@@ -101,6 +101,10 @@ public class Floor1Map extends Map {
 	public Entity getExit(){
 		return exit;
 	}
+	
+	public void setEnterance(Entity enterance){
+		this.entrance = enterance;
+	}
 
 
 }
