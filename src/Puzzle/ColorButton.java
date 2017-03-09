@@ -3,16 +3,20 @@ package Puzzle;
 import Enums.ButtonColors;
 import Models.Players.PlayableCharacter;
 import SpriteSheet.SpriteSheet;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class ColorButton extends Button {
+
+	private static final long serialVersionUID = 1L;
+	private int color = 255;
 	private final ButtonColors buttonColor;
 	private final boolean isIncrementer;
 	private CombinedColor solution;
 
 	public ColorButton(int x, int y, ButtonColors buttonColor, boolean isIncrementer, CombinedColor b) {
-		super(SpriteSheet.getBorderedBlock(15, 15, Color.WHITE, 2), x, y);
+
+		super(SpriteSheet.getColorButtonImage(buttonColor, isIncrementer), x, y);
+
 		this.buttonColor = buttonColor;
 		this.isIncrementer = isIncrementer;
 		solution = b;

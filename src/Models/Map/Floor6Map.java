@@ -16,6 +16,10 @@ import javafx.scene.paint.Color;
 
 public class Floor6Map extends Floor1Map {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Entity> rooms;
 	private ArrayList<Entity> npcs;
 	private ArrayList<Entity> upgrades;
@@ -36,6 +40,7 @@ public class Floor6Map extends Floor1Map {
 		populateLevelSpecificEntities();
 	}
 
+	@Override
 	public void populateLevelSpecificEntities() {
 
 		// Entity lastRoom = rooms.get(rooms.size() - 1);
@@ -46,6 +51,7 @@ public class Floor6Map extends Floor1Map {
 		// getMapObjects().add();
 	}
 
+	@Override
 	public void populateNPC() {
 		for (Entity e : rooms) {
 			Entity temp = npcChoice(controller, e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(),
@@ -57,6 +63,7 @@ public class Floor6Map extends Floor1Map {
 		getMapObjects().addAll(npcs);
 	}
 
+	@Override
 	public void populateUpgrades() {
 		for (Entity e : rooms) {
 			Entity temp = upgradeChoice(controller, e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(),
@@ -83,11 +90,11 @@ public class Floor6Map extends Floor1Map {
 			generatePaths(rooms);
 			createPuzzleRoom(rooms.get(rooms.size()-1));
 			populateMap(rooms);
+			
 			generateDoors(rooms);
 		} catch (IOException e) {
 
 		}
-
 	}
 	
 	@Override
@@ -103,7 +110,7 @@ public class Floor6Map extends Floor1Map {
 		int radius = (int) (((getMapWidth() * .8 - 150 * 1.2)) * Math.sqrt(rooms.size()));
 		room: for (int i = 1; i < 2; i++) {
 			Entity previousRoom = rooms.get(rooms.size() - 1);
-			Entity currentRoom = createNewRoom(500, 500, 1, 1);
+			Entity currentRoom = createNewRandomRoom(500, 500, 1, 1);
 
 			int maxDist = Math.max(currentRoom.getWidth(), currentRoom.getHeight());
 			// in radians

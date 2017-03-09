@@ -16,6 +16,10 @@ import javafx.scene.image.Image;
 
 public abstract class NPC extends Entity implements Interactable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private StoryController controller;
 
 	public NPC(Image i, StoryController st, int x, int y) {
@@ -32,22 +36,6 @@ public abstract class NPC extends Entity implements Interactable{
 	
 	@Override
 	public void hasCollided(Collision c){
-//		Entity collider;
-//		if(c.collidingEntity == this){
-//			collider = c.collidedEntity;
-//		} else { 
-//			collider = c.collidingEntity;
-//		}
-//		System.out.println(collider);
-//		System.out.println(collider.getTag());
-//		String[] tagElements = collider.getTag().split("-");
-//		switch(tagElements[0]){
-//		case "Human":
-//			if(InputHandler.keyInputContains(KeyCode.F)){
-//				interact((PlayableCharacter)collider);
-//			}
-//			break;
-//		}
 	}
 
 	public StoryController getController(){

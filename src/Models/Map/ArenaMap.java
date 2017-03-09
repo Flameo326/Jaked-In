@@ -6,9 +6,14 @@ import Controller.CollisionSystem;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
+import Models.Upgrades.Upgrade;
 
 public class ArenaMap extends Map{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<PlayableCharacter> baseEntities;
 
 	public ArenaMap(int width, int height, ArrayList<PlayableCharacter> baseEntities) {
@@ -21,8 +26,7 @@ public class ArenaMap extends Map{
 	public void generateMap(){
 		getMapObjects().clear();
 		generateArenaWalls(getMapWidth(), getMapHeight());
-		// Would need to intially populate
-//		getMapObjects().add(new MedPack(SpriteSheet.getBlock(10, 10, Color.RED), 0, 0));
+		getMapObjects().add(createNewRoom(0, 0, getMapWidth(), getMapHeight()));
 	}
 	
 	public void generateArenaWalls(int width, int height){
@@ -57,7 +61,7 @@ public class ArenaMap extends Map{
 					}
 				}
 				if(!notColliding) { continue; }
-				collisions = CollisionSystem.getCollision(wall, baseEntities.toArray(new Entity[0]));
+				 collisions = CollisionSystem.getCollision(wall, baseEntities.toArray(new Entity[0]));
 				for(Collision c : collisions){
 					if(Math.min(c.xPenDepth, c.yPenDepth) > -20){
 						notColliding = false;
@@ -70,23 +74,23 @@ public class ArenaMap extends Map{
 		}
 	}
 	
-	public void checkCollision(Entity e){
-		e.setXPos(rand.nextInt(getMapWidth()) - getMapWidth()/2);
-		e.setYPos(rand.nextInt(getMapHeight()) - getMapHeight()/2);
+	public Upgrade createNewUpgrade(){
+		Upgrade u = upgradeChoice(null, -getMapWidth()/2, -getMapHeight()/2, getMapWidth(), getMapHeight());
 		boolean colliding = true;
 		
 		while(colliding){
+			u.setXPos(rand.nextInt(getMapWidth()) - getMapWidth()/2);
+			u.setYPos(rand.nextInt(getMapHeight()) - getMapHeight()/2);
 			colliding = false;
-			ArrayList<Collision> collisions = CollisionSystem.getCollision(e, getMapObjects().toArray(new Entity[0]));
+			ArrayList<Collision> collisions = CollisionSystem.getCollision(u, getMapObjects().toArray(new Entity[0]));
 			for(Collision c : collisions){
-				if(c.hasCollided){
+				if(!c.collidedEntity.getTag().equals("Room") && c.hasCollided){
 					colliding = true;
-					e.setXPos(rand.nextInt(getMapWidth()) - getMapWidth()/2);
-					e.setYPos(rand.nextInt(getMapHeight()) - getMapHeight()/2);
 					break;
 				}
 			}
 		}
+		return u;
 	}
 
 }

@@ -10,10 +10,15 @@ import javafx.scene.image.Image;
 
 public abstract class Weapon extends Entity implements Attackable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final PlayableCharacter ownedEntity;
 	private int attackTime;
 	protected int timer;
 
+	// Weapons are no longer going to have a display???
 	public Weapon(PlayableCharacter e, Image i){
 		super(i, e.getXPos(), e.getYPos(), (int)i.getWidth(), (int)i.getHeight());
 		ownedEntity = e;
@@ -22,9 +27,7 @@ public abstract class Weapon extends Entity implements Attackable{
 
 	@Override
 	public void hasCollided(Collision c) {
-		// do nothing im pretty sure
-		// we dont care about collision among weapon... potentially//
-		// only there for display
+		// do nothing
 	}
 	
 	@Override

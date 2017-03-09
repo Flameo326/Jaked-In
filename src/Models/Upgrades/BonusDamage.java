@@ -1,20 +1,28 @@
 package Models.Upgrades;
 
+import java.util.Random;
+
 import Models.Players.PlayableCharacter;
 import SpriteSheet.SpriteSheet;
 
 public class BonusDamage extends Upgrade{
 
-	// This class would have to access the weapon to modify the damage...
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int bonusDamage;
+
 	public BonusDamage(int x, int y) {
 		super(SpriteSheet.getBonusDamage(), x, y);
-		// TODO Auto-generated constructor stub
+		bonusDamage = new Random().nextInt(5)+1;
 	}
 
 	@Override
 	public void collect(PlayableCharacter c) {
-		// TODO Auto-generated method stub
-		
+		c.setBonusDamage(bonusDamage);
+		isCollected = true;
 	}
 
 }

@@ -13,12 +13,16 @@ import SpriteSheet.SpriteSheet;
 
 public class AllyNPC extends PlayableCharacter implements Interactable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private StoryController controller;
 	private PlayableCharacter ally;
 	private boolean interacted;
 	
 	public AllyNPC(StoryController controller, int x, int y) {
-		super(SpriteSheet.getNPC(), x, y);
+		super(SpriteSheet.getRandomNPC(), x, y);
 		this.controller = controller;
 		setDisplayLayer(6);
 		setTag(getTag() + "-AllyNPC");
@@ -26,22 +30,6 @@ public class AllyNPC extends PlayableCharacter implements Interactable {
 	
 	@Override
 	public void hasCollided(Collision c) {
-//		Entity collider;
-//		if(c.collidingEntity == this){
-//			collider = c.collidedEntity;
-//		} else { 
-//			collider = c.collidingEntity;
-//		}
-//		System.out.println(collider);
-//		System.out.println(collider.getTag());
-//		String[] tagElements = collider.getTag().split("-");
-//		switch(tagElements[0]){
-//		case "Human":
-//			if(InputHandler.keyInputContains(KeyCode.F)){
-//				interact((PlayableCharacter)collider);
-//			}
-//			break;
-//		}
 	}
 	
 	@Override

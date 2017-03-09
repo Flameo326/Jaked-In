@@ -6,6 +6,10 @@ import Projectiles.NormalProjectile;
 import javafx.scene.image.Image;
 
 public abstract class ProjectileWeapon extends Weapon{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected final int bulletLifeTime;
 	protected int bullets;
 	
@@ -25,7 +29,7 @@ public abstract class ProjectileWeapon extends Weapon{
 			p = new NormalProjectile(getOwnedEntity());
 			p.setLifeTime((int)(bulletLifeTime * 3.33));
 			if(--bullets <= 0){
-				getOwnedEntity().removeWeapon(this);
+				getOwnedEntity().removeWeapon();
 			}
 		}
 		return p;

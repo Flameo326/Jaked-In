@@ -15,7 +15,6 @@ public class Button extends Entity implements Interactable, Subscribable<Button>
 	
 	public Button(Image i, int x, int y) {
 		super(i, x, y);
-
 	}
 
 	@Override

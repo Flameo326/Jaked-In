@@ -1,6 +1,5 @@
 package Controller;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,11 +13,6 @@ import Models.Map.ArenaMap;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
-import Models.Upgrades.MedPack;
-import Models.Upgrades.NormalWeaponBullets;
-import Models.Upgrades.SpeedBoost;
-import Models.Upgrades.Upgrade;
-import SpriteSheet.SpriteSheet;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -47,7 +41,7 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 	private ArenaMap arenaMap;
 	private ArrayList<PlayableCharacter> players, deadPlayers;
 	private Random rand;
-	private long upgradeTime, weaponTime;
+	private long upgradeTime;
 	
 	public void addPlayer(PlayableCharacter p){
 		players.add(p);
@@ -148,7 +142,6 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 					s.setScene(scene);
 					s.centerOnScreen();
 				} catch (IOException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 				
@@ -202,36 +195,9 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 		// from 3o seconds to 3 minuutes
 		if(GameController.getTimer() >= upgradeTime){
 			// Get current time + 30 seconds to 3 minutes ahead
-			upgradeTime = GameController.getTimer()+ (rand.nextInt(12) + 1) * 5000000000l;
+			upgradeTime = GameController.getTimer()+ /*(rand.nextInt(12) + 1) **/ 5000000000l;
 			
-			Upgrade u;
-			switch(rand.nextInt(2)){
-			case 1:
-				u = new SpeedBoost(0, 0);
-				break;
-			default:
-				u = new MedPack(0, 0);
-				break;
-			}
-			
-			arenaMap.checkCollision(u);
-			gc.addEntity(u);
-		}
-		if(GameController.getTimer() >= weaponTime){
-			weaponTime = GameController.getTimer()+ (rand.nextInt(12) + 1) * 15000000000l;
-			
-			Upgrade w;
-			switch(rand.nextInt(1)){
-//			case 1:
-//				w = new SpeedBoost(SpriteSheet.getBlock(15, 15, Color.MEDIUMPURPLE), 0, 0);
-//				break;
-			default:
-				w = new NormalWeaponBullets(SpriteSheet.getBlock(20, 10, Color.BLACK), 0, 0);
-				break;
-			}
-			
-			arenaMap.checkCollision(w);
-			gc.addEntity(w);
+			gc.addEntity(arenaMap.createNewUpgrade());
 		}
 		
 		// Check for win
@@ -297,6 +263,8 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 					else if(y > backY && y < backY + btnHeight){
 						myCanvas.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
 						PlayerBox.resetHumanPlayers();
+						HumanPlayer.resetHumanID();
+						ComputerPlayer.resetComputerID();
 						
 						Stage s = (Stage)myCanvas.getScene().getWindow();
 						if(s == null) { return; }
@@ -307,7 +275,6 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 							s.setScene(scene);
 							s.centerOnScreen();
 						} catch (IOException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					}
