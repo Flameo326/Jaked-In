@@ -23,6 +23,15 @@ public class Pulsar extends Projectile {
 		entities.remove(this);
 	}
 	
+	@Override
+	public void move(ArrayList<Entity> entities){
+		for(int i = 0; i < lifeTime; i++){
+			if(hasHit.isEmpty()){
+				super.move(entities);
+			}
+		}
+	}
+	
 	public HashSet<Entity> killOff(ArrayList<Entity> entities){
 		if(entities.contains(this)) {
 			entities.remove(this);

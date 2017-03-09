@@ -25,7 +25,7 @@ public abstract class ProjectileWeapon extends Weapon{
 			p = new NormalProjectile(getOwnedEntity());
 			p.setLifeTime((int)(bulletLifeTime * 3.33));
 			if(--bullets <= 0){
-				getOwnedEntity().removeWeapon(this);
+				getOwnedEntity().removeWeapon();
 			}
 		}
 		return p;

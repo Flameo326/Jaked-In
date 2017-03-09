@@ -20,7 +20,7 @@ public class BounceProjectileWeapon extends ProjectileWeapon {
 			p = new BounceProjectile(getOwnedEntity(), 4);
 			p.setLifeTime((int)(bulletLifeTime * 3.33));
 			if(--bullets <= 0){
-				getOwnedEntity().removeWeapon(this);
+				getOwnedEntity().removeWeapon();
 			}
 		}
 		return p;

@@ -19,7 +19,7 @@ public class ExplosiveProjectileWeapon extends ProjectileWeapon{
 			p = new ExplosiveProjectile(getOwnedEntity());
 			p.setLifeTime((int)(bulletLifeTime * 3.33));
 			if(--bullets <= 0){
-				getOwnedEntity().removeWeapon(this);
+				getOwnedEntity().removeWeapon();
 			}
 		}
 		return p;

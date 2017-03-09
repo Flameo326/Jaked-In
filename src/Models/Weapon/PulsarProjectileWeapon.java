@@ -26,15 +26,15 @@ public class PulsarProjectileWeapon extends ProjectileWeapon{
 				p.killOff(entities);
 			}
 			if(--bullets <= 0){
-				getOwnedEntity().removeWeapon(this);
+				getOwnedEntity().removeWeapon();
 			}
 		}
 		return p;
 	}
 	
+	@Override
 	public Attack attack(){
-		System.out.println("Wrong attack?");
-		return null;
-	};
+		throw new UnsupportedOperationException("Invalid attack method called");
+	}
 	
 }
