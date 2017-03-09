@@ -7,7 +7,6 @@ import Controller.InputHandler;
 import Enums.Direction;
 import Interfaces.Interactable;
 import Models.Entity;
-import Models.Weapon.NormalProjectileWeapon;
 import Models.Weapon.PulsarProjectileWeapon;
 import Models.Weapon.Attack.Attack;
 import Projectiles.Pulsar;
@@ -22,7 +21,7 @@ public class HumanPlayer extends PlayableCharacter{
 	public HumanPlayer(Image i, int x, int y) {
 		super(i, x, y);
 		setTag("Human-" + ++humanID);
-		addWeapon(new NormalProjectileWeapon(this, 30));
+//		addWeapon(new NormalProjectileWeapon(this, 30));
 	}
 	
 	@Override
@@ -34,19 +33,19 @@ public class HumanPlayer extends PlayableCharacter{
 				move(entities);
 			}
 			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
-				if(getWeapon().getClass() == PulsarProjectileWeapon.class){
+				if(getWeapon() instanceof PulsarProjectileWeapon){
 					Pulsar p = (Pulsar) ((PulsarProjectileWeapon) getWeapon()).attack(entities);
 				} else {
 					Attack h = attack();
 					if(h != null){
-//						System.out.println(getTag() + " attacked");
 						entities.add(h);
 					}
 				}
 			}
-			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.ChangeWeapon)){
+			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.ChangeWeapon) &&
+					GameController.getTimer() >= weaponTimer){
 				changeWeapon();
-				InputHandler.keyrelease(InputHandler.ChangeWeapon);
+				weaponTimer = GameController.getTimer() + 300000000l;
 			}
 			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.Interact)){
 				checkForInteraction();

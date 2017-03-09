@@ -10,6 +10,7 @@ import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
 import Models.Weapon.BounceProjectileWeapon;
 import Models.Weapon.MeleeWeapon;
+import Models.Weapon.NormalProjectileWeapon;
 import Models.Weapon.PulsarProjectileWeapon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -135,13 +136,10 @@ public class ArenaMenuController implements Initializable{
     		// Set weapon
     		switch(playBox.getWeaponType()){
     		case "Projectile":
-    			p.setWeapon(new PulsarProjectileWeapon(p, 30));
-    			break;
-    		case "Melee":
-    			p.setWeapon(new MeleeWeapon(p));
+    			p.addWeapon(new NormalProjectileWeapon(p, 30));
     			break;
 			default:
-				System.out.println("Weapon Type is " + playBox.getWeaponType());
+				// Default is melee don't do anything
     		}
     		controller.addPlayer(p);
     	}

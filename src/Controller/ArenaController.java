@@ -1,6 +1,5 @@
 package Controller;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -297,6 +296,8 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 					else if(y > backY && y < backY + btnHeight){
 						myCanvas.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
 						PlayerBox.resetHumanPlayers();
+						HumanPlayer.resetHumanID();
+						ComputerPlayer.resetComputerID();
 						
 						Stage s = (Stage)myCanvas.getScene().getWindow();
 						if(s == null) { return; }

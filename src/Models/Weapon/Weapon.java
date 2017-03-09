@@ -22,9 +22,7 @@ public abstract class Weapon extends Entity implements Attackable{
 
 	@Override
 	public void hasCollided(Collision c) {
-		// do nothing im pretty sure
-		// we dont care about collision among weapon... potentially//
-		// only there for display
+		// do nothing
 	}
 	
 	@Override
