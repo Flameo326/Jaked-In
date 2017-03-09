@@ -315,4 +315,8 @@ public final class SpriteSheet {
 		}
 		return i;
 	}
+
+	public static Image getRandomEnemy() {
+		return SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
+	}
 }

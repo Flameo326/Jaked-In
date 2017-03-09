@@ -116,7 +116,9 @@ public class ComputerPlayer extends PlayableCharacter{
 			
 			// if didn't move
 			if(prevX == getXPos() && prevY == getYPos()){
-				timer = decisionLength + 200;
+				decisionChoice = rand.nextInt(8);
+				setCurrDir(Direction.values()[decisionChoice >= 4 ? decisionChoice+1 : decisionChoice]);
+				timer = 0;
 			}
 			timer += Math.abs(prevX - getXPos()) + Math.abs(prevY - getYPos()); 
 			
@@ -127,9 +129,12 @@ public class ComputerPlayer extends PlayableCharacter{
 					Direction currDir = getCurrDir();
 					//change direction to fire, then change the direction back
 					setCurrDir(directionOfClosestEnemy());
+					
 					if(difficulty != Difficulties.HARD){
 						Pulsar p = new Pulsar(this);
-						if(!p.killOff(entities, true).isEmpty()){
+						if(!p.killOff(entities, false).isEmpty()){
+//							new Pulsar(this).killOff(entities, true);
+							
 							Attack h = attack();
 							if(h != null){
 								entities.add(h);
@@ -140,13 +145,13 @@ public class ComputerPlayer extends PlayableCharacter{
 							setCurrDir(Direction.values()[i >= 4 ? i+1 : i]);
 							Pulsar p = new Pulsar(this);
 							if(!p.killOff(entities, false).isEmpty()){
-								Pulsar temp = new Pulsar(this);
-								p.killOff(entities, true);
+//								new Pulsar(this).killOff(entities, true);
 								
 								Attack h = attack();
 								if(h != null){
 									entities.add(h);
 								}
+								break;
 							}
 						}	
 					}

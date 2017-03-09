@@ -3,6 +3,7 @@ package Projectiles;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import Controller.CollisionSystem;
 import Models.Collision;
 //github.com/Flameo326/Jaked-In.git
 import Models.Entity;
@@ -20,6 +21,7 @@ public class Pulsar extends Projectile {
 	public Pulsar(PlayableCharacter e) {
 		super(e, SpriteSheet.getBouceProjectile(), 8);
 		setLifeTime(50);
+		setDamage(0);
 	}
 
 	@Override
@@ -35,14 +37,15 @@ public class Pulsar extends Projectile {
 			if(hasHit.isEmpty()){
 //				move(entities);
 				
-//				for(int x = 0; x < getSpeed(); x++){
-//					setXPos(getXPos() + getCurrDir().getX());
-//					setYPos(getYPos() + getCurrDir().getY());
-//					CollisionSystem.checkMovementCollisions(this, entities);
-//				}
-				move(entities);
+				for(int x = 0; x < getSpeed(); x++){
+					prevX = getXPos();
+					prevY = getYPos();
+					setXPos(getXPos() + getCurrDir().getX());
+					setYPos(getYPos() + getCurrDir().getY());
+					CollisionSystem.checkMovementCollisions(this, entities);
+					}
 				if(showLine){
-					entities.add(new Entity(SpriteSheet.getBlock(2, 2, Color.RED), getXPos(), getYPos()) {
+					entities.add(new Entity(SpriteSheet.getBlock(1, 1, Color.RED), getXPos(), getYPos()) {
 						private int timer = 0;
 						
 						@Override
