@@ -29,13 +29,17 @@ public final class SpriteSheet {
 	}
 	
 	public static Image getBorderedBlock(int width, int height, Color c, int borderWidth){
+		return getBorderedBlock(width, height, c, borderWidth, Color.BLACK);
+	}
+	
+	public static Image getBorderedBlock(int width, int height, Color c, int borderWidth, Color borderColor){
 		WritableImage img = new WritableImage(width, height);
 		PixelWriter pw = img.getPixelWriter();
 		for(int i = 0; i < img.getHeight(); i++){
 			for(int e = 0; e < img.getWidth(); e++){
 				if(i < borderWidth || e < borderWidth || i > img.getHeight()-borderWidth ||
 						e > img.getWidth()-borderWidth){
-					pw.setColor(e, i, Color.BLACK);
+					pw.setColor(e, i, borderColor);
 				} else {
 					pw.setColor(e, i, c);
 				}

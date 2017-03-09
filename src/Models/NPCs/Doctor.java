@@ -15,7 +15,7 @@ public class Doctor extends NPC {
 
 	private String[] dialogue = {
 			"I’m sorry for all of this. Watson forced me to work on you."
-					+ " Take this key card it will get you down to the Tech Wing, I wish I could do more", // 0
+					+ " Go down to the Tech Wing. There is a security worker there who can help you. I wish I could do more", // 0
 			"I already told you that I am sorry, what more do you want?", // 1
 			"Fine take this power up and go away!", // 2
 			"Please, just leave me alone." };// 3
@@ -25,10 +25,6 @@ public class Doctor extends NPC {
 		super(SpriteSheet.getDoctor(), st, x, y);
 		setTag("NPC-Doctor");
 	}
-
-//	public void conversation(PlayableCharacter c) {
-//		
-//	}
 
 	@Override
 	public void interact(PlayableCharacter c) {

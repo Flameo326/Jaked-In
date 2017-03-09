@@ -1,9 +1,13 @@
 package Models.Map;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import Controller.StoryController;
+import Enums.ButtonColors;
 import Models.Entity;
+import Puzzle.ColorButton;
+import Puzzle.CombinedColor;
 
 public class Floor6Map extends Floor1Map{
 
@@ -60,4 +64,34 @@ public class Floor6Map extends Floor1Map{
 		createExit(rooms.get(0));
 		createEntrance(rooms.get(rooms.size()-1));
 	}
+	
+	@Override
+	public void generateMap(){
+		super.generateMap();
+		
+		ArrayList<Entity> singleRoom = generateRooms(400, 400, 1, 1, 1);
+		createPuzzleRoom(singleRoom);
+		generatePaths(singleRoom);
+		
+		
+		
+	}
+	
+	public void createPuzzleRoom(ArrayList<Entity> singleRoom){
+		// e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight()
+		int xMid = singleRoom.get(0).getShape().getCenterX();
+		int yMid = singleRoom.get(0).getShape().getCenterY();
+
+		ArrayList<Entity> puzzleButtons = new ArrayList<>();
+		CombinedColor solution = new CombinedColor(xMid, yMid);
+		puzzleButtons.add(solution);
+		puzzleButtons.add(new ColorButton(xMid - 100, yMid + 100, ButtonColors.RED, true, solution));//redIncrement
+		puzzleButtons.add(new ColorButton(xMid + 100, yMid + 100, ButtonColors.RED, false, solution));//RedDecrement
+		puzzleButtons.add(new ColorButton(xMid - 100, yMid, ButtonColors.GREEN, true, solution));//GreenIncrement
+		puzzleButtons.add(new ColorButton(xMid + 100, yMid, ButtonColors.GREEN, false, solution));//GreenDecrement
+		puzzleButtons.add(new ColorButton(xMid - 100, yMid - 100, ButtonColors.BLUE, true, solution));//BlueIncrement
+		puzzleButtons.add(new ColorButton(xMid + 100, yMid - 100, ButtonColors.BLUE, false, solution));//BlueDecrement
+		getMapObjects().addAll(puzzleButtons);
+	}
+		
 }
