@@ -9,12 +9,16 @@ import Interfaces.Interactable;
 import Models.Entity;
 import Models.Weapon.PulsarProjectileWeapon;
 import Models.Weapon.Attack.Attack;
-import Projectiles.Pulsar;
+//import Projectiles.Pulsar;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 public class HumanPlayer extends PlayableCharacter{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static int humanID = 0;
 	private long weaponTimer;
 
@@ -34,7 +38,8 @@ public class HumanPlayer extends PlayableCharacter{
 			}
 			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
 				if(getWeapon() instanceof PulsarProjectileWeapon){
-					Pulsar p = (Pulsar) ((PulsarProjectileWeapon) getWeapon()).attack(entities);
+//					Pulsar p = (Pulsar) ((PulsarProjectileWeapon) getWeapon()).attack(entities);
+					((PulsarProjectileWeapon) getWeapon()).attack(entities);
 				} else {
 					Attack h = attack();
 					if(h != null){

@@ -16,14 +16,18 @@ import javafx.scene.input.KeyCode;
 
 public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Weapon equippedWeapon, previousWeapon, mainWeapon, secondWeapon;
 	private Entity healthBar;
 	private int maxHealth, currentHealth;
 	private boolean isDodging, weaponHasChanged;
-	private int damageReduction = 0;
+	private int damageReduction, bonusDamage;
 
 	public PlayableCharacter(Image i, int x, int y) {
-		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
+		super(i, x, y);
 		healthBar = new HealthBar(this);
 		setSpeed(3);
 		setDisplayLayer(7);
@@ -137,14 +141,6 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		}
 	}
 	
-	public Weapon hasWeapon(Class val){
-		Weapon weapon = null;
-		if(val.isInstance(mainWeapon)) {
-			weapon = mainWeapon;
-		}
-		return weapon;
-	}
-	
 	public boolean isAlive(){
 		return currentHealth > 0;
 	}
@@ -187,5 +183,13 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 
 	public void setDamageReduction(int damageReduction) {
 		this.damageReduction = damageReduction;
+	}
+	
+	public int getBonusDamage(){
+		return bonusDamage;
+	}
+	
+	public void setBonusDamage(int val){
+		bonusDamage = val;
 	}
 }

@@ -6,13 +6,15 @@ import java.util.Collections;
 import Enums.ButtonColors;
 import Interfaces.Publishable;
 import Interfaces.Subscribable;
-import Models.Entity;
 import SpriteSheet.SpriteSheet;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class CombinedColor extends Button implements Publishable<Door>{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Door> subscribers = new ArrayList<>();
 	private int red = 255;
 	private int green = 255;

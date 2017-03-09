@@ -2,6 +2,10 @@ package Models.Shape;
 
 public class Circle extends Shape{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int radius;
 	
 	public Circle(int centerX, int centerY, int radius){

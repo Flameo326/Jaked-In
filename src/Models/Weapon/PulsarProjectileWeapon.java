@@ -11,8 +11,13 @@ import SpriteSheet.SpriteSheet;
 
 public class PulsarProjectileWeapon extends ProjectileWeapon{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public PulsarProjectileWeapon(PlayableCharacter e, int bullets) {
-		super(e, SpriteSheet.getBouceProjectile(), 10000, 5, 30);
+		super(e, SpriteSheet.getBouceProjectile(), bullets, 5, 30);
 	}
 	
 	public Attack attack(ArrayList<Entity> entities) {

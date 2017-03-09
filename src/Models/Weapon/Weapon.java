@@ -10,10 +10,15 @@ import javafx.scene.image.Image;
 
 public abstract class Weapon extends Entity implements Attackable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final PlayableCharacter ownedEntity;
 	private int attackTime;
 	protected int timer;
 
+	// Weapons are no longer going to have a display???
 	public Weapon(PlayableCharacter e, Image i){
 		super(i, e.getXPos(), e.getYPos(), (int)i.getWidth(), (int)i.getHeight());
 		ownedEntity = e;

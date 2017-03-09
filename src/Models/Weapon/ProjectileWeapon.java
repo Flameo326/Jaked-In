@@ -6,6 +6,10 @@ import Projectiles.NormalProjectile;
 import javafx.scene.image.Image;
 
 public abstract class ProjectileWeapon extends Weapon{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected final int bulletLifeTime;
 	protected int bullets;
 	

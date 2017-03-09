@@ -9,11 +9,15 @@ import javafx.scene.image.Image;
 
 public class HitBox extends Attack{
 
-	// This will be for Like Melee Weapons...
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public HitBox(PlayableCharacter e, Image i) {
 		super(e, i);
 		setTag(getTag() + "-Melee");
-		setDamage(20);
+		setDamage(getDamage() + 20);
 		setCurrDir(Direction.getDir(0, 0));
 	}
 	

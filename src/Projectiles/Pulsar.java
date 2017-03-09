@@ -3,18 +3,20 @@ package Projectiles;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.MedPack;
 import SpriteSheet.SpriteSheet;
-import javafx.scene.paint.Color;
 
 public class Pulsar extends Projectile {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Pulsar(PlayableCharacter e) {
 		super(e, SpriteSheet.getBouceProjectile(), 8);
-		
 	}
 
 	@Override

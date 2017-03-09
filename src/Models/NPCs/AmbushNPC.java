@@ -13,20 +13,20 @@ import SpriteSheet.SpriteSheet;
 
 public class AmbushNPC extends PlayableCharacter implements Interactable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private StoryController controller;
 	private PlayableCharacter enemy;
 	private boolean interacted;
 
 	public AmbushNPC(StoryController controller, int x, int y) {
-		super(SpriteSheet.getNPC(), x, y);
+		super(SpriteSheet.getRandomNPC(), x, y);
 		this.controller = controller;
 		setDisplayLayer(6);
 		setTag(getTag() + "-EnemyNPC");
 	}
-	
-//	public String conversation(PlayableCharacter c) {
-//		return dialogue;
-//	}
 
 	@Override
 	public void interact(PlayableCharacter p) {
@@ -39,22 +39,7 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 
 	@Override
 	public void hasCollided(Collision c) {
-//		Entity collider;
-//		if(c.collidingEntity == this){
-//			collider = c.collidedEntity;
-//		} else { 
-//			collider = c.collidingEntity;
-//		}
-//		System.out.println(collider);
-//		System.out.println(collider.getTag());
-//		String[] tagElements = collider.getTag().split("-");
-//		switch(tagElements[0]){
-//		case "Human":
-//			if(InputHandler.keyInputContains(KeyCode.F)){
-//				interact((PlayableCharacter)collider);
-//			}
-//			break;
-//		}
+		
 	}
 
 	@Override

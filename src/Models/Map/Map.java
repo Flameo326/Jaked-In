@@ -1,6 +1,5 @@
 package Models.Map;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,10 +20,14 @@ import Models.NPCs.PowerUpNPC;
 import Models.NPCs.StoryNPC;
 import Models.Shape.Shape;
 import Models.Upgrades.BonusDamage;
+import Models.Upgrades.BounceWeaponPickup;
 import Models.Upgrades.DamageReduction;
+import Models.Upgrades.ExplosiveWeaponPickup;
 import Models.Upgrades.ForceFieldReflection;
 import Models.Upgrades.MedPack;
+import Models.Upgrades.ProjectileWeaponPickup;
 import Models.Upgrades.SpeedBoost;
+import Models.Upgrades.Upgrade;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -79,11 +82,6 @@ public class Map implements Serializable{
 			generatePaths(rooms);
 			populateMap(rooms);
 			generateDoors(rooms);
-			
-			// create room
-//			super.generate
-//			ArrayList<Entity> singleRoom;
-//			generatePaths(singleRoom);
 			
 		} catch(IOException e){
 			
@@ -206,7 +204,7 @@ public class Map implements Serializable{
 	
 	public Entity createNewWall(int x, int y, int width, int height){
 		Image img = SpriteSheet.getBlock(width, height, Color.LIGHTGRAY);
-		Entity e = new Entity(img, x, y, (int)img.getWidth(), (int)img.getHeight()){
+		Entity e = new Entity(img, x, y){
 			/**
 			 * 
 			 */
@@ -232,7 +230,8 @@ public class Map implements Serializable{
 	}
 	
 	public Entity createNewRoom(int x, int y, int width, int height){
-		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUA), x, y, width, height){
+		// Change this
+		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUA), x, y){
 			/**
 			 * 
 			 */
@@ -254,7 +253,7 @@ public class Map implements Serializable{
 	public Entity createNewPath(int minWidth, int minHeight, int maxWidth, int maxHeight){
 		int width = rand.nextInt(maxWidth - minWidth + 1) + minWidth;
 		int height = rand.nextInt(maxHeight - minHeight + 1) + minHeight;
-		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUAMARINE), 0, 0, width, height){
+		Entity e = new Entity(SpriteSheet.getBlock(width, height, Color.AQUAMARINE), 0, 0){
 			/**
 			 * 
 			 */
@@ -693,9 +692,9 @@ public class Map implements Serializable{
 		}
 	}
 	
-	public Entity upgradeChoice(StoryController controller, int roomX, int roomY, int width, int height){
+	public Upgrade upgradeChoice(StoryController controller, int roomX, int roomY, int width, int height){
 		if (rand.nextInt(100) + 1 < 51) {
-			int selection = rand.nextInt(5) + 1;// choosing what Upgrade is
+			int selection = rand.nextInt(8) + 1;// choosing what Upgrade is
 													// created
 			int x = rand.nextInt(width - 30) + roomX + 15;
 			int y = rand.nextInt(height - 30) + roomY + 15;
@@ -708,6 +707,12 @@ public class Map implements Serializable{
 				return new ForceFieldReflection(x, y);
 			case 4:
 				return new MedPack(x, y);
+			case 5:
+				return new BounceWeaponPickup(x, y);
+			case 6:
+				return new ExplosiveWeaponPickup(x, y);
+			case 7:
+				return new ProjectileWeaponPickup(x, y);
 			default:
 				return new SpeedBoost(x, y);
 			

@@ -7,6 +7,11 @@ import SpriteSheet.SpriteSheet;
 
 public class ExplosiveProjectileWeapon extends ProjectileWeapon{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ExplosiveProjectileWeapon(PlayableCharacter e, int bullets) {
 		super(e, SpriteSheet.getExplosiveProjectile(), bullets, 100, 30);
 	}

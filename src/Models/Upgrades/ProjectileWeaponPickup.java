@@ -2,20 +2,24 @@ package Models.Upgrades;
 
 import Models.Players.PlayableCharacter;
 import Models.Weapon.NormalProjectileWeapon;
-import javafx.scene.image.Image;
+import SpriteSheet.SpriteSheet;
 
-public class ProjectileWeaponBullets extends Upgrade{
+public class ProjectileWeaponPickup extends Upgrade{
 
-	public ProjectileWeaponBullets(Image i, int x, int y) {
-		super(i, x, y);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public ProjectileWeaponPickup(int x, int y) {
+		super(SpriteSheet.getNormalProjectilePickup(), x, y);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void collect(PlayableCharacter c) {
-		NormalProjectileWeapon currWeapon =  (NormalProjectileWeapon) c.hasWeapon(NormalProjectileWeapon.class);
-		if(currWeapon != null){
-			currWeapon.addBullets(30);
+		if(c.getWeapon() instanceof NormalProjectileWeapon){
+			((NormalProjectileWeapon)c.getWeapon()).addBullets(30);
 		} else {
 			c.addWeapon(new NormalProjectileWeapon(c, 25));
 		}

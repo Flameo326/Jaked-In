@@ -7,6 +7,10 @@ import SpriteSheet.SpriteSheet;
 
 public class DamageReduction extends Upgrade{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int damageReduction = 0;
 
 	public DamageReduction(int x, int y) {
@@ -18,6 +22,7 @@ public class DamageReduction extends Upgrade{
 	@Override
 	public void collect(PlayableCharacter c) {
 		c.setDamageReduction(damageReduction);
+		isCollected = true;
 	}
 
 }

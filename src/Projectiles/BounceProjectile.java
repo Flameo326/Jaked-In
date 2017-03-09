@@ -7,8 +7,13 @@ import SpriteSheet.SpriteSheet;
 
 public class BounceProjectile extends Projectile {
 	
-	public BounceProjectile(PlayableCharacter e, int BounceAmount) {
-		super(e, SpriteSheet.getBouceProjectile(), 8);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public BounceProjectile(PlayableCharacter e, int bounceAmount) {
+		super(e, SpriteSheet.getBouceProjectile(), bounceAmount);
 		setBounceAmount(bounceAmount);
 	}
 
