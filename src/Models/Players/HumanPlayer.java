@@ -7,22 +7,25 @@ import Controller.InputHandler;
 import Enums.Direction;
 import Interfaces.Interactable;
 import Models.Entity;
-import Models.Weapon.NormalProjectileWeapon;
 import Models.Weapon.PulsarProjectileWeapon;
 import Models.Weapon.Attack.Attack;
-import Projectiles.Pulsar;
+//import Projectiles.Pulsar;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 public class HumanPlayer extends PlayableCharacter{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static int humanID = 0;
 	private long weaponTimer;
 
 	public HumanPlayer(Image i, int x, int y) {
 		super(i, x, y);
 		setTag("Human-" + ++humanID);
-		addWeapon(new NormalProjectileWeapon(this, 30));
+//		addWeapon(new NormalProjectileWeapon(this, 30));
 	}
 	
 	@Override
@@ -34,19 +37,20 @@ public class HumanPlayer extends PlayableCharacter{
 				move(entities);
 			}
 			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
-				if(getWeapon().getClass() == PulsarProjectileWeapon.class){
-					Pulsar p = (Pulsar) ((PulsarProjectileWeapon) getWeapon()).attack(entities);
+				if(getWeapon() instanceof PulsarProjectileWeapon){
+//					Pulsar p = (Pulsar) ((PulsarProjectileWeapon) getWeapon()).attack(entities);
+					((PulsarProjectileWeapon) getWeapon()).attack(entities);
 				} else {
 					Attack h = attack();
 					if(h != null){
-//						System.out.println(getTag() + " attacked");
 						entities.add(h);
 					}
 				}
 			}
-			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.ChangeWeapon)){
+			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.ChangeWeapon) &&
+					GameController.getTimer() >= weaponTimer){
 				changeWeapon();
-				InputHandler.keyrelease(InputHandler.ChangeWeapon);
+				weaponTimer = GameController.getTimer() + 300000000l;
 			}
 			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.Interact)){
 				checkForInteraction();

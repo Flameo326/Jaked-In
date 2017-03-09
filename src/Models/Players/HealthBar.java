@@ -9,6 +9,10 @@ import javafx.scene.paint.Color;
 
 public class HealthBar extends Entity{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private PlayableCharacter ownedEntity;
 	private double currPercent;
 	

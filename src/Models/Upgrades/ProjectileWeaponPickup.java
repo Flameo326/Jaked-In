@@ -2,12 +2,17 @@ package Models.Upgrades;
 
 import Models.Players.PlayableCharacter;
 import Models.Weapon.NormalProjectileWeapon;
-import javafx.scene.image.Image;
+import SpriteSheet.SpriteSheet;
 
-public class NormalWeaponBullets extends Upgrade{
+public class ProjectileWeaponPickup extends Upgrade{
 
-	public NormalWeaponBullets(Image i, int x, int y) {
-		super(i, x, y);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public ProjectileWeaponPickup(int x, int y) {
+		super(SpriteSheet.getNormalProjectilePickup(), x, y);
 		// TODO Auto-generated constructor stub
 	}
 

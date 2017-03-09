@@ -11,6 +11,10 @@ import javafx.scene.image.Image;
 
 public class ComputerPlayer extends PlayableCharacter{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static int computerID = 0;
 	private int prevX = 0, prevY = 0;
 	private Difficulties difficulty = Difficulties.EASY;

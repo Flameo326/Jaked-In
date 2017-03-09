@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import Controller.GameController;
 import Interfaces.Collectable;
-import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
@@ -12,6 +11,10 @@ import javafx.scene.image.Image;
 
 public abstract class Upgrade extends Entity implements Collectable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected boolean isCollected;
 	private long timer;
 

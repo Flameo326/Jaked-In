@@ -13,10 +13,8 @@ import Enums.Direction;
 import Interfaces.Collideable;
 import Interfaces.Moveable;
 import Models.Shape.Shape;
-import SpriteSheet.SpriteSheet;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 public abstract class Entity implements Collideable, Moveable, Comparable<Entity>, Serializable{
 	
@@ -91,10 +89,7 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 	public Direction getCurrDir(){
 		return direction;
 	}
-	
-	// X and Y now correlate to the center position...
-	// Should we provide method to get display point???
-	// does it actually matter?
+
 	public void setXPos(int val){ shape.setCenterX(val); }
 	public int getXPos(){ return shape.getCenterX(); }
 	

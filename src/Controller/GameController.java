@@ -14,6 +14,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class GameController extends AnimationTimer implements Publishable<PlayableCharacter>{
@@ -78,6 +79,10 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 	public void updateImage(Canvas c){
 		GraphicsContext g = c.getGraphicsContext2D();
 		g.clearRect(0, 0, c.getWidth(), c.getHeight());
+		
+		g.setFill(Color.BLACK);
+		g.fillRect(0, 0, c.getWidth(), c.getHeight());
+		
 		int offsetX = 0, offsetY = 0;
 		if(focusedEntity != null){
 			offsetX = focusedEntity.getDisplayableXPos();

@@ -11,6 +11,10 @@ import SpriteSheet.SpriteSheet;
 
 public class StoryNPC extends NPC {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String dialogue = "";
 	private static int storyLineCount = -1;
 	private boolean hasSpoken = false;
@@ -25,22 +29,8 @@ public class StoryNPC extends NPC {
 
 
 	public StoryNPC(StoryController st, int x, int y) {
-		super(SpriteSheet.getNPC(), st, x, y);
+		super(SpriteSheet.getRandomNPC(), st, x, y);
 	}
-
-//	public String dialogue(){
-//		
-//		if(storyLineCount > storyLine.length){
-//			storyLineCount = storyLine.length-1;
-//		}
-//		if(!hasSpoken){
-//			hasSpoken = true;
-//			return storyLine[storyLineCount++];
-//		}else{
-//			return storyLine[storyLineCount];
-//		}
-//		
-//	}
 	
 	@Override
 	public void interact(PlayableCharacter c) {

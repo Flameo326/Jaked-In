@@ -7,6 +7,10 @@ import SpriteSheet.SpriteSheet;
 
 public class MedPack extends Upgrade {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final int HPIncrease;
 
 	public MedPack(int x, int y) {

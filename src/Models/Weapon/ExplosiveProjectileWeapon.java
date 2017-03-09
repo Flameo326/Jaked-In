@@ -7,6 +7,11 @@ import SpriteSheet.SpriteSheet;
 
 public class ExplosiveProjectileWeapon extends ProjectileWeapon{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ExplosiveProjectileWeapon(PlayableCharacter e, int bullets) {
 		super(e, SpriteSheet.getExplosiveProjectile(), bullets, 100, 30);
 	}
@@ -19,7 +24,7 @@ public class ExplosiveProjectileWeapon extends ProjectileWeapon{
 			p = new ExplosiveProjectile(getOwnedEntity());
 			p.setLifeTime((int)(bulletLifeTime * 3.33));
 			if(--bullets <= 0){
-				getOwnedEntity().removeWeapon(this);
+				getOwnedEntity().removeWeapon();
 			}
 		}
 		return p;

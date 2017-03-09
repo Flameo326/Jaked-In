@@ -11,7 +11,10 @@ import javafx.scene.paint.Color;
 
 public class Floor1Map extends Map {
 
-	// Also need a list of doors and exits
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Entity> rooms;
 	private ArrayList<Entity> npcs;
 	private ArrayList<Entity> upgrades;
@@ -76,7 +79,7 @@ public class Floor1Map extends Map {
 	
 	public void createExit(Entity room){
 		// Exit door goes to the level previous
-		exit = new Door(SpriteSheet.getBlock(40, 40, Color.ORANGE), controller, 0, 0, true);
+		exit = new Door(SpriteSheet.getDoor(), controller, 0, 0, true);
 		int x = rand.nextInt(room.getWidth() - exit.getWidth()) + room.getShape().getMinX() + exit.getWidth()/2;
 		int y = rand.nextInt(room.getHeight() - exit.getHeight()) + room.getShape().getMinY() + exit.getHeight()/2;
 		exit.setXPos(x);
@@ -86,7 +89,7 @@ public class Floor1Map extends Map {
 	
 	public void createEntrance(Entity room){
 		// Entrance door goes to the next level
-		entrance = new Door(SpriteSheet.getBlock(40, 40, Color.ORANGE), controller, 0, 0, false);
+		entrance = new Door(SpriteSheet.getDoor(), controller, 0, 0, false);
 		int x = rand.nextInt(room.getWidth() - entrance.getWidth()) + room.getShape().getMinX() + entrance.getWidth()/2;
 		int y = rand.nextInt(room.getHeight() - entrance.getHeight()) + room.getShape().getMinY() + entrance.getHeight()/2;
 		entrance.setXPos(x);

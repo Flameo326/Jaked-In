@@ -20,7 +20,6 @@ public class PlayerBox extends VBox{
 	private static int HUMAN_PLAYERS = 0;
 	
 	private static final String[] PLAYER_TYPES = {"Human", "Computer"};
-//	private static final String[] WEAPON_TYPES = {"Projectile", "Melee"};
 	
 	private HBox playerNavigation;
 	private ImageView playerImage;
@@ -73,17 +72,27 @@ public class PlayerBox extends VBox{
 		hardBox = new CheckBox("Hard");
 		
 		easyBox.setOnAction(e -> {
+			if(!hardBox.isSelected() && !mediumBox.isSelected() && !easyBox.isSelected()){
+				easyBox.setSelected(true);
+			}
 			mediumBox.setSelected(false);
 			hardBox.setSelected(false);
 		});
 		mediumBox.setOnAction(e -> {
+			if(!hardBox.isSelected() && !mediumBox.isSelected() && !easyBox.isSelected()){
+				mediumBox.setSelected(true);
+			}
 			easyBox.setSelected(false);
 			hardBox.setSelected(false);
 		});
 		hardBox.setOnAction(e -> {
+			if(!hardBox.isSelected() && !mediumBox.isSelected() && !easyBox.isSelected()){
+				hardBox.setSelected(true);
+			}
 			mediumBox.setSelected(false);
 			easyBox.setSelected(false);
 		});
+		easyBox.setSelected(true);
 		
 		diffTypes = new VBox(easyBox, mediumBox, hardBox);
 		diffTypes.setAlignment(Pos.CENTER);
