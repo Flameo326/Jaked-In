@@ -14,6 +14,7 @@ public class SpeedBoost extends Upgrade{
 	// otherwise we call setTimer() and check to see when it has expired...
 	@Override 
 	public void collect(PlayableCharacter c){
+		System.out.println("collected");
 		c.setSpeed(c.getSpeed() + 1);
 		isCollected = true;
 	}
