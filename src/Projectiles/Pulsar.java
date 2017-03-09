@@ -3,6 +3,7 @@ package Projectiles;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import Controller.CollisionSystem;
 import Models.Collision;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
@@ -14,7 +15,7 @@ public class Pulsar extends Projectile {
 	
 	public Pulsar(PlayableCharacter e) {
 		super(e, SpriteSheet.getBouceProjectile(), 8);
-		
+		setLifeTime(50);
 	}
 
 	@Override
@@ -22,16 +23,41 @@ public class Pulsar extends Projectile {
 		entities.remove(this);
 	}
 	
-	public HashSet<Entity> killOff(ArrayList<Entity> entities){
+	public HashSet<Entity> killOff(ArrayList<Entity> entities, boolean showLine){
 		if(entities.contains(this)) {
 			entities.remove(this);
 		}
 		for(int i = 0; i < lifeTime; i++){
 			if(hasHit.isEmpty()){
+//				move(entities);
+				
+//				for(int x = 0; x < getSpeed(); x++){
+//					setXPos(getXPos() + getCurrDir().getX());
+//					setYPos(getYPos() + getCurrDir().getY());
+//					CollisionSystem.checkMovementCollisions(this, entities);
+//				}
 				move(entities);
+				if(showLine){
+					entities.add(new Entity(SpriteSheet.getBlock(2, 2, Color.RED), getXPos(), getYPos()) {
+						private int timer = 0;
+						
+						@Override
+						public void update(ArrayList<Entity> entities) {
+							if(++timer > 20){
+								entities.remove(this);
+							}
+							
+						}
+						
+						@Override
+						public void hasCollided(Collision c) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				}
 			}
 		}
-		entities.add(new MedPack(getXPos(), getYPos()));
 		return hasHit;
 	}
 

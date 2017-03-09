@@ -24,6 +24,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	private int currentWeapon;
 	private boolean isDodging, weaponHasChanged;
 	private int damageReduction = 0;
+	ArrayList<PlayableCharacter> Enemys = new ArrayList<>();
 
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y, (int)i.getWidth(), (int)i.getHeight());
@@ -204,5 +205,9 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 
 	public void setDamageReduction(int damageReduction) {
 		this.damageReduction = damageReduction;
+	}
+	
+	public ArrayList<PlayableCharacter> getEnemys() {
+		return Enemys;
 	}
 }
