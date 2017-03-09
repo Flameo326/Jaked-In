@@ -3,7 +3,10 @@ package Models.Map;
 import java.util.ArrayList;
 
 import Controller.StoryController;
+import Enums.ButtonColors;
 import Models.Entity;
+import Puzzle.ColorButton;
+import Puzzle.CombinedColor;
 
 public class Floor6Map extends Floor1Map{
 
@@ -60,4 +63,23 @@ public class Floor6Map extends Floor1Map{
 		createExit(rooms.get(0));
 		createEntrance(rooms.get(rooms.size()-1));
 	}
+	
+	@Override
+	public void generateMap(){
+		super.generateMap();
+		
+		ArrayList<Entity> singleRoom = generateRooms(400, 400, 1, 1, 1);
+		generatePaths(singleRoom);
+//		createPuzzleRoom(singleRoom);
+		
+		
+	}
+	
+//	public void createPuzzleRoom(ArrayList<Entity> singleRoom){
+//		ArrayList<Entity> puzzleButton = new ArrayList<>();
+//		CombinedColor solution = new CombinedColor(x, y);
+//		ColorButton redIncrement = new ColorButton(x, y, ButtonColors.RED, true, solution);
+//		getMapObjects().addAll(puzzleButton);
+//	}
+		
 }

@@ -7,6 +7,7 @@ import Enums.ButtonColors;
 import Interfaces.Publishable;
 import Interfaces.Subscribable;
 import Models.Entity;
+import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -18,15 +19,15 @@ public class CombinedColor extends Button implements Publishable<Door>{
 	private int blue = 255;
 	private ArrayList<Integer> possibleSolutions = new ArrayList<>();
 	private final Color solutionColor;
-	private boolean isSolved = false;
 
-	public CombinedColor(Image i, int x, int y, int width, int height) {
-		super(i, x, y, width, height);
+	public CombinedColor(int x, int y) {
+		super(SpriteSheet.getBorderedBlock(10, 10, Color.WHITE, 2), x, y);
 		for (int j = 0; j < 6; j++) {
 			possibleSolutions.add(j * 51);
 		}
 		Collections.shuffle(possibleSolutions);
 		solutionColor = Color.rgb(possibleSolutions.get(0), possibleSolutions.get(1), possibleSolutions.get(2));
+		
 	}
 
 	public void changeColor(ButtonColors color, int newColorValue) {
@@ -37,6 +38,7 @@ public class CombinedColor extends Button implements Publishable<Door>{
 		} else {
 			blue = newColorValue;
 		}
+		setImage(SpriteSheet.getBorderedBlock(10, 10, getColor(), 2, getSolutionColor()));
 		checkForSolution();
 	}
 
@@ -51,8 +53,7 @@ public class CombinedColor extends Button implements Publishable<Door>{
 
 	
 	public void checkForSolution(){
-		isSolved = getColor().equals(solutionColor);
-		if(isSolved = true){
+		if(getColor().equals(solutionColor)){
 			notifySubscribers();
 		}
 	}
