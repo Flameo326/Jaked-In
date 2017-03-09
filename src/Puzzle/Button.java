@@ -11,8 +11,8 @@ import javafx.scene.image.Image;
 
 public class Button extends Entity implements Interactable, Subscribable<Button>{
 	
-	public Button(Image i, int x, int y, int width, int height) {
-		super(i, x, y, width, height);
+	public Button(Image i, int x, int y) {
+		super(i, x, y);
 
 	}
 

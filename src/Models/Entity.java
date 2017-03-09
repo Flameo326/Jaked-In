@@ -13,8 +13,10 @@ import Enums.Direction;
 import Interfaces.Collideable;
 import Interfaces.Moveable;
 import Models.Shape.Shape;
+import SpriteSheet.SpriteSheet;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public abstract class Entity implements Collideable, Moveable, Comparable<Entity>, Serializable{
 	
