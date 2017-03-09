@@ -7,9 +7,7 @@ import Controller.InputHandler;
 import Enums.Direction;
 import Interfaces.Interactable;
 import Models.Entity;
-import Models.Weapon.PulsarProjectileWeapon;
 import Models.Weapon.Attack.Attack;
-//import Projectiles.Pulsar;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
@@ -37,14 +35,10 @@ public class HumanPlayer extends PlayableCharacter{
 				move(entities);
 			}
 			if(InputHandler.keyInputContains(InputHandler.Player1Attack)){
-				if(getWeapon() instanceof PulsarProjectileWeapon){
-//					Pulsar p = (Pulsar) ((PulsarProjectileWeapon) getWeapon()).attack(entities);
-					((PulsarProjectileWeapon) getWeapon()).attack(entities);
-				} else {
-					Attack h = attack();
-					if(h != null){
-						entities.add(h);
-					}
+				Attack h = attack();
+				if(h != null){
+//						System.out.println(getTag() + " attacked");
+					entities.add(h);
 				}
 			}
 			if(GameController.getStoryMode() && InputHandler.keyInputContains(InputHandler.ChangeWeapon) &&

@@ -25,4 +25,8 @@ public enum Direction {
 	public static Direction getDir(int x, int y){
 		return Direction.values()[x + ((y+1)*3+1)];
 	}
+	
+	public static Direction getInverse(Direction dir){
+		return Direction.getDir(dir.getX()*-1, dir.getY()*-1);
+	}
 }
