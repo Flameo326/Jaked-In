@@ -2,7 +2,9 @@ package Puzzle;
 
 import Enums.ButtonColors;
 import Models.Players.PlayableCharacter;
+import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class ColorButton extends Button {
 	private int color = 255;
