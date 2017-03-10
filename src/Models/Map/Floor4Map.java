@@ -54,7 +54,7 @@ public class Floor4Map extends Floor1Map{
 	@Override
 	public void populateUpgrades() {
 		for (Entity e : rooms) {
-			Entity temp = upgradeChoice(controller, e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight());
+			Entity temp = upgradeChoice(e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight());
 			if (temp != null) {
 				upgrades.add(temp);
 			}
