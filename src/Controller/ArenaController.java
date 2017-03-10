@@ -13,6 +13,7 @@ import Models.Map.ArenaMap;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
+import Models.Upgrades.Upgrade;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -140,7 +141,6 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 					BorderPane root = loader.load();
 					Scene scene = new Scene(root, s.getScene().getWidth(), s.getScene().getHeight());
 					s.setScene(scene);
-					s.centerOnScreen();
 				} catch (IOException e2) {
 					e2.printStackTrace();
 				}
@@ -192,12 +192,12 @@ public class ArenaController implements Initializable, Subscribable<PlayableChar
 	@Override
 	public void update(PlayableCharacter value) {
 		if(InputHandler.keyInputContains(KeyCode.ESCAPE)) { displayEscapeMenu(); }
-		// from 3o seconds to 3 minuutes
+
 		if(GameController.getTimer() >= upgradeTime){
 			// Get current time + 30 seconds to 3 minutes ahead
-			upgradeTime = GameController.getTimer()+ /*(rand.nextInt(12) + 1) **/ 5000000000l;
-			
-			gc.addEntity(arenaMap.createNewUpgrade());
+			upgradeTime = GameController.getTimer()+ 5000000000l;
+			Upgrade u = arenaMap.createNewUpgrade();
+			if(u != null) { gc.addEntity(u); }
 		}
 		
 		// Check for win

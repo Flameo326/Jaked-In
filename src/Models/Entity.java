@@ -27,9 +27,8 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 	private Direction direction;
 	private Shape shape;
 	private String tag;
+	private int prevX, prevY;
 	private int speed = 1;
-	protected int prevX;
-	protected int prevY;
 	private int displayLayer;
 	
 	public Entity(Image i, int x, int y){
@@ -47,6 +46,7 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 		setTag("Entity");
 		setDisplayLayer(0);
 		setCurrDir(Direction.RIGHT);
+		speed = 1;
 	}
 	
 	@Override
@@ -119,6 +119,14 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 		return prevY;
 	}
 	
+	public void setPrevXPos(int v){
+		prevX = v;
+	}
+	
+	public void setPrevYPos(int v){
+		prevY = v;
+	}
+	
 	public void resetColliders(){
 		colliders.clear();
 	}
@@ -144,7 +152,7 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 	
 	private void writeObject(ObjectOutputStream out) throws IOException{
 		out.defaultWriteObject();
-		ImageIO.write(SwingFXUtils.fromFXImage(img, null), "jpg", out);
+		ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", out);
 	}
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException{

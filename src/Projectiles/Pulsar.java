@@ -17,10 +17,11 @@ public class Pulsar extends Projectile {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private int framesOfExistence;
 
 	public Pulsar(PlayableCharacter e) {
 		super(e, SpriteSheet.getBouceProjectile(), 8);
-		setLifeTime(50);
+		framesOfExistence = 50;
 		setDamage(0);
 	}
 
@@ -33,33 +34,27 @@ public class Pulsar extends Projectile {
 		if(entities.contains(this)) {
 			entities.remove(this);
 		}
-		for(int i = 0; i < lifeTime; i++){
+		for(int i = 0; i < framesOfExistence; i++){
 			if(hasHit.isEmpty()){
 //				move(entities);
 				
 				for(int x = 0; x < getSpeed(); x++){
-					prevX = getXPos();
-					prevY = getYPos();
+					setPrevXPos(getXPos());
+					setPrevYPos(getYPos());
 					setXPos(getXPos() + getCurrDir().getX());
 					setYPos(getYPos() + getCurrDir().getY());
 					CollisionSystem.checkMovementCollisions(this, entities);
-					}
+				}
 				if(showLine){
 					entities.add(new Entity(SpriteSheet.getBlock(1, 1, Color.RED), getXPos(), getYPos()) {
+						private static final long serialVersionUID = 1L;
 						private int timer = 0;
-						
 						@Override
 						public void update(ArrayList<Entity> entities) {
-							if(++timer > 20){
-								entities.remove(this);
-							}
-							
+							if(++timer > 20){ entities.remove(this); }
 						}
-						
 						@Override
-						public void hasCollided(Collision c) {
-							
-						}
+						public void hasCollided(Collision c) {}
 					});
 				}
 			}

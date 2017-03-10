@@ -37,7 +37,7 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 	public void interact(PlayableCharacter p) {
 		Cutscene c = new DialogCutscene(controller, .5, "GET HIM!");
 		controller.startCutscene(c);
-		setImage(SpriteSheet.getEnemy());
+		setImage(SpriteSheet.getDefaultEnemy());
 		setEnemy(p);
 		interacted = true;
 	}
@@ -51,7 +51,7 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 	public void update(ArrayList<Entity> entities) {
 		if(interacted){
 			PlayableCharacter p = new ComputerPlayer(SpriteSheet.getRandomEnemy(), getXPos(), getYPos(), Difficulties.NORMAL);
-			p.setWeapon(new NormalProjectileWeapon(p, 20));
+			p.addWeapon(new NormalProjectileWeapon(p, 20));
 			for(Entity i : p.getDisplayableEntities()){
 				entities.add(i);
 			}
