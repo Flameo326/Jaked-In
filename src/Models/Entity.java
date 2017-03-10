@@ -84,7 +84,11 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 	public Shape getShape() { return shape; }
 	
 	public void setCurrDir(Direction direction) {
-		this.direction = direction;
+		if(direction == null){
+			System.out.println("error here");
+		}else{
+		 this.direction = direction;
+		}
 	}
 	
 	public Direction getCurrDir(){
