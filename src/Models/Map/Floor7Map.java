@@ -6,6 +6,7 @@ import Controller.StoryController;
 import Models.Entity;
 import Models.NPCs.Doctor;
 import Models.Players.PlayableCharacter;
+import Models.Weapon.ExplosiveProjectileWeapon;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.paint.Color;
 
@@ -42,6 +43,9 @@ public class Floor7Map extends Floor1Map{
 		int y = rand.nextInt(lastRoom.getHeight() - 30) + lastRoom.getShape().getMinY() + 15;
 		watson.setXPos(x);
 		watson.setYPos(y);
+		watson.setWeapon(new ExplosiveProjectileWeapon(watson, 300));
+		watson.setEnemys(PlayableCharacter.getFriendlies());
+		PlayableCharacter.getEnemies().add(watson);
 		for(Entity e : watson.getDisplayableEntities()){
 			getMapObjects().add(e);
 		}
