@@ -29,6 +29,7 @@ import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.Upgrade;
+import Models.Weapon.ExplosiveProjectileWeapon;
 import Models.Weapon.ProjectileWeapon;
 import SpriteSheet.SpriteSheet;
 import javafx.beans.value.ChangeListener;
@@ -69,10 +70,11 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	
 	public void newStory(){
 		seed = Map.setRandomSeed();
+		watson = new ComputerPlayer(SpriteSheet.getWatson(), 0, 0, Difficulties.HARD);
+		watson.addWeapon(new ExplosiveProjectileWeapon(watson, 200));
 		generateLevels();	
 		lives = 5;
 		player1 = new HumanPlayer(SpriteSheet.getRandomPlayer(), 0, 0);
-		watson = new ComputerPlayer(SpriteSheet.getWatson(), 0, 0, Difficulties.HARD);
 		
 		createGameController();
 	}
@@ -80,10 +82,12 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	public void newStory(long l){
 		seed = l;
 		Map.setSeed(l);
+		watson = new ComputerPlayer(SpriteSheet.getWatson(), 0, 0, Difficulties.HARD);
+		watson.addWeapon(new ExplosiveProjectileWeapon(watson, 200));
 		generateLevels();	
 		lives = 5;
 		player1 = new HumanPlayer(SpriteSheet.getRandomPlayer(), 0, 0);
-		watson = new ComputerPlayer(SpriteSheet.getWatson(), 0, 0, Difficulties.HARD);
+		
 		
 		createGameController();
 	}
@@ -97,7 +101,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		levels[3] = new Floor4Map(this, 500, 500);
 		levels[4] = new Floor5Map(this, 500, 500);
 		levels[5] = new Floor6Map(this, 500, 500);
-		levels[6] = new Floor7Map(this, 500, 500);
+		levels[6] = new Floor7Map(this, 500, 500, watson);
 
 		levels[0].generateMap();
 		new Thread(new MapGeneratorThread(levels[1])).start();
@@ -105,7 +109,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		new Thread(new MapGeneratorThread(levels[3])).start();
 		new Thread(new MapGeneratorThread(levels[4])).start();
 		new Thread(new MapGeneratorThread(levels[5])).start();
-		new Thread(new MapGeneratorThread(levels[6], watson)).start();
+		new Thread(new MapGeneratorThread(levels[6])).start();
 	}
 	
 	public void createGameController(){
@@ -185,7 +189,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		}
 		if(GameController.getTimer() >= enemyTime){
 			// Get current time + 30 seconds to 3 minutes ahead
-			enemyTime = GameController.getTimer()+ 20000000000l/(currentLevel+1)/2;
+			enemyTime = GameController.getTimer()+ 20000000000l/(currentLevel/2+1);
 			PlayableCharacter enemy = levels[currentLevel].generateRandomEnemy();
 			if(enemy != null) { 
 				levels[currentLevel].addEntity(enemy.getDisplayableEntities());
@@ -246,7 +250,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		g.setTextAlign(TextAlignment.CENTER);
 		
 		int yPos = height*3/8;
-		g.fillText("You Win!\n\nWatson is Defeated and JAK is Free!\nThank You!", width/2, yPos);
+		g.fillText("You Win!\n\nWatson is Defeated\n\nJAK is Free!\nThank You!", width/2, yPos);
 		yPos += 32;
 		
 		int btnWidth = width*2/5;

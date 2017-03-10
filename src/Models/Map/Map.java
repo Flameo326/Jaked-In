@@ -1,5 +1,6 @@
 package Models.Map;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import Models.NPCs.MedicNPC;
 import Models.NPCs.PowerUpNPC;
 import Models.NPCs.StoryNPC;
 import Models.Players.ComputerPlayer;
+//github.com/Flameo326/Jaked-In.git
 import Models.Players.PlayableCharacter;
 import Models.Shape.Shape;
 import Models.Upgrades.BonusDamage;
@@ -49,7 +51,8 @@ public class Map implements Serializable{
 	private int mapWidth, mapHeight;
 	private int border = 10;
 	private boolean mapIsLinear;
-	private ArrayList<Entity> rooms;
+	private ArrayList<Entity> rooms;	
+	private BufferedWriter bf;
 	
 	public Map(int width, int height){
 		mapWidth = width;

@@ -29,7 +29,9 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	private int damageReduction, bonusReduction;
 	private int baseDamage, bonusDamage;
 	private long bonusDamageLength, bonusSpeedLength, bonusReductionLength, ForceFieldLength;
-
+	private static ArrayList<PlayableCharacter> friendlies = new ArrayList<>();
+	private static ArrayList<PlayableCharacter> enemies = new ArrayList<>();
+	
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y);
 		healthBar = new HealthBar(this);
@@ -217,13 +219,17 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	public void setBaseDamage(int i){
 		baseDamage = i;
 	}
-	
+
 	public int getBaseDamage(){
 		return baseDamage;
 	}
 	
 	public ArrayList<PlayableCharacter> getEnemys() {
 		return Enemys;
+	}
+	
+	public void setEnemys(ArrayList<PlayableCharacter>Enemys) {
+		this.Enemys = Enemys;
 	}
 	
 	public int getBonusDamage(){
@@ -237,6 +243,22 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		}
 	}
 	
+	public static ArrayList<PlayableCharacter> getFriendlies() {
+		return friendlies;
+	}
+
+	public static void setFriendlies(ArrayList<PlayableCharacter> friendlies) {
+		PlayableCharacter.friendlies = friendlies;
+	}
+
+	public static ArrayList<PlayableCharacter> getEnemies() {
+		return enemies;
+	}
+
+	public static void setEnemies(ArrayList<PlayableCharacter> enemies) {
+		PlayableCharacter.enemies = enemies;
+	}
+
 	public int getBonusReduction(){
 		return bonusReduction;
 	}
