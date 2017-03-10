@@ -25,19 +25,7 @@ public class PlayerBox extends VBox{
 	private static int HUMAN_PLAYERS = 0;
 	
 	private static final String[] PLAYER_TYPES = {"Human", "Computer"};
-	private static final ArrayList<Color> colors;
-	static{
-		colors = new ArrayList<>();
-		colors.add(Color.RED);
-		colors.add(Color.GREEN);
-		colors.add(Color.BLUE);
-		colors.add(Color.AQUA);
-		colors.add(Color.BLACK);
-		colors.add(Color.BLUEVIOLET);
-		colors.add(Color.CHARTREUSE);
-		colors.add(Color.CORAL);
-		colors.add(Color.HOTPINK);
-	}
+	private static final ArrayList<Color> colors = new ArrayList<>();
 	
 	private HBox playerNavigation;
 	private ImageView playerImage;
@@ -239,6 +227,19 @@ public class PlayerBox extends VBox{
 	
 	public static void resetHumanPlayers(){
 		HUMAN_PLAYERS = 0;
+	}
+	
+	public static void resetColors(){
+		colors.clear();
+		colors.add(Color.RED);
+		colors.add(Color.GREEN);
+		colors.add(Color.BLUE);
+		colors.add(Color.AQUA);
+		colors.add(Color.BLACK);
+		colors.add(Color.BLUEVIOLET);
+		colors.add(Color.CHARTREUSE);
+		colors.add(Color.CORAL);
+		colors.add(Color.HOTPINK);
 	}
 
 }

@@ -96,6 +96,10 @@ public class GameController extends AnimationTimer implements Publishable<Playab
 		}
 	}
 	
+	public void clear(){
+		entities.clear();
+	}
+	
 	public void addPlayer(PlayableCharacter p){
 		if(!players.contains(p)){
 			players.add(p);

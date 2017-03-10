@@ -177,6 +177,7 @@ public class ArenaMenuController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		PlayerBox.resetColors();
 		label1.setPadding(new Insets(10, 0, 0, 0));
 		label1.prefWidthProperty().bind(playerMenu.widthProperty());
 		label2.prefWidthProperty().bind(playerMenu.widthProperty());

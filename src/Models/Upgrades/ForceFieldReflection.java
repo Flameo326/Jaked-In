@@ -34,10 +34,10 @@ public class ForceFieldReflection extends Upgrade{
 		isCollected = true;
 	}
 
-	@Override
-	public void reverseEffect() {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void reverseEffect() {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }

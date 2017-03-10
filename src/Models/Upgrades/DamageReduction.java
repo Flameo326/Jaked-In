@@ -35,12 +35,12 @@ public class DamageReduction extends Upgrade{
 		isCollected = true;
 	}
 
-	@Override
-	public void reverseEffect() {
-		getPlayerAffected().setBonusReduction(getPlayerAffected().getBonusReduction() - getBonus());
-		if(getPlayerAffected().getBonusReductionLength() == getBoostExpiration()){
-			getPlayerAffected().setBonusReductionLength(0);
-		}	
-	}
+//	@Override
+//	public void reverseEffect() {
+//		getPlayerAffected().setBonusReduction(getPlayerAffected().getBonusReduction() - getBonus());
+//		if(getPlayerAffected().getBonusReductionLength() == getBoostExpiration()){
+//			getPlayerAffected().setBonusReductionLength(0);
+//		}	
+//	}
 
 }

@@ -35,17 +35,17 @@ public class SpeedBoost extends Upgrade{
 			c.setBonusSpeedLength(getBoostExpiration());
 		}
 		
-		setImage(SpriteSheet.getBlank());
+//		setImage(SpriteSheet.getBlank());
 		isCollected = true;
 	}
 	
-	@Override
-	public void reverseEffect(){
-		getPlayerAffected().setBonusSpeed(getPlayerAffected().getBonusSpeed() - getBonus());
-		if(getPlayerAffected().getBonusSpeedLength() == getBoostExpiration()){
-			getPlayerAffected().setBonusSpeedLength(0);
-		}
-		System.out.println("Removed boost from " + getPlayerAffected().getTag() + " with boost of " + getBonus());
-	}
+//	@Override
+//	public void reverseEffect(){
+//		getPlayerAffected().setBonusSpeed(getPlayerAffected().getBonusSpeed() - getBonus());
+//		if(getPlayerAffected().getBonusSpeedLength() == getBoostExpiration()){
+//			getPlayerAffected().setBonusSpeedLength(0);
+//		}
+//		System.out.println("Removed boost from " + getPlayerAffected().getTag() + " with boost of " + getBonus());
+//	}
 
 }

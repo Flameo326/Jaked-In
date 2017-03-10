@@ -24,7 +24,7 @@ public class SecurityWorker extends NPC {
 			"You need to leave, I think I hear more guards coming" };// 2
 
 	public SecurityWorker(StoryController st, int x, int y) {
-		super(SpriteSheet.getSecurityWorker(), st, x, y);
+		super(SpriteSheet.getRandomNPC(), st, x, y);
 	}
 
 	@Override

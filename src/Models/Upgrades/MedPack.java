@@ -29,9 +29,9 @@ public class MedPack extends Upgrade {
 		return HPIncrease;
 	}
 
-	@Override
-	public void reverseEffect() {
-		// do nothign
-	}
+//	@Override
+//	public void reverseEffect() {
+//		// do nothign
+//	}
 
 }

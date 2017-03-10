@@ -26,9 +26,9 @@ public class ProjectileWeaponPickup extends Upgrade{
 		isCollected = true;
 	}
 
-	@Override
-	public void reverseEffect() {
-		// do nothing
-	}
+//	@Override
+//	public void reverseEffect() {
+//		// do nothing
+//	}
 
 }
