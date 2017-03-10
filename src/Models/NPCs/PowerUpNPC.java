@@ -22,19 +22,6 @@ public class PowerUpNPC extends NPC {
 		super(SpriteSheet.getRandomNPC(), st, x, y);
 	}
 
-	public void conversation(PlayableCharacter p) {
-		if (!hasSpoken) {// needs to be random powerup
-			Upgrade u = getRandomUpgrade();
-			u.collect(p);
-			hasSpoken = true;
-			Cutscene c = new DialogCutscene(getController(), .5, "Here, take this. It will help you fight Watson");
-			getController().startCutscene(c);
-		} else {
-			Cutscene c = new DialogCutscene(getController(), .5, "I have nothing more to help you!");
-			getController().startCutscene(c);
-		}
-	}
-
 	// Need to figure out this
 	public String callPlayer() {
 		return "OVER HERE!!";
@@ -44,11 +31,12 @@ public class PowerUpNPC extends NPC {
 	public void interact(PlayableCharacter c) {
 		Cutscene convo;
 
-		if (!hasSpoken) {
+		if (!hasSpoken) {// needs to be random powerup
 			Upgrade u = getRandomUpgrade();
 			u.collect(c);
 			hasSpoken = true;
-			convo = new DialogCutscene(getController(), .5, "Here, take this. It will help you fight Watson");
+			String text = "Here, take this. It will help you fight Watson.\n\nYou recieved a "+u.getClass().getSimpleName();
+			convo = new DialogCutscene(getController(), .5, text);
 		} else {
 			convo = new DialogCutscene(getController(), .5, "I have nothing more to help you!");
 		}

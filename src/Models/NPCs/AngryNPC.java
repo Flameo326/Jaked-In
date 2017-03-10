@@ -32,7 +32,7 @@ public class AngryNPC extends PlayableCharacter implements Interactable {
 	public void interact(PlayableCharacter p) {
 		Cutscene c = new DialogCutscene(controller, .5, "You killed my Family!");
 		controller.startCutscene(c);
-		setImage(SpriteSheet.getEnemy());
+		setImage(SpriteSheet.getDefaultEnemy());
 		setEnemy(p);
 		interacted = true;
 	}
