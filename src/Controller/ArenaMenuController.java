@@ -140,7 +140,6 @@ public class ArenaMenuController implements Initializable{
 				default:
 					p = new ComputerPlayer(playImage, 0, 0, Difficulties.EASY);
 					break;
-    			
     			}
     			break;
 			default:
@@ -152,9 +151,9 @@ public class ArenaMenuController implements Initializable{
     		case "Projectile":
     			p.setWeapon(new NormalProjectileWeapon(p, 30));
     			break;
-    		case "Melee":
-    			p.setWeapon(new MeleeWeapon(p));
-    			break;
+//    		case "Melee":
+//    			p.setWeapon(new MeleeWeapon(p));
+//    			break;
 			default:
 				// Default is melee don't do anything
     		}

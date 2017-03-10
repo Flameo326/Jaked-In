@@ -1,6 +1,5 @@
 package Models.Map;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import Controller.CollisionSystem;
@@ -66,8 +65,7 @@ public class Floor6Map extends Floor1Map {
 	@Override
 	public void populateUpgrades() {
 		for (Entity e : rooms) {
-			Entity temp = upgradeChoice(controller, e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(),
-					e.getHeight());
+			Entity temp = upgradeChoice(e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight());
 			if (temp != null) {
 				upgrades.add(temp);
 			}
@@ -83,23 +81,19 @@ public class Floor6Map extends Floor1Map {
 
 	@Override
 	public void generateMap() {
-		try {
-			ArrayList<Entity> rooms = generateRooms(150, getMapWidth(), .8, 1.2, 10);
-			generatePuzzleRoom(rooms);
-			this.rooms = rooms;
-			generatePaths(rooms);
-			createPuzzleRoom(rooms.get(rooms.size()-1));
-			populateMap(rooms);
-			
-			generateDoors(rooms);
-		} catch (IOException e) {
-
-		}
+		ArrayList<Entity> rooms = generateRooms(150, getMapWidth(), .8, 1.2, 10);
+		generatePuzzleRoom(rooms);
+		this.rooms = rooms;
+		generatePaths(rooms);
+		createPuzzleRoom(rooms.get(rooms.size()-1));
+		populateMap(rooms);
+		
+		generateDoors(rooms);
 	}
 	
 	@Override
 	public void createEntrance(Entity room){
-		Entity entrance = new Door(SpriteSheet.getBlock(40, 40, Color.ORANGE), controller, 0, 0, false);
+		Entity entrance = new Door(SpriteSheet.getDoor(), controller, 0, 0, false);
 		entrance.setXPos(rooms.get(rooms.size()-1).getXPos());
 		entrance.setYPos(rooms.get(rooms.size()-1).getYPos());
 		getMapObjects().add(entrance);
@@ -109,10 +103,7 @@ public class Floor6Map extends Floor1Map {
 	public void generatePuzzleRoom(ArrayList<Entity> rooms) {
 		int radius = (int) (((getMapWidth() * .8 - 150 * 1.2)) * Math.sqrt(rooms.size()));
 		room: for (int i = 1; i < 2; i++) {
-			Entity previousRoom = rooms.get(rooms.size() - 1);
 			Entity currentRoom = createNewRandomRoom(500, 500, 1, 1);
-
-			int maxDist = Math.max(currentRoom.getWidth(), currentRoom.getHeight());
 			// in radians
 			int degree = rand.nextInt(360);
 			int initialDegree = degree;

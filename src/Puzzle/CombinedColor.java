@@ -2,11 +2,11 @@ package Puzzle;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import Enums.ButtonColors;
 import Interfaces.Collideable;
 import Models.Collision;
 import Models.Entity;
+//import Models.NPCs.Door;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.paint.Color;
 
@@ -14,11 +14,11 @@ public class CombinedColor extends Button implements Collideable{
 
 
 	private static final long serialVersionUID = 1L;
-	private int red = 255;
-	private int green = 255;
-	private int blue = 255;
+//	private ArrayList<Door> subscribers = new ArrayList<>();
+	private int currRed = 255, solutionRed;
+	private int currGreen = 255, solutionGreen;
+	private int currBlue = 255, solutionBlue;
 	private ArrayList<Integer> possibleSolutions = new ArrayList<>();
-	private final Color solutionColor;
 
 
 	public CombinedColor(int x, int y) {
@@ -27,7 +27,10 @@ public class CombinedColor extends Button implements Collideable{
 			possibleSolutions.add(j * 51);
 		}
 		Collections.shuffle(possibleSolutions);
-		solutionColor = Color.rgb(possibleSolutions.get(0), possibleSolutions.get(1), possibleSolutions.get(2));
+		solutionRed = possibleSolutions.get(0);
+		solutionGreen = possibleSolutions.get(1);
+		solutionBlue = possibleSolutions.get(2);
+		
 		setImage(SpriteSheet.getBorderedBlock(90, 90, getColor(), 20, getSolutionColor()));
 		setDisplayLayer(8);
 		setTag("Wall");
@@ -35,50 +38,83 @@ public class CombinedColor extends Button implements Collideable{
 
 	public void changeColor(ButtonColors color, int adjustment) {
 		if (color == ButtonColors.RED) {
-			red += adjustment;
-			if(red > 255){
-				red = 255;
-			}else if(red < 0){
-				red = 0;
+//<<<<<<< HEAD
+//			currRed = newColorValue;
+//=======
+			currRed += adjustment;
+			if(currRed > 255){
+				currRed = 255;
+			}else if(currRed < 0){
+				currRed = 0;
 			}
 		} else if (color == ButtonColors.GREEN) {
-			green += adjustment;
-			if(green > 255){
-				green = 255;
-			}else if(green < 0){
-				green = 0;
+//<<<<<<< HEAD
+//			currGreen = newColorValue;
+//=======
+			currGreen += adjustment;
+			if(currGreen > 255){
+				currGreen = 255;
+			}else if(currGreen < 0){
+				currGreen = 0;
 			}
 		} else {
-			blue += adjustment;
-			if(blue > 255){
-				blue = 255;
-			}else if(blue < 0){
-				blue = 0;
+//<<<<<<< HEAD
+//			currBlue = newColorValue;
+//=======
+			currBlue += adjustment;
+			if(currBlue > 255){
+				currBlue = 255;
+			}else if(currBlue < 0){
+				currBlue = 0;
 			}
 		}
 		setImage(SpriteSheet.getBorderedBlock(90, 90, getColor(), 20, getSolutionColor()));
-		System.out.println(red +" " + green + " " + blue );
-		System.out.println(possibleSolutions.get(0) + " " + possibleSolutions.get(1) + " " + possibleSolutions.get(2));
+//		System.out.println(red +" " + green + " " + blue );
+//		System.out.println(possibleSolutions.get(0) + " " + possibleSolutions.get(1) + " " + possibleSolutions.get(2));
 	}
 
 	public Color getColor() {
-		Color c = Color.rgb(red, green, blue);
+		Color c = Color.rgb(currRed, currGreen, currBlue);
 		return c;
 	}
 	
 	public Color getSolutionColor(){
-		return solutionColor;
+		return Color.rgb(solutionRed, solutionGreen, solutionBlue);
 	}
 	
 	@Override
 	public void update(ArrayList<Entity> entities) {
-		if(getColor().equals(solutionColor)){
+		if(getColor().equals(getSolutionColor())){
 			entities.remove(this);
 		}
 	}
 	
-	public void hasCollided(Collision c) {
-		}
+	@Override
+	public void update(Button b) {
+		currRed = 255;
+		currGreen = 255;
+		currBlue = 255;
 	}
+
+//	@Override
+//	public void attach(Subscribable<Door> sub) {
+//		subscribers.add((Door) sub);	
+//	}
+//
+//	@Override
+//	public void detach(Subscribable<Door> sub) {
+//		subscribers.remove(sub);
+//	}
+//
+//	@Override
+//	public void notifySubscribers() {
+//		for (Subscribable<Door> s : subscribers) {
+//			s.update(null);
+
+	@Override
+	public void hasCollided(Collision c) {
+		// do nothingg
+	}
+}
 
 

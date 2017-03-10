@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Enums.Direction;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
+import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 
 public class HitBox extends Attack{
@@ -14,8 +15,8 @@ public class HitBox extends Attack{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public HitBox(PlayableCharacter e, Image i) {
-		super(e, i);
+	public HitBox(PlayableCharacter e) {
+		super(e, SpriteSheet.getMeleeAttackImage());
 		setTag(getTag() + "-Melee");
 		setDamage(getDamage() + 20);
 		setCurrDir(Direction.getDir(0, 0));

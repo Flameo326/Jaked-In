@@ -23,7 +23,6 @@ public class HumanPlayer extends PlayableCharacter{
 	public HumanPlayer(Image i, int x, int y) {
 		super(i, x, y);
 		setTag("Human-" + ++humanID);
-//		addWeapon(new NormalProjectileWeapon(this, 30));
 	}
 	
 	@Override

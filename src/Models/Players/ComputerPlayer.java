@@ -64,7 +64,6 @@ public class ComputerPlayer extends PlayableCharacter{
 					entities.add(h);
 				}
 			}
-		
 		case NORMAL:
 		case HARD:
 			

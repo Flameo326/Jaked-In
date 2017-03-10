@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 public class ColorButton extends Button {
 
 	private static final long serialVersionUID = 1L;
-	private int color = 255;
+//	private int color = 255;
 	private final ButtonColors buttonColor;
 	private final boolean isIncrementer;
 	private CombinedColor solution;

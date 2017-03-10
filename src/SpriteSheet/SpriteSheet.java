@@ -87,7 +87,7 @@ public final class SpriteSheet {
 		explosiveProjectilePickup = getSpriteSheetImage(11, 53, 10, 10);
 		normalProjectilePickup = getSpriteSheetImage(22, 53, 10, 10);
 		phaseBlasterPickup = getSpriteSheetImage(33, 53, 10, 10);
-//		meleeAttack
+		meleeAttack = getSpriteSheetImage(0, 81, 20, 20);
 		
 		normalProjectile = getBlock(5, 5, Color.BLACK);
 		// bounce = normal
@@ -116,6 +116,11 @@ public final class SpriteSheet {
 		PixelReader pr = spriteSheet.getPixelReader();
 		WritableImage img = new WritableImage(width, height);
 		img.getPixelWriter().setPixels(0, 0, width, height, pr, x, y);
+		return img;
+	}
+	
+	public static Image getBlank(){
+		WritableImage img = new WritableImage(1, 1);
 		return img;
 	}
 	
@@ -167,6 +172,17 @@ public final class SpriteSheet {
 		return img;
 	}
 	
+	public static Image getForceField(){
+		WritableImage img = new WritableImage(40, 40);
+		PixelWriter pw = img.getPixelWriter();
+		for(int i = 0; i < img.getHeight(); i++){
+			for(int y = 0; y < img.getWidth(); y++){
+				pw.setColor(y, i, Color.AQUA);
+			}
+		}
+		return img;
+	}
+	
 	public static Image getDoor(){
 		return door;
 	}
@@ -195,6 +211,10 @@ public final class SpriteSheet {
 		return phaseBlaster;
 	}
 	
+	public static Image getMeleeAttackImage(){
+		return meleeAttack;
+	}
+	
 	public static Image getExplosiveProjectilePickup(){
 		return explosiveProjectilePickup;
 	}
@@ -211,16 +231,25 @@ public final class SpriteSheet {
 		return phaseBlasterPickup;
 	}
 
-	public static Image getMeleeWeapon() {
-		return SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3);
-	}
+//	public static Image getMeleeWeapon() {
+//		return SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3);
+//	}
 
 	public static Image getAlly() {
 		return SpriteSheet.getBorderedBlock(30, 30, Color.TURQUOISE, 3);
 	}
 	
-	public static Image getEnemy(){
+	public static Image getRandomEnemy(){
+		Random rand = new Random();
+		return getDefaultEnemyWithColor(Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
+	}
+	
+	public static Image getDefaultEnemy(){
 		return SpriteSheet.getBorderedBlock(30, 30, Color.DARKRED, 2);
+	}
+	
+	public static Image getDefaultEnemyWithColor(Color c){
+		return SpriteSheet.getBorderedBlock(30, 30, c, 2);
 	}
 	
 	public static Image getWatson(){
@@ -269,7 +298,7 @@ public final class SpriteSheet {
 		return damageReduction;
 	}
 	
-	public static Image getForceField() {
+	public static Image getForceFieldPickup() {
 		return forceField;
 	}
 	
@@ -313,9 +342,5 @@ public final class SpriteSheet {
 			}
 		}
 		return i;
-	}
-
-	public static Image getRandomEnemy() {
-		return SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
 	}
 }

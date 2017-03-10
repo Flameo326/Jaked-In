@@ -1,7 +1,6 @@
 package Models.Map;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,6 +8,7 @@ import java.util.Random;
 
 import Controller.CollisionSystem;
 import Controller.StoryController;
+import Enums.Difficulties;
 import Enums.Direction;
 import Models.Collision;
 import Models.Entity;
@@ -18,6 +18,8 @@ import Models.NPCs.AngryNPC;
 import Models.NPCs.MedicNPC;
 import Models.NPCs.PowerUpNPC;
 import Models.NPCs.StoryNPC;
+import Models.Players.ComputerPlayer;
+//github.com/Flameo326/Jaked-In.git
 import Models.Players.PlayableCharacter;
 import Models.Shape.Shape;
 import Models.Upgrades.BonusDamage;
@@ -26,6 +28,7 @@ import Models.Upgrades.DamageReduction;
 import Models.Upgrades.ExplosiveWeaponPickup;
 import Models.Upgrades.ForceFieldReflection;
 import Models.Upgrades.MedPack;
+import Models.Upgrades.PhaseBlasterPickup;
 import Models.Upgrades.ProjectileWeaponPickup;
 import Models.Upgrades.SpeedBoost;
 import Models.Upgrades.Upgrade;
@@ -50,13 +53,6 @@ public class Map implements Serializable{
 	public Map(int width, int height){
 		mapWidth = width;
 		mapHeight = height;
-		try {
-			bf = new BufferedWriter(new FileWriter("src/test.txt"));
-			bf.write(this.getClass().getSimpleName()+"\n");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		mapObjects = new ArrayList<>();
 		rand = new Random();
@@ -74,18 +70,12 @@ public class Map implements Serializable{
 	
 	// This method can be overrode for different functionality
 	public void generateMap(){
-		try{
-			
-			mapObjects.clear();
-			ArrayList<Entity> rooms = generateRooms(150, mapWidth, .8, 1.2, 10);
-			this.rooms = rooms;
-			generatePaths(rooms);
-			populateMap(rooms);
-			generateDoors(rooms);
-			
-		} catch(IOException e){
-			
-		}
+		mapObjects.clear();
+		ArrayList<Entity> rooms = generateRooms(150, mapWidth, .8, 1.2, 10);
+		this.rooms = rooms;
+		generatePaths(rooms);
+		populateMap(rooms);
+		generateDoors(rooms);
 	}
 	
 	public ArrayList<Entity> getRooms(){
@@ -147,11 +137,10 @@ public class Map implements Serializable{
 		return rooms;
 	}
 	
-	public void generatePaths(ArrayList<Entity> rooms) throws IOException{
+	public void generatePaths(ArrayList<Entity> rooms){
 		ArrayList<Entity> walls = new ArrayList<>();
 		for(int i = 0; i < rooms.size(); i++){
 			Entity currentRoom = rooms.get(i);
-			bf.append("Generating Room\n");
 			walls.addAll(generateWalls(currentRoom, walls));
 	
 			// If this is zero then 
@@ -200,6 +189,53 @@ public class Map implements Serializable{
 	
 	public void generateDoors(ArrayList<Entity> rooms){
 		
+	}
+	
+	public Upgrade generateRandomUpgrade(){
+		Entity e = null;
+		while(e == null || (!e.getTag().equals("Room") && !e.getTag().equals("Path"))){
+			e = mapObjects.get(rand.nextInt(mapObjects.size()));
+		}
+		Upgrade u;
+		if(e.getHeight() > 30 && e.getWidth() > 30){
+			u = upgradeChoice(e.getShape().getMinX(), e.getShape().getMinY(), e.getWidth(), e.getHeight());
+		} else {
+			u = upgradeChoice(e.getShape().getMinX(), e.getShape().getMinY(), 31, 31);
+		}
+		return u;
+	}
+	
+	public PlayableCharacter generateRandomEnemy(){
+		Entity e = null;
+		
+		while(e == null || (!e.getTag().equals("Room") && !e.getTag().equals("Path"))){
+			e = mapObjects.get(rand.nextInt(mapObjects.size()));
+		}
+		int x = e.getXPos(), y = e.getYPos();
+		if(e.getWidth() > 30){
+			x = rand.nextInt(e.getWidth() - 30) + e.getShape().getMinX() + 15;
+		}
+		if(e.getHeight() > 30){
+			y = rand.nextInt(e.getHeight() - 30) + e.getShape().getMinY() + 15;
+		}
+		
+		Difficulties d;
+		switch(rand.nextInt(3)){
+		case 0:
+			d = Difficulties.EASY;
+			break;
+		case 1:
+			d = Difficulties.NORMAL;
+			break;
+		case 2:
+			d = Difficulties.HARD;
+			break;
+		default:
+			d = Difficulties.EASY;
+		}
+		PlayableCharacter enemy = new ComputerPlayer(SpriteSheet.getRandomEnemy(), x, y, d);
+		
+		return enemy;
 	}
 	
 	public Entity createNewWall(int x, int y, int width, int height){
@@ -272,34 +308,29 @@ public class Map implements Serializable{
 		return e;
 	}
 	
-	public ArrayList<Entity> generateWalls(Entity e, ArrayList<Entity> mapWalls) throws IOException{
+	public ArrayList<Entity> generateWalls(Entity e, ArrayList<Entity> mapWalls){
 		// Check for walls that the object is colliding with
 		checkWalls(e, mapWalls);
 		
 		ArrayList<Entity> walls = new ArrayList<>();
-//		walls.addAll(checkWalls(e, mapWalls));
 		
 		Shape shape = e.getShape();
 		int height = shape.getRoundedHeight();
 		int width = shape.getRoundedWidth() + border*2;
 		
 		// Top
-		bf.append("Top\n");
 		Entity wall = createNewWall(shape.getCenterX(), shape.getMinY()-border/2, width, border);
 		walls.addAll(checkWallCollision(wall));
 		
 		// Bot
-		bf.append("Bot\n");
 		wall = createNewWall(shape.getCenterX(), shape.getMaxY()+border/2, width, border);
 		walls.addAll(checkWallCollision(wall));
 		
 		// Left
-		bf.append("Left\n");
 		wall = createNewWall(shape.getMinX()-border/2, shape.getCenterY(), border, height);
 		walls.addAll(checkWallCollision(wall));
 		
 		// Right 
-		bf.append("Right\n");
 		wall = createNewWall(shape.getMaxX()+border/2, shape.getCenterY(), border, height);
 		walls.addAll(checkWallCollision(wall));
 		return walls;
@@ -313,8 +344,7 @@ public class Map implements Serializable{
 	 * @param e - The Entity that may be colliding against walls
 	 * @throws IOException 
 	 */
-	public void checkWalls(Entity e, ArrayList<Entity> walls) throws IOException{
-//		ArrayList<Entity> newWalls = new ArrayList<>();
+	public void checkWalls(Entity e, ArrayList<Entity> walls){
 		int size = walls.size();
 		for(int i = 0; i < size; i++){
 			Entity wall = walls.get(0);
@@ -326,10 +356,8 @@ public class Map implements Serializable{
 			
 			walls.remove(wall);
 			// Trunctate the wall
-			bf.append("Checking for Entity being placed on Wall\n");
 			walls.addAll(truncateWallFromCollision(c));
 		}
-//		return newWalls;
 	}
 	
 	/**
@@ -345,7 +373,7 @@ public class Map implements Serializable{
 	 * @return An ArrayList containing the walls that do not collide against entities in the map
 	 * @throws IOException 
 	 */
-	public ArrayList<Entity> checkWallCollision(Entity wall) throws IOException{
+	public ArrayList<Entity> checkWallCollision(Entity wall){
 		ArrayList<Entity> walls = new ArrayList<Entity>();
 		walls.add(wall);
 		for(int i = 0; i < mapObjects.size(); i++){
@@ -371,7 +399,7 @@ public class Map implements Serializable{
 	 * @return - An ArrayList containing the walls that come from the collision.
 	 * @throws IOException 
 	 */
-	public ArrayList<Entity> truncateWallFromCollision(Collision c) throws IOException{
+	public ArrayList<Entity> truncateWallFromCollision(Collision c){
 		ArrayList<Entity> walls = new ArrayList<>();
 		Entity wall, e;
 		Shape shapeW, shapeE;
@@ -389,28 +417,15 @@ public class Map implements Serializable{
 		walls.add(wall);
 		shapeE = e.getShape();
 		shapeW = wall.getShape();
-		
-		bf.append("Detecting collision between: \n");
-		bf.append("\tMin X: " + shapeW.getMinX() + 
-				" Min Y: " + shapeW.getMinY() + 
-				" Max X: " + shapeW.getMaxX() + 
-				" Max Y: " + shapeW.getMaxY() + "\n");
-		bf.append("And: \n");
-		bf.append("\tMin X: " + shapeE.getMinX() + 
-				" Min Y: " + shapeE.getMinY() + 
-				" Max X: " + shapeE.getMaxX() + 
-				" Max Y:" + shapeE.getMaxY() +"\n");
 			
 		// Check if it's completely within the object and remove
 		if(c.xPenDepth >= shapeW.getWidth() && c.yPenDepth >= shapeW.getHeight()){
 			// the Wall is entirely inside the object.
 			walls.remove(wall);
-			bf.append("Wall was removed\n");
 		} else if(c.xPenDepth > 0 && c.yPenDepth > 0){
 			walls.remove(wall);
 			boolean split = false, hasWidth = false, hasHeight =  false;
 			if(wall.getWidth() <= 0 || wall.getHeight() <= 0) {
-				bf.append("Wall did not have valid width or height\n");
 				walls.clear(); 
 				return walls; 
 			}
@@ -452,40 +467,18 @@ public class Map implements Serializable{
 				hasHeight = true;
 				resizeWallHeight(wall2, yDir == 1 ? shapeE.getMaxY() : shapeE.getMinY() , yDir);
 			} 
-			
-			bf.append("Result is: \n");
 			if(split){
 				// If split, add the new 2 walls
 				walls.add(wall3);
 				walls.add(wall4);
-				bf.append("Split\n");
-				bf.append("\tMin X: " + wall3.getShape().getMinX() +
-						" Min Y: " + wall3.getShape().getMinY() + 
-						" Max X: " + wall3.getShape().getMaxX() +
-						" Max Y:" + wall3.getShape().getMaxY() +"\n");
-				bf.append("\tMin X: " + wall4.getShape().getMinX() + 
-						" Min Y: " + wall4.getShape().getMinY() + 
-						" Max X: " + wall4.getShape().getMaxX() +
-						" Max Y:" + wall4.getShape().getMaxY() +"\n");
 			} 
 			if(hasHeight){
 				walls.add(wall2);
-				bf.append("Height Wall: \n");
-				bf.append("\tMin X: " + wall2.getShape().getMinX() + 
-						" Min Y: " + wall2.getShape().getMinY() + 
-						" Max X: " + wall2.getShape().getMaxX() +
-						" Max Y:" + wall2.getShape().getMaxY() +"\n");
 			} 
 			if(hasWidth){
 				walls.add(wall1);
-				bf.append("Width Wall: \n");
-				bf.append("\tMin X: " + wall1.getShape().getMinX() + 
-						" Min Y: " + wall1.getShape().getMinY() + 
-						" Max X: " + wall1.getShape().getMaxX() +
-						" Max Y:" + wall1.getShape().getMaxY() +"\n");
 			}
 		}
-		bf.append("\n");
 		return walls;
 	}
 	
@@ -519,15 +512,9 @@ public class Map implements Serializable{
 	
 	public ArrayList<Entity> generatePathsBetween(Entity e1, Entity e2){
 		ArrayList<Entity> paths = new ArrayList<>();
-//		System.out.println("Making paths from Room: ");
-//		System.out.println("\tX: " + e1.getShape().getMinX() + " Y: " + e1.getShape().getMinY() + " Width: " + e1.getShape().getMaxX() + " Height: " + e1.getShape().getMaxY());
-//		System.out.println("To Room: ");
-//		System.out.println("\tX: " + e2.getShape().getMinX() + " Y: " + e2.getShape().getMinY() + " Width: " + e2.getShape().getMaxX() + " Height: " + e2.getShape().getMaxY());
-		
 		int playerW = 30 + 5, playerH = 30 + 5;
 		int width = rand.nextInt((int)(playerW*1.5/5)) * 5 + (int)(playerW*1.5);
 		int height = rand.nextInt((int)(playerH*1.5/5)) * 5 + (int)(playerH*1.5);
-//		System.out.println("Default Width: " + width + " Default Height: " + height + "\n");
 		
 		Entity previousPath = e1;
 		Shape shapeE2 = e2.getShape();
@@ -554,7 +541,6 @@ public class Map implements Serializable{
 				shapeE2.getMaxY() - (d.getY() == -1 && !xConnected ? playerH : 0))){
 			xPath = true;
 		}
-//		int i = 0;
 		while(!xConnected || !yConnected){
 			// Negate it get the direction towards the object
 			c = CollisionSystem.getCollision(previousPath, e2);
@@ -574,7 +560,6 @@ public class Map implements Serializable{
 					widthMax += 1;
 					widthMin = widthMax;
 				}
-//				System.out.println("Width Min and Max: " + widthMin + " " + widthMax);
 				
 				path = createNewPath(widthMin, height, widthMax, height);
 				
@@ -601,7 +586,6 @@ public class Map implements Serializable{
 					heightMax += 1;
 					heightMin = heightMax;
 				}
-//				System.out.println("Height Min and Max: " + heightMin + " " + heightMax);
 				
 				path = createNewPath(width, heightMin, width, heightMax);
 				int initialX;
@@ -629,10 +613,6 @@ public class Map implements Serializable{
 					xConnected = CollisionSystem.isIntersectingXAxis(path, e2).hasCollided;
 				}
 				
-//				System.out.println("Created " + (xPath ? "x" : "y") + "Path X: " + path.getShape().getMinX() + 
-//						" Y: " + path.getShape().getMinY() + " Width: " + path.getShape().getMaxX() + " Height: " + path.getShape().getMaxY());
-//				System.out.println("X: " + xConnected + " Y: " + yConnected + "\n");
-				
 				paths.add(path);
 				previousPath = path;
 				previousShape = path.getShape();
@@ -649,6 +629,14 @@ public class Map implements Serializable{
 	
 	public void setBorder(int i){
 		border = i;
+	}
+	
+	public void addEntity(Entity... entities){
+		for(Entity e : entities){
+			if(!mapObjects.contains(e)){
+				mapObjects.add(e);
+			}
+		}
 	}
 	
 	public ArrayList<Entity> getMapObjects(){
@@ -692,17 +680,17 @@ public class Map implements Serializable{
 		}
 	}
 	
-	public Upgrade upgradeChoice(StoryController controller, int roomX, int roomY, int width, int height){
+	public Upgrade upgradeChoice(int roomX, int roomY, int width, int height){
 		if (rand.nextInt(100) + 1 < 51) {
-			int selection = rand.nextInt(8) + 1;// choosing what Upgrade is
+			int selection = rand.nextInt(9) + 1;// choosing what Upgrade is
 													// created
 			int x = rand.nextInt(width - 30) + roomX + 15;
 			int y = rand.nextInt(height - 30) + roomY + 15;
 			switch (selection) {
 			case 1:
-				return new BonusDamage(x, y);
+				return new BonusDamage(x, y, false);
 			case 2:
-				return new DamageReduction(x, y);
+				return new DamageReduction(x, y, false);
 			case 3:
 				return new ForceFieldReflection(x, y);
 			case 4:
@@ -713,9 +701,10 @@ public class Map implements Serializable{
 				return new ExplosiveWeaponPickup(x, y);
 			case 7:
 				return new ProjectileWeaponPickup(x, y);
+			case 8:
+				return new PhaseBlasterPickup(x, y);
 			default:
-				return new SpeedBoost(x, y);
-			
+				return new SpeedBoost(x, y, false);
 			}
 		} else {
 			return null;
