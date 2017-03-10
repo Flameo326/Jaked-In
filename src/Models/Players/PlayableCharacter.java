@@ -23,23 +23,14 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	private Weapon equippedWeapon, previousWeapon, mainWeapon, secondWeapon;
 	private HealthBar healthBar;
 	private int maxHealth, currentHealth;
-<<<<<<< HEAD
-	private boolean isDodging, weaponHasChanged;
-	protected ArrayList<PlayableCharacter> Enemys = new ArrayList<>();
-	private int damageReduction, bonusDamage;
-	private static ArrayList<PlayableCharacter> friendlies = new ArrayList<>();
-	private static ArrayList<PlayableCharacter> enemies = new ArrayList<>();
-	
-=======
 	private boolean isDodging, weaponHasChanged;
 	private int bonusSpeed;
 	private int damageReduction, bonusReduction;
 	private int baseDamage, bonusDamage;
 	private long bonusDamageLength, bonusSpeedLength, bonusReductionLength, ForceFieldLength;
+	private static ArrayList<PlayableCharacter> friendlies = new ArrayList<>();
+	private static ArrayList<PlayableCharacter> enemies = new ArrayList<>();
 	
-
-
->>>>>>> branch 'master' of https://github.com/Flameo326/Jaked-In.git
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y);
 		healthBar = new HealthBar(this);
@@ -211,15 +202,11 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	public void setBaseDamage(int i){
 		baseDamage = i;
 	}
-<<<<<<< HEAD
 
-=======
-	
 	public int getBaseDamage(){
 		return baseDamage;
 	}
 	
->>>>>>> branch 'master' of https://github.com/Flameo326/Jaked-In.git
 	public ArrayList<PlayableCharacter> getEnemys() {
 		return Enemys;
 	}
@@ -234,9 +221,11 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	
 	public void setBonusDamage(int val){
 		bonusDamage = val;
+		if(bonusDamage < 0){
+			bonusDamage = 0;
+		}
 	}
 	
-<<<<<<< HEAD
 	public static ArrayList<PlayableCharacter> getFriendlies() {
 		return friendlies;
 	}
@@ -253,17 +242,22 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		PlayableCharacter.enemies = enemies;
 	}
 
-=======
 	public int getBonusReduction(){
 		return bonusReduction;
 	}
 	
 	public void setBonusReduction(int i){
 		bonusReduction = i;
+		if(bonusReduction < 0){
+			bonusReduction = 0;
+		}
 	}
 	
 	public void setBonusSpeed(int v){
 		bonusSpeed = v;
+		if(bonusSpeed < 0){
+			bonusSpeed = 0;
+		}
 	}
 	
 	public int getBonusSpeed(){
@@ -301,5 +295,4 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	public long getForceFieldLength(){
 		return ForceFieldLength;
 	}
->>>>>>> branch 'master' of https://github.com/Flameo326/Jaked-In.git
 }

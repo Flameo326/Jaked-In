@@ -1,5 +1,10 @@
 package FXML;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import SpriteSheet.SpriteSheet;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,9 +25,23 @@ public class PlayerBox extends VBox{
 	private static int HUMAN_PLAYERS = 0;
 	
 	private static final String[] PLAYER_TYPES = {"Human", "Computer"};
+	private static final ArrayList<Color> colors;
+	static{
+		colors = new ArrayList<>();
+		colors.add(Color.RED);
+		colors.add(Color.GREEN);
+		colors.add(Color.BLUE);
+		colors.add(Color.AQUA);
+		colors.add(Color.BLACK);
+		colors.add(Color.BLUEVIOLET);
+		colors.add(Color.CHARTREUSE);
+		colors.add(Color.CORAL);
+		colors.add(Color.HOTPINK);
+	}
 	
 	private HBox playerNavigation;
 	private ImageView playerImage;
+	private Color currColor;
 	private int playerCount;
 	
 	private ChoiceBox<String> playerType;
@@ -52,7 +71,9 @@ public class PlayerBox extends VBox{
 		
 		// Player Image
 		playerImage = new ImageView();
-		changePlayerImage();
+		currColor = colors.get(playerCount);
+		colors.remove(playerCount);
+		playerImage.setImage(SpriteSheet.getPlayerWithColor(currColor));
 		
 		// Right Player Button
 		Button rightPlayerNav = new Button();
@@ -164,17 +185,12 @@ public class PlayerBox extends VBox{
 	}
 	
 	public void changePlayerImage(){
-		if(playerCount > 1) { playerCount = 0; }
-		if(playerCount < 0) { playerCount = 1; }
-		switch(playerCount){
-		case 0:
-			playerImage.setImage(SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3));
-			break;
-		case 1:
-			playerImage.setImage(SpriteSheet.getBorderedBlock(30, 30, Color.GOLD, 3));
-			break;
-			
-		}
+		colors.add(currColor);
+		if(playerCount >= colors.size()) { playerCount = 0; }
+		if(playerCount < 0) { playerCount = colors.size()-1; }
+		currColor = colors.get(playerCount);
+		
+		playerImage.setImage(SpriteSheet.getPlayerWithColor(currColor));
 	}
 	
 	public void changeWeaponImage(){

@@ -31,7 +31,9 @@ public class ComputerPlayer extends PlayableCharacter{
 	public ComputerPlayer(Image i, int x, int y, Difficulties difficulty) {
 		super(i, x, y);
 		rand = new Random();
+		setCurrDir(Direction.RIGHT);
 		setTag("Computer-" + ++computerID);
+		setCurrDir(Direction.RIGHT);
 		setDecisionLengthIncrement(.1);
 		setDecisionLengthRange(30);
 		this.difficulty = difficulty;
@@ -206,7 +208,7 @@ public class ComputerPlayer extends PlayableCharacter{
 	}
 
 	public Direction directionOfClosestEnemy(){
-		Direction tempDirection = null;
+		Direction tempDirection = Direction.RIGHT;
 		int closestEnemy = Integer.MAX_VALUE;
 		for(PlayableCharacter i : Enemys){
 			if(closestEnemy > Math.abs(i.getXPos() - getXPos()) + Math.abs(i.getYPos() - getYPos())){

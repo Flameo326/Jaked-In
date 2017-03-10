@@ -14,7 +14,7 @@ public class PhaseBlaster extends ProjectileWeapon{
 	private static final long serialVersionUID = 1L;
 
 	public PhaseBlaster(PlayableCharacter e, int bullets) {
-		super(e, SpriteSheet.getPhaseBlasterProjectile(), bullets, 100, 200);
+		super(e, SpriteSheet.getPhaseBlasterWeapon(), bullets, 100, 200);
 		// TODO Auto-generated constructor stub
 	}
 	

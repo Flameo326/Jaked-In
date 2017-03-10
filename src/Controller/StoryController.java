@@ -68,8 +68,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		seed = Map.setRandomSeed();
 		generateLevels();	
 		lives = 5;
-		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
-		player1 = new HumanPlayer(img, 0, 0);
+		player1 = new HumanPlayer(SpriteSheet.getRandomPlayer(), 0, 0);
 		
 		createGameController();
 	}
@@ -79,8 +78,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		Map.setSeed(l);
 		generateLevels();	
 		lives = 5;
-		Image img = SpriteSheet.getBorderedBlock(30, 30, Color.WHITE, 3);
-		player1 = new HumanPlayer(img, 0, 0);
+		player1 = new HumanPlayer(SpriteSheet.getRandomPlayer(), 0, 0);
 		
 		createGameController();
 	}
@@ -168,7 +166,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	
 	@Override
 	public void update(PlayableCharacter value) {
-	displayHud();
+		displayHud();
 		
 		if(InputHandler.keyInputContains(KeyCode.ESCAPE)) { displayEscapeMenu(); }
 

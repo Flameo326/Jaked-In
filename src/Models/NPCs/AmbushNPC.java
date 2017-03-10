@@ -2,8 +2,6 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
-import com.sun.media.jfxmedia.MediaError;
-
 import Controller.StoryController;
 import Cutscene.Cutscene;
 import Cutscene.DialogCutscene;
@@ -47,7 +45,7 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 	@Override
 	public void update(ArrayList<Entity> entities) {
 		if(interacted){
-			PlayableCharacter p = new ComputerPlayer(SpriteSheet.getRandomEnemy(), getXPos(), getYPos(), Difficulties.NORMAL);
+			PlayableCharacter p = new ComputerPlayer(SpriteSheet.getRandomPlayer(), getXPos(), getYPos(), Difficulties.NORMAL);
 			p.addWeapon(new NormalProjectileWeapon(p, 20));
 			for(Entity i : p.getDisplayableEntities()){
 				entities.add(i);

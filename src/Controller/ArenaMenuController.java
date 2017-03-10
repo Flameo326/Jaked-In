@@ -10,8 +10,6 @@ import FXML.PlayerBox;
 import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
-import Models.Weapon.BounceProjectileWeapon;
-import Models.Weapon.MeleeWeapon;
 import Models.Weapon.NormalProjectileWeapon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

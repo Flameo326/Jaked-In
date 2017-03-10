@@ -32,6 +32,10 @@ import Models.Upgrades.PhaseBlasterPickup;
 import Models.Upgrades.ProjectileWeaponPickup;
 import Models.Upgrades.SpeedBoost;
 import Models.Upgrades.Upgrade;
+import Models.Weapon.BounceProjectileWeapon;
+import Models.Weapon.ExplosiveProjectileWeapon;
+import Models.Weapon.NormalProjectileWeapon;
+import Models.Weapon.PhaseBlaster;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -233,7 +237,21 @@ public class Map implements Serializable{
 		default:
 			d = Difficulties.EASY;
 		}
-		PlayableCharacter enemy = new ComputerPlayer(SpriteSheet.getRandomEnemy(), x, y, d);
+		PlayableCharacter enemy = new ComputerPlayer(SpriteSheet.getRandomPlayer(), x, y, d);
+		switch(rand.nextInt(5)){
+		case 1:
+			enemy.addWeapon(new NormalProjectileWeapon(enemy, 30));
+			break;
+		case 2:
+			enemy.addWeapon(new BounceProjectileWeapon(enemy, 15));
+			break;
+		case 3:
+			enemy.addWeapon(new PhaseBlaster(enemy, 25));
+			break;
+		case 4:
+			enemy.addWeapon(new ExplosiveProjectileWeapon(enemy, 8));
+			break;
+		}
 		
 		return enemy;
 	}

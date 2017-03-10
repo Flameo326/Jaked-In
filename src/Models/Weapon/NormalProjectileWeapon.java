@@ -12,7 +12,7 @@ public class NormalProjectileWeapon extends ProjectileWeapon{
 	private static final long serialVersionUID = 1L;
 
 	public NormalProjectileWeapon(PlayableCharacter e, int bullets) {
-		super(e, SpriteSheet.getNormalProjectile(), bullets, 50, 100);
+		super(e, SpriteSheet.getNormalProjectileWeapon(), bullets, 50, 100);
 	}
 	
 	public int getDamage(){

@@ -48,7 +48,8 @@ public final class SpriteSheet {
 	
 	private static Image spriteSheet;
 	
-	private static Image medpack, damageBoost, damageReduction, forceField, speed;
+	private static Image medpack, damageBoost, damageReduction, forceFieldPickup, speed;
+	private static Image forceField;
 	
 	private static Image turret, mine, spawner;
 	
@@ -57,31 +58,35 @@ public final class SpriteSheet {
 	private static Image blueIncrement, blueDecrement;
 	
 	private static Image explosiveProjectile, normalProjectile, phaseBlaster;
+	private static Image explosiveProjectileWeapon, normalProjectileWeapon, phaseBlasterWeapon;
 	private static Image explosiveProjectilePickup, normalProjectilePickup, bounceProjectilePickup, phaseBlasterPickup;
 	private static Image meleeAttack;
 	
 	// Default NPC and defaultPlayer will be the normal look but with color variations
 	private static Image defaultNPC, defaultPlayer; 
-	private static Image medic, ally, enemy;
+	private static Image medic;
 	private static Image watson;
 	
 	// may be used for rooms and Paths?
 	// otherwise it would be the standard colors but with darker edges
-	private static Image roomTile, pathTile, door;
+	private static Image door;
 	
 	public static void init(){
 		spriteSheet = new Image("/Other/16x16_Sprite_Sheet.png");
 		
 		door = getSpriteSheetImage(159, 31, 40, 40);
-//		roomTile
-//		pathTile
+
+//		security Worker
+		forceField = getSpriteSheetImage(118, 31, 40, 40);
 		
-//		medic
-//		ally
-//		enemy
-//		NPC
-//		player
-//		watson
+		defaultPlayer = getSpriteSheetImage(0, 0, 30, 30);
+		medic = getSpriteSheetImage(31, 0, 30, 30);
+		defaultNPC = getSpriteSheetImage(62, 0, 30, 30);
+		watson = getSpriteSheetImage(93, 0, 30, 30);
+		
+		normalProjectileWeapon = getSpriteSheetImage(11, 70, 10, 10);
+		explosiveProjectileWeapon = getSpriteSheetImage(22, 70, 10, 10);
+		phaseBlasterWeapon = getSpriteSheetImage(0, 70, 10, 10);
 		
 		bounceProjectilePickup = getSpriteSheetImage(0, 53, 10, 10);
 		explosiveProjectilePickup = getSpriteSheetImage(11, 53, 10, 10);
@@ -108,7 +113,7 @@ public final class SpriteSheet {
 		medpack = getSpriteSheetImage(0, 42, 10, 10);
 		damageBoost = getSpriteSheetImage(11, 42, 10, 10);
 		damageReduction = getSpriteSheetImage(22, 42, 10, 10);
-		forceField = getSpriteSheetImage(33, 42, 10, 10);
+		forceFieldPickup = getSpriteSheetImage(33, 42, 10, 10);
 		speed = getSpriteSheetImage(44, 42, 10, 10);
 	}	
 	
@@ -173,14 +178,7 @@ public final class SpriteSheet {
 	}
 	
 	public static Image getForceField(){
-		WritableImage img = new WritableImage(40, 40);
-		PixelWriter pw = img.getPixelWriter();
-		for(int i = 0; i < img.getHeight(); i++){
-			for(int y = 0; y < img.getWidth(); y++){
-				pw.setColor(y, i, Color.AQUA);
-			}
-		}
-		return img;
+		return forceField;
 	}
 	
 	public static Image getDoor(){
@@ -193,6 +191,18 @@ public final class SpriteSheet {
 	
 	public static Image getPathImage(){
 		return null;
+	}
+	
+	public static Image getExplosiveProjectileWeapon(){
+		return explosiveProjectileWeapon;
+	}
+	
+	public static Image getPhaseBlasterWeapon(){
+		return phaseBlasterWeapon;
+	}
+	
+	public static Image getNormalProjectileWeapon(){
+		return normalProjectileWeapon;
 	}
 
 	public static Image getExplosiveProjectile() {
@@ -238,31 +248,67 @@ public final class SpriteSheet {
 	public static Image getAlly() {
 		return SpriteSheet.getBorderedBlock(30, 30, Color.TURQUOISE, 3);
 	}
+	// Works for Players and Enemies
 	
-	public static Image getRandomEnemy(){
+	public static Image getRandomPlayer(){
 		Random rand = new Random();
-		return getDefaultEnemyWithColor(Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
+		return getPlayerWithColor(Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
 	}
 	
-	public static Image getDefaultEnemy(){
-		return SpriteSheet.getBorderedBlock(30, 30, Color.DARKRED, 2);
+	public static Image getPlayerWithColor(Color c){
+		PixelReader pr = defaultPlayer.getPixelReader();
+		WritableImage img = new WritableImage((int)defaultPlayer.getWidth(), (int)defaultPlayer.getHeight());
+		PixelWriter pw = img.getPixelWriter();
+		for(int y = 0; y < img.getHeight(); y++){
+			for(int x = 0; x < img.getWidth(); x++){
+				Color pxCol = pr.getColor(x, y);
+				if(pxCol.getOpacity() == 1 && pxCol.getRed() == 0 && pxCol.getBlue() == 0 && pxCol.getGreen() == 0){
+					pw.setColor(x, y, c);
+				} else {
+					pw.setColor(x, y, pr.getColor(x, y));
+				}
+			}
+		}
+		return img;
 	}
 	
-	public static Image getDefaultEnemyWithColor(Color c){
-		return SpriteSheet.getBorderedBlock(30, 30, c, 2);
+	public static Image getDefaultPlayer(){
+		return defaultPlayer;
+	}
+	
+	public static Image getRandomNPC(){
+		Random rand = new Random();
+		return getNPCWithColor(Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
+	}
+	
+	public static Image getNPCWithColor(Color c){
+		PixelReader pr = defaultNPC.getPixelReader();
+		WritableImage img = new WritableImage((int)defaultPlayer.getWidth(), (int)defaultPlayer.getHeight());
+		PixelWriter pw = img.getPixelWriter();
+		for(int y = 0; y < img.getHeight(); y++){
+			for(int x = 0; x < img.getWidth(); x++){
+				Color pxCol = pr.getColor(x, y);
+				if(pxCol.getOpacity() == 1 && pxCol.getRed() == 0 && pxCol.getBlue() == 0 && pxCol.getGreen() == 0){
+					pw.setColor(x, y, c);
+				} else {
+					pw.setColor(x, y, pr.getColor(x, y));
+				}
+			}
+		}
+		return img;
+	}
+	
+	public static Image getDefaultNPC(){
+		return defaultNPC;
 	}
 	
 	public static Image getWatson(){
-		return null;
+		return watson;
 	}
 	
 	public static Image getMedic(){
-		return SpriteSheet.getBorderedBlock(30, 30, Color.RED, 2);
+		return medic;
 	}
-	
-//	public static Image getStoryNPC(){
-//		return storyNPC;
-//	}
 	
 	public static Image getPrisoner() {
 		return SpriteSheet.getBorderedBlock(30, 30, Color.DARKGRAY, 2);
@@ -270,16 +316,6 @@ public final class SpriteSheet {
 
 	public static Image getSecurityWorker() {
 		return SpriteSheet.getBorderedBlock(30, 30, Color.BLUE, 2);
-	}
-	
-	public static Image getRandomNPC(){
-		Random rand = new Random();
-		return getNPCWithColor(Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
-	}
-
-	// General NPC Format with possible coloring for clothes?
-	public static Image getNPCWithColor(Color c) {
-		return SpriteSheet.getBorderedBlock(30, 30, c, 2);
 	}
 
 	public static Image getSpeedBoost() {
@@ -299,7 +335,7 @@ public final class SpriteSheet {
 	}
 	
 	public static Image getForceFieldPickup() {
-		return forceField;
+		return forceFieldPickup;
 	}
 	
 	public static Image getTurret(){

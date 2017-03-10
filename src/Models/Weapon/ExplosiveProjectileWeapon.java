@@ -14,7 +14,7 @@ public class ExplosiveProjectileWeapon extends ProjectileWeapon{
 	private static final long serialVersionUID = 1L;
 
 	public ExplosiveProjectileWeapon(PlayableCharacter e, int bullets) {
-		super(e, SpriteSheet.getExplosiveProjectile(), bullets, 100, 30);
+		super(e, SpriteSheet.getExplosiveProjectileWeapon(), bullets, 100, 30);
 	}
 
 	@Override

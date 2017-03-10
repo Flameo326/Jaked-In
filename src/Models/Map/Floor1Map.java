@@ -6,8 +6,6 @@ import Controller.StoryController;
 import Models.Entity;
 import Models.NPCs.Doctor;
 import Models.NPCs.Door;
-import SpriteSheet.SpriteSheet;
-import javafx.scene.paint.Color;
 
 public class Floor1Map extends Map {
 
@@ -24,7 +22,6 @@ public class Floor1Map extends Map {
 	public Floor1Map(StoryController controller, int width, int height) {
 		super(width, height);
 		this.controller = controller;
-		
 	}
 
 	// For each Map, create a custom populateMap method which populates the map
@@ -68,8 +65,6 @@ public class Floor1Map extends Map {
 		}
 		getMapObjects().addAll(upgrades);
 	}
-
-	
 	
 	@Override
 	public void generateDoors(ArrayList<Entity> rooms){
@@ -79,7 +74,7 @@ public class Floor1Map extends Map {
 	
 	public void createExit(Entity room){
 		// Exit door goes to the level previous
-		exit = new Door(SpriteSheet.getDoor(), controller, 0, 0, true);
+		exit = new Door(controller, 0, 0, true);
 		int x = rand.nextInt(room.getWidth() - exit.getWidth()) + room.getShape().getMinX() + exit.getWidth()/2;
 		int y = rand.nextInt(room.getHeight() - exit.getHeight()) + room.getShape().getMinY() + exit.getHeight()/2;
 		exit.setXPos(x);
@@ -89,7 +84,7 @@ public class Floor1Map extends Map {
 	
 	public void createEntrance(Entity room){
 		// Entrance door goes to the next level
-		entrance = new Door(SpriteSheet.getDoor(), controller, 0, 0, false);
+		entrance = new Door(controller, 0, 0, false);
 		int x = rand.nextInt(room.getWidth() - entrance.getWidth()) + room.getShape().getMinX() + entrance.getWidth()/2;
 		int y = rand.nextInt(room.getHeight() - entrance.getHeight()) + room.getShape().getMinY() + entrance.getHeight()/2;
 		entrance.setXPos(x);
