@@ -139,7 +139,6 @@ public class ArenaMenuController implements Initializable{
 				default:
 					p = new ComputerPlayer(playImage, 0, 0, Difficulties.EASY);
 					break;
-    			
     			}
     			break;
 			default:
