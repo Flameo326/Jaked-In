@@ -2,6 +2,7 @@ package Projectiles;
 
 import java.util.ArrayList;
 
+import Controller.GameController;
 import Enums.Direction;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
@@ -20,7 +21,7 @@ public class ExplosiveProjectile extends Projectile {
 
 	@Override
 	public void update(ArrayList<Entity> entities) {
-		if(++timer >= lifeTime || !hasHit.isEmpty()){
+		if(GameController.getTimer() >= lifeTime || !hasHit.isEmpty()){
 			for(int i = 0; i < 8; i++){
 				Projectile p = new NormalProjectile(getOwnedEntity());
 				p.setXPos(this.getXPos());

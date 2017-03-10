@@ -1,5 +1,6 @@
 package Models.Weapon;
 
+import Controller.GameController;
 import Models.Players.PlayableCharacter;
 import Models.Weapon.Attack.Attack;
 import Projectiles.NormalProjectile;
@@ -16,7 +17,6 @@ public abstract class ProjectileWeapon extends Weapon{
 	public ProjectileWeapon(PlayableCharacter e, Image i, int bullets, int reloadTime, int bulletLifeTime){
 		super(e, i);
 		setAttackTime(reloadTime);
-		setTimer(getAttackTime());
 		this.bulletLifeTime = bulletLifeTime;
 		this.bullets = bullets;
 	}
@@ -24,8 +24,8 @@ public abstract class ProjectileWeapon extends Weapon{
 	@Override
 	public Attack attack() {
 		NormalProjectile p = null;
-		if(getTimer() >= getAttackTime()){
-			setTimer(0);
+		if(GameController.getTimer() >= getNextAttackTime()){
+			setNextAttackTime();
 			p = new NormalProjectile(getOwnedEntity());
 			p.setLifeTime((int)(bulletLifeTime * 3.33));
 			if(--bullets <= 0){
@@ -37,5 +37,9 @@ public abstract class ProjectileWeapon extends Weapon{
 	
 	public void addBullets(int val){
 		bullets += val;
+	}
+
+	public int getBullets() {
+		return bullets;
 	}
 }

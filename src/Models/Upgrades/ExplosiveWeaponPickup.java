@@ -12,7 +12,7 @@ public class ExplosiveWeaponPickup extends Upgrade{
 	private static final long serialVersionUID = 1L;
 
 	public ExplosiveWeaponPickup(int x, int y) {
-		super(SpriteSheet.getExplosiveProjectilePickup(), x, y);
+		super(SpriteSheet.getExplosiveProjectilePickup(), x, y, true);
 	}
 
 	@Override
@@ -23,6 +23,12 @@ public class ExplosiveWeaponPickup extends Upgrade{
 			c.addWeapon(new ExplosiveProjectileWeapon(c, 25));
 		}
 		isCollected = true;
+	}
+
+	@Override
+	public void reverseEffect() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

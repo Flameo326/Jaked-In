@@ -12,8 +12,7 @@ public class BounceWeaponPickup extends Upgrade{
 	private static final long serialVersionUID = 1L;
 
 	public BounceWeaponPickup(int x, int y) {
-		super(SpriteSheet.getBounceProjectilePickup(), x, y);
-		// TODO Auto-generated constructor stub
+		super(SpriteSheet.getBounceProjectilePickup(), x, y, true);
 	}
 
 	@Override
@@ -24,6 +23,12 @@ public class BounceWeaponPickup extends Upgrade{
 			c.addWeapon(new BounceProjectileWeapon(c, 25));
 		}
 		isCollected = true;
+	}
+
+	@Override
+	public void reverseEffect() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

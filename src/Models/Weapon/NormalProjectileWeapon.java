@@ -15,4 +15,8 @@ public class NormalProjectileWeapon extends ProjectileWeapon{
 		super(e, SpriteSheet.getNormalProjectile(), bullets, 50, 100);
 	}
 	
+	public int getDamage(){
+		return 5;
+	}
+	
 }

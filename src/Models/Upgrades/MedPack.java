@@ -14,7 +14,7 @@ public class MedPack extends Upgrade {
 	private final int HPIncrease;
 
 	public MedPack(int x, int y) {
-		super(SpriteSheet.getMedPack(), x, y);
+		super(SpriteSheet.getMedPack(), x, y, true);
 		Random randy = new Random();
 		HPIncrease = randy.nextInt(21) + 20;
 	}
@@ -27,6 +27,11 @@ public class MedPack extends Upgrade {
 
 	public int getHPIncrease() {
 		return HPIncrease;
+	}
+
+	@Override
+	public void reverseEffect() {
+		// do nothign
 	}
 
 }

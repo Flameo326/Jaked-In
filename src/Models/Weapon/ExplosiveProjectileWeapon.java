@@ -1,5 +1,6 @@
 package Models.Weapon;
 
+import Controller.GameController;
 import Models.Players.PlayableCharacter;
 import Models.Weapon.Attack.Attack;
 import Projectiles.ExplosiveProjectile;
@@ -19,8 +20,8 @@ public class ExplosiveProjectileWeapon extends ProjectileWeapon{
 	@Override
 	public Attack attack() {
 		ExplosiveProjectile p = null;
-		if(getTimer() >= getAttackTime()){
-			setTimer(0);
+		if(GameController.getTimer() >= getNextAttackTime()){
+			setNextAttackTime();
 			p = new ExplosiveProjectile(getOwnedEntity());
 			p.setLifeTime((int)(bulletLifeTime * 3.33));
 			if(--bullets <= 0){
@@ -28,6 +29,10 @@ public class ExplosiveProjectileWeapon extends ProjectileWeapon{
 			}
 		}
 		return p;
+	}
+	
+	public int getDamage(){
+		return 40;
 	}
 	
 	

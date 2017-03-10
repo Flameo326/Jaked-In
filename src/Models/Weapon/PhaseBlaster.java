@@ -3,28 +3,27 @@ package Models.Weapon;
 import Controller.GameController;
 import Models.Players.PlayableCharacter;
 import Models.Weapon.Attack.Attack;
-import Projectiles.BounceProjectile;
-import SpriteSheet.SpriteSheet;
+import Projectiles.PhaseBlasterProjectile;
+import SpriteSheet.SpriteSheet;;
 
-public class BounceProjectileWeapon extends ProjectileWeapon {
+public class PhaseBlaster extends ProjectileWeapon{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public BounceProjectileWeapon(PlayableCharacter e, int bullets) {
-		super(e, SpriteSheet.getNormalProjectile(), bullets, 30, 2000);
+	public PhaseBlaster(PlayableCharacter e, int bullets) {
+		super(e, SpriteSheet.getPhaseBlasterProjectile(), bullets, 100, 200);
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
 	public Attack attack() {
-		BounceProjectile p = null;
+		PhaseBlasterProjectile p = null;
 		if(GameController.getTimer() >= getNextAttackTime()){
 			setNextAttackTime();
-			p = new BounceProjectile(getOwnedEntity(), 4);
-			p.setLifeTime((int)(bulletLifeTime * 3.33));
+			p = new PhaseBlasterProjectile(getOwnedEntity());
 			if(--bullets <= 0){
 				getOwnedEntity().removeWeapon();
 			}
@@ -33,6 +32,7 @@ public class BounceProjectileWeapon extends ProjectileWeapon {
 	}
 	
 	public int getDamage(){
-		return 45;
+		return 15;
 	}
+
 }

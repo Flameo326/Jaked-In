@@ -1,6 +1,8 @@
 package Projectiles;
 
 import java.util.ArrayList;
+
+import Controller.GameController;
 import Enums.Direction;
 import Models.Collision;
 import Models.Entity;
@@ -21,12 +23,11 @@ public abstract class Projectile extends Attack{
 		setCurrDir(getOwnedEntity().getCurrDir());
 		setSpeed(speed);
 		setTag(getTag() + "-Projectile");
-		setDamage(getDamage() + 5);
 	}
 	
 	@Override
 	public void update(ArrayList<Entity> entities) {
-		if(++timer >= lifeTime || !hasHit.isEmpty()){
+		if(GameController.getTimer() >= lifeTime || !hasHit.isEmpty()){
 			entities.remove(this);
 		}
 		move(entities);
@@ -43,11 +44,14 @@ public abstract class Projectile extends Attack{
 		} else { return; }
 		
 		String[] tagElements = collider.getTag().split("-");
-//		String[] ourElements = getTag().split("-");
 		
 		switch(tagElements[0]){
-//		case "Attack":
 		case "Wall":
+			if(tagElements.length > 2 && tagElements[1].equals("ForceField") 
+					&& tagElements[2].equals(getOwnedEntity().getTag())){
+				// collided against own forcefield
+				break;
+			}
 			bounces++;
 			if(c.xPenDepth < c.yPenDepth){
 				setXPos(getXPos() + (-getCurrDir().getX() * c.xPenDepth) * 2);

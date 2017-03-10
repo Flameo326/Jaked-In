@@ -2,6 +2,7 @@ package Models.Weapon;
 
 import java.util.ArrayList;
 
+import Controller.GameController;
 import Enums.Direction;
 import Models.Entity;
 import Models.Players.PlayableCharacter;
@@ -22,8 +23,8 @@ public class PulsarProjectileWeapon extends ProjectileWeapon{
 	
 	public Attack attack(ArrayList<Entity> entities) {
 		Pulsar p = null;
-		if(getTimer() >= getAttackTime()){
-			setTimer(0);
+		if(GameController.getTimer() >= getNextAttackTime()){
+			setNextAttackTime();
 			for(int i = 0; i < 8; i++){				
 				p = new Pulsar(getOwnedEntity());
 				p.setCurrDir(Direction.values()[i >= 4 ? i+1 : i]);
@@ -40,6 +41,10 @@ public class PulsarProjectileWeapon extends ProjectileWeapon{
 	@Override
 	public Attack attack(){
 		throw new UnsupportedOperationException("Invalid attack method called");
+	}
+	
+	public int getDamage(){
+		return 0;
 	}
 	
 }
