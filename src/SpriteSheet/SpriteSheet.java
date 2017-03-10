@@ -216,8 +216,7 @@ public final class SpriteSheet {
 	}
 
 	public static Image getAlly() {
-		// TODO Auto-generated method stub
-		return null;
+		return SpriteSheet.getBorderedBlock(30, 30, Color.TURQUOISE, 3);
 	}
 	
 	public static Image getEnemy(){

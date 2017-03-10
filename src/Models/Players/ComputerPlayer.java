@@ -25,6 +25,7 @@ public class ComputerPlayer extends PlayableCharacter{
 	private Random rand;
 	private int decisionChoice, decisionLength, timer;
 	private int decisionLengthIncrement, decisionLengthRange;
+	private PlayableCharacter leader;
 
 	
 	public ComputerPlayer(Image i, int x, int y, Difficulties difficulty) {
@@ -70,38 +71,23 @@ public class ComputerPlayer extends PlayableCharacter{
 			// Move
 			prevX = getXPos(); prevY = getYPos();
 			
-			int shortestDistanceFromEnemy = Integer.MAX_VALUE;
-			Entity enemy = null;
-			for(PlayableCharacter p : Enemys){
-				if(Math.abs(p.getXPos() - getXPos()) + Math.abs(p.getYPos() - getYPos()) < shortestDistanceFromEnemy){
-					shortestDistanceFromEnemy = Math.abs(p.getXPos() - getXPos()) + Math.abs(p.getYPos() - getYPos());
-					enemy = p;
-				}
-			}
-			if(getWeapon().getClass() == MeleeWeapon.class){
-				
-				//Move choice when melee
-				if(timer > decisionLength){
-					if(shortestDistanceFromEnemy < 800 || difficulty == Difficulties.HARD){
-						decisionLength = (new Random()).nextInt(20) * 20;
-						timer = 0;
-						setCurrDir(directionOfClosestEnemy());
-					} else {
-						timer = 0;
-						decisionLength = (new Random()).nextInt(20) * 20;
-						decisionChoice = rand.nextInt(8);
-						setCurrDir(Direction.values()[decisionChoice >= 4 ? decisionChoice+1 : decisionChoice]);
+			if(leader == null){
+				int shortestDistanceFromEnemy = Integer.MAX_VALUE;
+				Entity enemy = null;
+				for(PlayableCharacter p : Enemys){
+					if(Math.abs(p.getXPos() - getXPos()) + Math.abs(p.getYPos() - getYPos()) < shortestDistanceFromEnemy){
+						shortestDistanceFromEnemy = Math.abs(p.getXPos() - getXPos()) + Math.abs(p.getYPos() - getYPos());
+						enemy = p;
 					}
 				}
-			} else {
-				if(enemy != null){
+				if(getWeapon().getClass() == MeleeWeapon.class){
 					
-					//Move choice when ranged
+					//Move choice when melee
 					if(timer > decisionLength){
-						if(shortestDistanceFromEnemy < 100){
-							setCurrDir(Direction.getInverse(directionOfClosestEnemy()));
-						} else if(shortestDistanceFromEnemy > 300 && (shortestDistanceFromEnemy < 800 || difficulty == Difficulties.HARD)) {
-							setCurrDir(directionOfClosestEnemy());	
+						if(shortestDistanceFromEnemy < 800 || difficulty == Difficulties.HARD){
+							decisionLength = (new Random()).nextInt(20) * 20;
+							timer = 0;
+							setCurrDir(directionOfClosestEnemy());
 						} else {
 							timer = 0;
 							decisionLength = (new Random()).nextInt(20) * 20;
@@ -109,18 +95,42 @@ public class ComputerPlayer extends PlayableCharacter{
 							setCurrDir(Direction.values()[decisionChoice >= 4 ? decisionChoice+1 : decisionChoice]);
 						}
 					}
+				} else {
+					if(enemy != null){
+						
+						//Move choice when ranged
+						if(timer > decisionLength){
+							if(shortestDistanceFromEnemy < 100){
+								setCurrDir(Direction.getInverse(directionOfClosestEnemy()));
+							} else if(shortestDistanceFromEnemy > 300 && (shortestDistanceFromEnemy < 800 || difficulty == Difficulties.HARD)) {
+								setCurrDir(directionOfClosestEnemy());	
+							} else {
+								timer = 0;
+								decisionLength = (new Random()).nextInt(20) * 20;
+								decisionChoice = rand.nextInt(8);
+								setCurrDir(Direction.values()[decisionChoice >= 4 ? decisionChoice+1 : decisionChoice]);
+							}
+						}
+					}
+				}
+
+				move(entities);
+				
+				// if didn't move
+				if(prevX == getXPos() && prevY == getYPos()){
+					decisionChoice = rand.nextInt(8);
+					setCurrDir(Direction.values()[decisionChoice >= 4 ? decisionChoice+1 : decisionChoice]);
+					timer = 0;
+				}
+				timer += Math.abs(prevX - getXPos()) + Math.abs(prevY - getYPos()); 
+			} else {
+				
+				if(Math.abs(leader.getXPos() - getXPos()) + Math.abs(leader.getYPos() - getYPos()) > 100){
+					setCurrDir(Direction.getInverse(CollisionSystem.getCollision(this, leader).collisionNormal));
+					move(entities);
 				}
 			}
 			
-			move(entities);
-			
-			// if didn't move
-			if(prevX == getXPos() && prevY == getYPos()){
-				decisionChoice = rand.nextInt(8);
-				setCurrDir(Direction.values()[decisionChoice >= 4 ? decisionChoice+1 : decisionChoice]);
-				timer = 0;
-			}
-			timer += Math.abs(prevX - getXPos()) + Math.abs(prevY - getYPos()); 
 			
 			
 			// Attack
@@ -208,4 +218,7 @@ public class ComputerPlayer extends PlayableCharacter{
 		return tempDirection;
 	}
 	
+	public void setLeader(PlayableCharacter leader){
+		this.leader = leader;
+	}
 }

@@ -53,6 +53,8 @@ public class AngryNPC extends PlayableCharacter implements Interactable {
 			for(Entity i : p.getDisplayableEntities()){
 				entities.add(i);
 			}
+			p.setEnemys(PlayableCharacter.getFriendlies());
+			PlayableCharacter.getEnemies().add(p);
 			entities.remove(this);
 		}
 	}

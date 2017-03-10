@@ -23,7 +23,6 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private StoryController controller;
-	private PlayableCharacter enemy;
 	private boolean interacted;
 
 	public AmbushNPC(StoryController controller, int x, int y) {
@@ -38,7 +37,6 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 		Cutscene c = new DialogCutscene(controller, .5, "GET HIM!");
 		controller.startCutscene(c);
 		setImage(SpriteSheet.getEnemy());
-		setEnemy(p);
 		interacted = true;
 	}
 
@@ -55,13 +53,10 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 			for(Entity i : p.getDisplayableEntities()){
 				entities.add(i);
 			}
+			p.setEnemys(PlayableCharacter.getFriendlies());
+			PlayableCharacter.getEnemies().add(p);
 			entities.remove(this);
 			// make sure we add weapon and health bar
 		}
 	}
-	
-	public void setEnemy(PlayableCharacter c){
-		enemy = c;
-	}
-
 }

@@ -18,6 +18,7 @@ import Models.NPCs.AngryNPC;
 import Models.NPCs.MedicNPC;
 import Models.NPCs.PowerUpNPC;
 import Models.NPCs.StoryNPC;
+import Models.Players.PlayableCharacter;
 import Models.Shape.Shape;
 import Models.Upgrades.BonusDamage;
 import Models.Upgrades.BounceWeaponPickup;
@@ -43,8 +44,7 @@ public class Map implements Serializable{
 	private int mapWidth, mapHeight;
 	private int border = 10;
 	private boolean mapIsLinear;
-	private ArrayList<Entity> rooms;
-	
+	private ArrayList<Entity> rooms;	
 	private BufferedWriter bf;
 	
 	public Map(int width, int height){
