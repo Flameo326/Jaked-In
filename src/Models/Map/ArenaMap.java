@@ -75,9 +75,10 @@ public class ArenaMap extends Map{
 	}
 	
 	public Upgrade createNewUpgrade(){
-		Upgrade u = upgradeChoice(null, -getMapWidth()/2, -getMapHeight()/2, getMapWidth(), getMapHeight());
-		boolean colliding = true;
+		Upgrade u = upgradeChoice(-getMapWidth()/2, -getMapHeight()/2, getMapWidth(), getMapHeight());
+		if( u == null) { return u; }
 		
+		boolean colliding = true;
 		while(colliding){
 			u.setXPos(rand.nextInt(getMapWidth()) - getMapWidth()/2);
 			u.setYPos(rand.nextInt(getMapHeight()) - getMapHeight()/2);
