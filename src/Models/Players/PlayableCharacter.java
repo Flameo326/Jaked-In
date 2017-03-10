@@ -217,6 +217,9 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	
 	public void setBonusDamage(int val){
 		bonusDamage = val;
+		if(bonusDamage < 0){
+			bonusDamage = 0;
+		}
 	}
 	
 	public int getBonusReduction(){
@@ -225,10 +228,16 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	
 	public void setBonusReduction(int i){
 		bonusReduction = i;
+		if(bonusReduction < 0){
+			bonusReduction = 0;
+		}
 	}
 	
 	public void setBonusSpeed(int v){
 		bonusSpeed = v;
+		if(bonusSpeed < 0){
+			bonusSpeed = 0;
+		}
 	}
 	
 	public int getBonusSpeed(){
