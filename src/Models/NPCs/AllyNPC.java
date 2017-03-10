@@ -38,7 +38,7 @@ public class AllyNPC extends PlayableCharacter implements Interactable {
 		if(interacted){
 			entities.remove(this);
 			ComputerPlayer p = new ComputerPlayer(SpriteSheet.getRandomPlayer(), this.getXPos(), this.getYPos(), Difficulties.NORMAL);
-			
+			p.setTag("AllyNPC-"+p.getTag());
 			Entity human = null;
 			for(Entity e : entities){
 				if(e.getTag().split("-")[0].equals("Human")){
@@ -50,7 +50,9 @@ public class AllyNPC extends PlayableCharacter implements Interactable {
 			}
 			p.setEnemys(PlayableCharacter.getEnemies());
 			PlayableCharacter.getFriendlies().add(p);
-			entities.add(p);
+			for(Entity e : p.getDisplayableEntities()){
+				entities.add(e);
+			}
 			
 		}
 	}

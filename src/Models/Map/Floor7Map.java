@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Controller.StoryController;
 import Models.Entity;
 import Models.NPCs.Doctor;
+import Models.Players.PlayableCharacter;
 import SpriteSheet.SpriteSheet;
 import javafx.scene.paint.Color;
 
@@ -17,9 +18,9 @@ public class Floor7Map extends Floor1Map{
 	private ArrayList<Entity> rooms;
 	private ArrayList<Entity> upgrades;
 	private StoryController controller;
-	private Entity watson;
+	private PlayableCharacter watson;
 
-	public Floor7Map(StoryController controller, int width, int height, Entity watson) {
+	public Floor7Map(StoryController controller, int width, int height, PlayableCharacter watson) {
 		super(controller, width, height);
 		this.controller = controller;
 		this.watson = watson;
@@ -41,7 +42,9 @@ public class Floor7Map extends Floor1Map{
 		int y = rand.nextInt(lastRoom.getHeight() - 30) + lastRoom.getShape().getMinY() + 15;
 		watson.setXPos(x);
 		watson.setYPos(y);
-		getMapObjects().add(watson);
+		for(Entity e : watson.getDisplayableEntities()){
+			getMapObjects().add(e);
+		}
 	}
 
 	@Override
