@@ -29,7 +29,7 @@ public class PulsarProjectileWeapon extends ProjectileWeapon{
 				p = new Pulsar(getOwnedEntity());
 				p.setCurrDir(Direction.values()[i >= 4 ? i+1 : i]);
 				p.setLifeTime((int)(bulletLifeTime * 3.33));
-				p.killOff(entities);
+				p.killOff(entities, false);
 			}
 			if(--bullets <= 0){
 				getOwnedEntity().removeWeapon();
@@ -43,6 +43,7 @@ public class PulsarProjectileWeapon extends ProjectileWeapon{
 		throw new UnsupportedOperationException("Invalid attack method called");
 	}
 	
+	@Override
 	public int getDamage(){
 		return 0;
 	}

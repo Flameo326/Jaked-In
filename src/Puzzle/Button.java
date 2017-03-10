@@ -11,6 +11,12 @@ import javafx.scene.image.Image;
 
 public class Button extends Entity implements Interactable, Subscribable<Button>{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected int timer = 0;
+	
 	public Button(Image i, int x, int y) {
 		super(i, x, y);
 	}
@@ -29,7 +35,7 @@ public class Button extends Entity implements Interactable, Subscribable<Button>
 
 	@Override
 	public void update(ArrayList<Entity> entities) {
-		// TODO Auto-generated method stub
+		timer++;
 		
 	}
 

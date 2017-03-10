@@ -27,8 +27,8 @@ public abstract class Entity implements Collideable, Moveable, Comparable<Entity
 	private Direction direction;
 	private Shape shape;
 	private String tag;
-	private int speed;
 	private int prevX, prevY;
+	private int speed = 1;
 	private int displayLayer;
 	
 	public Entity(Image i, int x, int y){

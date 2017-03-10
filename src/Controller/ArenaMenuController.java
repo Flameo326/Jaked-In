@@ -2,6 +2,7 @@ package Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Enums.Difficulties;
@@ -12,7 +13,6 @@ import Models.Players.PlayableCharacter;
 import Models.Weapon.BounceProjectileWeapon;
 import Models.Weapon.MeleeWeapon;
 import Models.Weapon.NormalProjectileWeapon;
-import Models.Weapon.PulsarProjectileWeapon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -112,6 +112,7 @@ public class ArenaMenuController implements Initializable{
     	
     	ArenaController controller = loader.getController();
     	// Need to get players and Add them
+    	ArrayList<PlayableCharacter> players = new ArrayList<>();
     	PlayableCharacter p = null;
     	for(Node n : playersBox.getChildren()){
     		PlayerBox playBox;
@@ -148,12 +149,23 @@ public class ArenaMenuController implements Initializable{
     		// Set weapon
     		switch(playBox.getWeaponType()){
     		case "Projectile":
-    			p.addWeapon(new NormalProjectileWeapon(p, 30));
+    			p.setWeapon(new NormalProjectileWeapon(p, 30));
     			break;
+//    		case "Melee":
+//    			p.setWeapon(new MeleeWeapon(p));
+//    			break;
 			default:
 				// Default is melee don't do anything
     		}
     		controller.addPlayer(p);
+    		players.add(p);
+    	}
+    	for(PlayableCharacter player1 : players){
+    		for(PlayableCharacter player2 : players){
+    			if(player1 != player2){
+    				player1.getEnemys().add(player2);
+    			}
+    		}
     	}
     	
     	

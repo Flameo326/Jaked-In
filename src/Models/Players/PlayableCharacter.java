@@ -3,7 +3,6 @@ package Models.Players;
 import java.util.ArrayList;
 
 import Controller.CollisionSystem;
-import Controller.InputHandler;
 import Interfaces.Attackable;
 import Interfaces.Damageable;
 import Interfaces.Dodgeable;
@@ -13,7 +12,6 @@ import Models.Weapon.MeleeWeapon;
 import Models.Weapon.Weapon;
 import Models.Weapon.Attack.Attack;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 
 public abstract class PlayableCharacter extends Entity implements Attackable, Dodgeable, Damageable {
 	
@@ -21,6 +19,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	protected ArrayList<PlayableCharacter> Enemys = new ArrayList<>();
 	private Weapon equippedWeapon, previousWeapon, mainWeapon, secondWeapon;
 	private HealthBar healthBar;
 	private int maxHealth, currentHealth;
@@ -29,6 +28,8 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	private int damageReduction, bonusReduction;
 	private int baseDamage, bonusDamage;
 	private long bonusDamageLength, bonusSpeedLength, bonusReductionLength, ForceFieldLength;
+	
+
 
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y);
@@ -204,6 +205,10 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	
 	public int getBaseDamage(){
 		return baseDamage;
+	}
+	
+	public ArrayList<PlayableCharacter> getEnemys() {
+		return Enemys;
 	}
 	
 	public int getBonusDamage(){

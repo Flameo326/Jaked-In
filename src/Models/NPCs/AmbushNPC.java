@@ -2,13 +2,18 @@ package Models.NPCs;
 
 import java.util.ArrayList;
 
+import com.sun.media.jfxmedia.MediaError;
+
 import Controller.StoryController;
 import Cutscene.Cutscene;
 import Cutscene.DialogCutscene;
+import Enums.Difficulties;
 import Interfaces.Interactable;
 import Models.Collision;
 import Models.Entity;
+import Models.Players.ComputerPlayer;
 import Models.Players.PlayableCharacter;
+import Models.Weapon.NormalProjectileWeapon;
 import SpriteSheet.SpriteSheet;
 
 public class AmbushNPC extends PlayableCharacter implements Interactable {
@@ -45,6 +50,12 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 	@Override
 	public void update(ArrayList<Entity> entities) {
 		if(interacted){
+			PlayableCharacter p = new ComputerPlayer(SpriteSheet.getRandomEnemy(), getXPos(), getYPos(), Difficulties.NORMAL);
+			p.addWeapon(new NormalProjectileWeapon(p, 20));
+			for(Entity i : p.getDisplayableEntities()){
+				entities.add(i);
+			}
+			entities.remove(this);
 			// make sure we add weapon and health bar
 		}
 	}
