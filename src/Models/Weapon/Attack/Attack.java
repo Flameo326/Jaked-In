@@ -70,29 +70,28 @@ public abstract class Attack extends Entity {
 		String[] ourElements = getTag().split("-");
 		switch(tagElements[0]){
 		case "Human":
-			 if(!ourElements[2].equals("AllyNPC") && !ourElements[1].equals("Human")){
+			 if(!ourElements[1].equals("AllyNPC") && !ourElements[1].equals("Human")){
 				collidedChar.takeDamage(getDamage());
 				hasHit.add(collider);
 			} 
 			break;
 		case "Computer":
-			if(ourElements[2].equals("AllyNPC") || ourElements[1].equals("Human")){
+			if(ourElements[1].equals("AllyNPC") || ourElements[1].equals("Human")){
 				collidedChar.takeDamage(getDamage());
 				hasHit.add(collider);
 			} 
 			break;
-		case "NPC":
-			if(ourElements[2].equals("AllyNPC") || ourElements[1].equals("Human")){
-				if(tagElements.length > 1 && !ourElements[2].equals("AllyNPC")){
-					collidedChar.takeDamage(getDamage());
-					hasHit.add(collider);
-				}
-			} else {
-				if(tagElements.length > 1 && ourElements[2].equals("AllyNPC")){
-					collidedChar.takeDamage(getDamage());
-					hasHit.add(collider);
-				}
-			}
+		case "AllyNPC":
+			if(!ourElements[1].equals("AllyNPC") && !ourElements[1].equals("Human")){
+				collidedChar.takeDamage(getDamage());
+				hasHit.add(collider);
+			} 
+			break;
+		case "EnemyNPC":
+			if(ourElements[1].equals("AllyNPC") || ourElements[1].equals("Human")){
+				collidedChar.takeDamage(getDamage());
+				hasHit.add(collider);
+			} 
 			break;
 		}
 	}

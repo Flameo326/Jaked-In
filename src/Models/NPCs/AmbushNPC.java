@@ -46,6 +46,7 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 	public void update(ArrayList<Entity> entities) {
 		if(interacted){
 			PlayableCharacter p = new ComputerPlayer(SpriteSheet.getRandomPlayer(), getXPos(), getYPos(), Difficulties.NORMAL);
+			p.setTag("EnemyNPC-"+p.getTag());
 			p.addWeapon(new NormalProjectileWeapon(p, 20));
 			for(Entity i : p.getDisplayableEntities()){
 				entities.add(i);

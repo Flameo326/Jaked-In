@@ -81,18 +81,28 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		} else { return; }
 		
 		String[] tagElements = collider.getTag().split("-");
+		String[] ourElements = getTag().split("-");
 		
 		switch(tagElements[0]){
 		case "Wall":
 			if(tagElements.length > 1 && tagElements[1].equals("ForceField")){break;}
 		case "Human":
 		case "Computer":
+		case "EnemyNPC":
 			if(c.xPenDepth < c.yPenDepth){
 				setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);
 			} else {
 				setYPos(getYPos() + c.collisionNormal.getY() * c.yPenDepth);
 			}
 			break;
+		case "AllyNPC":
+			if(!ourElements[0].equals("Human")){
+				if(c.xPenDepth < c.yPenDepth){
+					setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);
+				} else {
+					setYPos(getYPos() + c.collisionNormal.getY() * c.yPenDepth);
+				}
+			}
 		case "Room":
 			// Maybe display the room name in screen...
 			break;
