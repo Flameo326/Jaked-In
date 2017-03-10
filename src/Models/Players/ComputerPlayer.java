@@ -31,6 +31,7 @@ public class ComputerPlayer extends PlayableCharacter{
 		super(i, x, y);
 		rand = new Random();
 		setTag("Computer-" + ++computerID);
+		setCurrDir(Direction.RIGHT);
 		setDecisionLengthIncrement(.1);
 		setDecisionLengthRange(30);
 		this.difficulty = difficulty;

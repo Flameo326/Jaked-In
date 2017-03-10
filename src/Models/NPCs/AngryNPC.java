@@ -35,7 +35,6 @@ public class AngryNPC extends PlayableCharacter implements Interactable {
 	public void interact(PlayableCharacter p) {
 		Cutscene c = new DialogCutscene(controller, .5, "You killed my Family!");
 		controller.startCutscene(c);
-		setImage(SpriteSheet.getDefaultEnemy());
 		setEnemy(p);
 		interacted = true;
 	}
@@ -48,7 +47,7 @@ public class AngryNPC extends PlayableCharacter implements Interactable {
 	@Override
 	public void update(ArrayList<Entity> entities) {
 		if(interacted){
-			PlayableCharacter p = new ComputerPlayer(SpriteSheet.getRandomEnemy(), getXPos(), getYPos(), Difficulties.EASY);
+			PlayableCharacter p = new ComputerPlayer(SpriteSheet.getRandomPlayer(), getXPos(), getYPos(), Difficulties.EASY);
 			p.setWeapon(new NormalProjectileWeapon(p, 20));
 			for(Entity i : p.getDisplayableEntities()){
 				entities.add(i);
