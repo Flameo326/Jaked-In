@@ -93,7 +93,7 @@ public class Floor6Map extends Floor1Map {
 	
 	@Override
 	public void createEntrance(Entity room){
-		Entity entrance = new Door(SpriteSheet.getDoor(), controller, 0, 0, false);
+		Entity entrance = new Door(controller, 0, 0, false);
 		entrance.setXPos(rooms.get(rooms.size()-1).getXPos());
 		entrance.setYPos(rooms.get(rooms.size()-1).getYPos());
 		getMapObjects().add(entrance);
