@@ -17,8 +17,7 @@ public abstract class Attack extends Entity {
 	private static final long serialVersionUID = 1L;
 	protected HashSet<Entity> hasHit;
 	private final PlayableCharacter ownedEntity;
-	protected int lifeTime;
-	protected int timer;
+	protected long lifeTime;
 	private int damage;
 	
 	// This will be for Like Melee Weapons...
@@ -28,13 +27,13 @@ public abstract class Attack extends Entity {
 		hasHit = new HashSet<Entity>();
 		setTag("Attack-" + ownedEntity.getTag());
 		setDisplayLayer(5);
-		setDamage(e.getBonusDamage());
+		setDamage(e.getBonusDamage() + e.getBaseDamage());
 	}
 	
 	// Position the hitBox in the direction that the object was moving
 	@Override
 	public void update(ArrayList<Entity> entities) {
-		if(++timer >= lifeTime || !hasHit.isEmpty()){
+		if(GameController.getTimer() >= lifeTime || !hasHit.isEmpty()){
 			entities.remove(this);
 		}
 	}
@@ -99,12 +98,12 @@ public abstract class Attack extends Entity {
 	}
 	
 	public void setLifeTime(int i){
-		lifeTime = i;
+		lifeTime = GameController.getTimer() + 1000000000l/60 * i;
 	}
 	
-	public void incrementTimer(){
-		++timer;
-	}
+//	public void incrementTimer(){
+//		++timer;
+//	}
 	
 	public void setDamage(int val){
 		damage = val;
@@ -114,13 +113,13 @@ public abstract class Attack extends Entity {
 		return ownedEntity;
 	}
 	
-	public int getLifeTime(){
+	public long getLifeTime(){
 		return lifeTime;
 	}
 	
-	public int getTimer(){
-		return timer;
-	}
+//	public int getTimer(){
+//		return timer;
+//	}
 	
 	public int getDamage(){
 		return damage;

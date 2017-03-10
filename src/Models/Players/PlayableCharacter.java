@@ -2,6 +2,7 @@ package Models.Players;
 
 import java.util.ArrayList;
 
+import Controller.CollisionSystem;
 import Controller.InputHandler;
 import Interfaces.Attackable;
 import Interfaces.Damageable;
@@ -21,10 +22,13 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	 */
 	private static final long serialVersionUID = 1L;
 	private Weapon equippedWeapon, previousWeapon, mainWeapon, secondWeapon;
-	private Entity healthBar;
+	private HealthBar healthBar;
 	private int maxHealth, currentHealth;
 	private boolean isDodging, weaponHasChanged;
-	private int damageReduction, bonusDamage;
+	private int bonusSpeed;
+	private int damageReduction, bonusReduction;
+	private int baseDamage, bonusDamage;
+	private long bonusDamageLength, bonusSpeedLength, bonusReductionLength, ForceFieldLength;
 
 	public PlayableCharacter(Image i, int x, int y) {
 		super(i, x, y);
@@ -55,8 +59,15 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	
 	@Override
 	public void move(ArrayList<Entity> entities) {
-		super.move(entities);
+		for(int i = 0; i < getSpeed()+getBonusSpeed(); i++){
+			setPrevXPos(getXPos());
+			setPrevYPos(getYPos());
+			setXPos(getXPos() + getCurrDir().getX());
+			setYPos(getYPos() + getCurrDir().getY());
+			CollisionSystem.checkMovementCollisions(this, entities);
+		}
 		healthBar.update(entities);
+		equippedWeapon.update(entities);
 	}
 
 	@Override
@@ -65,14 +76,14 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		if(c.collidingEntity == this){
 			collider = c.collidedEntity;
 		} else { return; }
-		if(InputHandler.keyInputContains(KeyCode.F)) { return; }
 		
 		String[] tagElements = collider.getTag().split("-");
 		
 		switch(tagElements[0]){
+		case "Wall":
+			if(tagElements.length > 1 && tagElements[1].equals("ForceField")){break;}
 		case "Human":
 		case "Computer":
-		case "Wall":
 			if(c.xPenDepth < c.yPenDepth){
 				setXPos(getXPos() + c.collisionNormal.getX() * c.xPenDepth);
 			} else {
@@ -94,13 +105,15 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 	@Override
 	public void takeDamage(int val) {
 		if(!isDodging){
-			if(val > damageReduction){
-				val -= damageReduction;
-				damageReduction = 0;
-			}else{
-				damageReduction -= val;
+			if(val > bonusReduction){
+				val -= bonusReduction;
+				bonusReduction = 0;
+			} else {
+				bonusReduction -= val;
 				val = 0;
 			}
+			val -= damageReduction;
+			if(val < 0) { val = 0; }
 			
 			currentHealth -= val;
 			System.out.println(getTag() + " has " + getCurrentHealth() + "/" + getMaxHealth());
@@ -185,11 +198,67 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		this.damageReduction = damageReduction;
 	}
 	
+	public void setBaseDamage(int i){
+		baseDamage = i;
+	}
+	
+	public int getBaseDamage(){
+		return baseDamage;
+	}
+	
 	public int getBonusDamage(){
 		return bonusDamage;
 	}
 	
 	public void setBonusDamage(int val){
 		bonusDamage = val;
+	}
+	
+	public int getBonusReduction(){
+		return bonusReduction;
+	}
+	
+	public void setBonusReduction(int i){
+		bonusReduction = i;
+	}
+	
+	public void setBonusSpeed(int v){
+		bonusSpeed = v;
+	}
+	
+	public int getBonusSpeed(){
+		return bonusSpeed;
+	}
+	
+	public void setBonusDamageLength(long l){
+		bonusDamageLength = l;
+	}
+	
+	public void setBonusSpeedLength(long l){
+		bonusSpeedLength = l;
+	}
+	
+	public void setBonusReductionLength(long l){
+		bonusReductionLength = l;
+	}
+	
+	public void setForceFieldLength(long l){
+		ForceFieldLength = l;
+	}
+	
+	public long getBonusDamageLength(){
+		return bonusDamageLength;
+	}
+	
+	public long getBonusSpeedLength(){
+		return bonusSpeedLength;
+	}
+	
+	public long getBonusReductionLength(){
+		return bonusReductionLength;
+	}
+	
+	public long getForceFieldLength(){
+		return ForceFieldLength;
 	}
 }
