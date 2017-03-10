@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import Cutscene.Cutscene;
 import Cutscene.DialogCutscene;
 import Cutscene.Introduction;
+import Enums.Difficulties;
 import Interfaces.Subscribable;
 import Models.Entity;
 import Models.Map.Floor1Map;
@@ -24,9 +25,11 @@ import Models.Map.Floor6Map;
 import Models.Map.Floor7Map;
 import Models.Map.Map;
 import Models.Map.MapGeneratorThread;
+import Models.Players.ComputerPlayer;
 import Models.Players.HumanPlayer;
 import Models.Players.PlayableCharacter;
 import Models.Upgrades.Upgrade;
+import Models.Weapon.ExplosiveProjectileWeapon;
 import Models.Weapon.ProjectileWeapon;
 import SpriteSheet.SpriteSheet;
 import javafx.beans.value.ChangeListener;
@@ -58,6 +61,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	private transient Canvas myCanvas;
 	private transient GameController gc;
 	private HumanPlayer player1;
+	private ComputerPlayer watson;
 	private Floor1Map[] levels;
 	private long seed;
 	private long upgradeTime, enemyTime;
@@ -66,6 +70,8 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	
 	public void newStory(){
 		seed = Map.setRandomSeed();
+		watson = new ComputerPlayer(SpriteSheet.getWatson(), 0, 0, Difficulties.HARD);
+		watson.addWeapon(new ExplosiveProjectileWeapon(watson, 200));
 		generateLevels();	
 		lives = 5;
 		player1 = new HumanPlayer(SpriteSheet.getRandomPlayer(), 0, 0);
@@ -76,9 +82,12 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	public void newStory(long l){
 		seed = l;
 		Map.setSeed(l);
+		watson = new ComputerPlayer(SpriteSheet.getWatson(), 0, 0, Difficulties.HARD);
+		watson.addWeapon(new ExplosiveProjectileWeapon(watson, 200));
 		generateLevels();	
 		lives = 5;
 		player1 = new HumanPlayer(SpriteSheet.getRandomPlayer(), 0, 0);
+		
 		
 		createGameController();
 	}
@@ -92,7 +101,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		levels[3] = new Floor4Map(this, 500, 500);
 		levels[4] = new Floor5Map(this, 500, 500);
 		levels[5] = new Floor6Map(this, 500, 500);
-		levels[6] = new Floor7Map(this, 500, 500);
+		levels[6] = new Floor7Map(this, 500, 500, watson);
 
 		levels[0].generateMap();
 		new Thread(new MapGeneratorThread(levels[1])).start();
@@ -108,6 +117,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		gc.attach(this);
 		gc.addEntity(player1.getDisplayableEntities());
 		gc.addPlayer(player1);
+		gc.addPlayer(watson);
 		gc.setFocus(player1);
 		gc.addEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
 		start();
@@ -161,8 +171,6 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		myCanvas.setOnKeyPressed((e) -> InputHandler.keyPress(e));
 		myCanvas.setOnKeyReleased((e) -> InputHandler.keyRelease(e));
 	}
-
-	//2359911335623836
 	
 	@Override
 	public void update(PlayableCharacter value) {
@@ -181,7 +189,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		}
 		if(GameController.getTimer() >= enemyTime){
 			// Get current time + 30 seconds to 3 minutes ahead
-			enemyTime = GameController.getTimer()+ 20000000000l/(currentLevel+1);
+			enemyTime = GameController.getTimer()+ 20000000000l/(currentLevel/2+1);
 			PlayableCharacter enemy = levels[currentLevel].generateRandomEnemy();
 			if(enemy != null) { 
 				levels[currentLevel].addEntity(enemy.getDisplayableEntities());
@@ -190,17 +198,23 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		}
 		
 		if(!value.isAlive()){
-			System.out.println("Live lost"); 
-			if(--lives <= 0){
-				// displayLoss();
-				displayGameOver();
-				gc.stop();
+			if(value == player1){
+				System.out.println("Live lost"); 
+				if(--lives <= 0){
+					// displayLoss();
+					displayGameOver();
+					gc.stop();
+				} else {
+					// beginning of level?
+					startCutscene(new DialogCutscene(this, .5, "You have Died\n\n"+lives+" Memory Units Remaining"));
+					player1.setXPos(levels[currentLevel].getExit().getXPos());
+					player1.setYPos(levels[currentLevel].getExit().getYPos());
+					player1.setCurrentHealth(player1.getMaxHealth());
+				}
 			} else {
-				// beginning of level?
-				startCutscene(new DialogCutscene(this, .5, "You have Died\n\n"+lives+" Memory Units Remaining"));
-				player1.setXPos(levels[currentLevel].getExit().getXPos());
-				player1.setYPos(levels[currentLevel].getExit().getYPos());
-				player1.setCurrentHealth(player1.getMaxHealth());
+				// Display Win
+				displayWin();
+				gc.stop();
 			}
 		}
 	}
@@ -219,6 +233,50 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		// KeyEvent to record input while playing
 		myCanvas.setOnKeyPressed((e) -> InputHandler.keyPress(e));
 		myCanvas.setOnKeyReleased((e) -> InputHandler.keyRelease(e));
+	}
+	
+	public void displayWin(){
+		GraphicsContext g = myCanvas.getGraphicsContext2D();
+		int width = (int) myCanvas.getWidth();
+		int height = (int) myCanvas.getHeight();
+		g.setFill(Color.WHITE);
+		g.fillRect(width/4, height/8, width/2, height*3/4);
+		
+		g.setStroke(Color.BLACK);
+		g.strokeRect(width/4, height/8, width/2, height*3/4);
+		
+		g.setFont(new Font(32));
+		g.setFill(Color.BLACK);
+		g.setTextAlign(TextAlignment.CENTER);
+		
+		int yPos = height*3/8;
+		g.fillText("You Win!\n\nWatson is Defeated\n\nJAK is Free!\nThank You!", width/2, yPos);
+		yPos += 32;
+		
+		int btnWidth = width*2/5;
+		int btnHeight =  height/16;
+		int btnX = width/2 - btnWidth/2;
+		int btnY = height*13/16 - btnHeight/2;
+		g.strokeRoundRect(btnX, btnY, btnWidth, btnHeight, 5, 5);
+		g.fillText("Back to Main Menu", btnX + btnWidth/2, btnY + btnHeight*3/4, btnWidth);
+		myCanvas.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+			int x = (int)e.getSceneX();
+			int y = (int)e.getSceneY();
+			if(x < btnX || x > btnX + btnWidth || y < btnY || y > btnY + btnHeight){
+				// Succesfuly clicked button
+				Stage s = (Stage)myCanvas.getScene().getWindow();
+				if(s == null) { return; }
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/StartFXML.fxml"));
+				
+				try {
+					BorderPane root = loader.load();
+					Scene scene = new Scene(root, s.getScene().getWidth(), s.getScene().getHeight());
+					s.setScene(scene);
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+			}
+		});
 	}
 	
 	public void displayHud(){
@@ -352,17 +410,30 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 						g.clearRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight);
 						g.strokeRoundRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight, 5, 5);
 						g.fillText("Saving", btnX + btnWidth/2, saveY+btnHeight/2 + btnHeight*3/4, btnWidth);
-						try {
-							save();
-							g.clearRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight);
-							g.strokeRoundRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight, 5, 5);
-							g.fillText("Save Succesful", btnX + btnWidth/2, saveY+btnHeight/2 + btnHeight*3/4, btnWidth);
-						} catch (IOException e1) {
-							e1.printStackTrace();
-							g.clearRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight);
-							g.strokeRoundRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight, 5, 5);
-							g.fillText("Save Failed", btnX + btnWidth/2, saveY+btnHeight/2 + btnHeight*3/4, btnWidth);
-						}
+						
+						new Thread(new SaveThread(StoryController.this, btnX, saveY, btnWidth, btnHeight)).start();
+//						SaveThread s = 
+//						try {
+//							new Thread(new Runnable(){
+//								@Override
+//								public void run() {
+//									ObjectOutputStream write;
+//									try {
+//										write = new ObjectOutputStream(new FileOutputStream("src/Other/text.txt"));
+//										write.writeLong(seed);
+//										write.writeObject(this);
+//										write.close();
+//										g.clearRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight);
+//										g.strokeRoundRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight, 5, 5);
+//										g.fillText("Save Succesful", btnX + btnWidth/2, saveY+btnHeight/2 + btnHeight*3/4, btnWidth);
+//									} catch (IOException e) {
+//										e.printStackTrace();
+//										g.clearRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight);
+//										g.strokeRoundRect(btnX, saveY+btnHeight/2, btnWidth, btnHeight, 5, 5);
+//										g.fillText("Save Failed", btnX + btnWidth/2, saveY+btnHeight/2 + btnHeight*3/4, btnWidth);
+//									}
+//								}
+//							}).start();
 					}
 				}
 			}
@@ -424,10 +495,12 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	
 	public void changeLevel(int i){
 		stop();
-		gc.removeEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
+//		gc.removeEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
+		gc.clear();
 		int previousLevel = currentLevel;
 		currentLevel = i;
 		gc.addEntity(levels[currentLevel].getMapObjects().toArray(new Entity[0]));
+		gc.addEntity(player1.getDisplayableEntities());
 		
 		// Went up
 		if(i > previousLevel){
@@ -449,14 +522,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 	public int getCurrentLevel(){
 		return currentLevel;
 	}
-	
-	public void save() throws FileNotFoundException, IOException{
-		ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream("src/Other/text.txt"));
-		write.writeLong(seed);
-		write.writeObject(this);
-		write.close();
-	}
-	
+
 	public static StoryController load(){
 		StoryController controller = null;
 		long seed = 0;
@@ -484,9 +550,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		return controller;
 	}
 	
-	public String getFormattedTime(long l){
-//		String s = "";
-//		
+	public String getFormattedTime(long l){	
 		long timeBetween = l - GameController.getTimer();
 		
 		long minute;
@@ -496,5 +560,9 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		timeBetween -= (seconds = timeBetween/1000000000l);
 		
 		return minute + ":" + seconds;
+	}
+	
+	public long getSeed(){
+		return seed;
 	}
 }

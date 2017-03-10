@@ -37,7 +37,7 @@ public class AllyNPC extends PlayableCharacter implements Interactable {
 	public void update(ArrayList<Entity> entities) {
 		if(interacted){
 			entities.remove(this);
-			ComputerPlayer p = new ComputerPlayer(SpriteSheet.getAlly(), this.getXPos(), this.getYPos(), Difficulties.NORMAL);
+			ComputerPlayer p = new ComputerPlayer(SpriteSheet.getRandomPlayer(), this.getXPos(), this.getYPos(), Difficulties.NORMAL);
 			
 			Entity human = null;
 			for(Entity e : entities){

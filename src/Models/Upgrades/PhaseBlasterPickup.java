@@ -26,9 +26,9 @@ public class PhaseBlasterPickup extends Upgrade{
 		isCollected = true;
 	}
 
-	@Override
-	public void reverseEffect() {
-		// do nothign
-	}
+//	@Override
+//	public void reverseEffect() {
+//		// do nothign
+//	}
 
 }

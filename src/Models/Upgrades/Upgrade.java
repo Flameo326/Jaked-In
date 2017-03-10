@@ -31,13 +31,14 @@ public abstract class Upgrade extends Entity implements Collectable{
 	@Override
 	public void update(ArrayList<Entity> entities) {
 		if(isCollected){
-			if(permanent){ entities.remove(this); }
-			else {
-				if(GameController.getTimer() >= boostExpiration){
-					reverseEffect();
-					entities.remove(this);
-				}
-			}
+			entities.remove(this);
+//			if(permanent){ entities.remove(this); }
+//			else {
+//				if(GameController.getTimer() >= boostExpiration){
+//					reverseEffect();
+//					entities.remove(this);
+//				}
+//			}
 		}
 	}
 	
@@ -71,7 +72,7 @@ public abstract class Upgrade extends Entity implements Collectable{
 		}
 	}
 	
-	public abstract void reverseEffect();
+//	public abstract void reverseEffect();
 	
 	public void setBoostExpiration(){
 		boostExpiration = GameController.getTimer() + 1000000000l * length;

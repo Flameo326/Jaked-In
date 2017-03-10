@@ -51,11 +51,8 @@ public abstract class NPC extends Entity implements Interactable{
 			return new BonusDamage(0, 0, true);
 		case 2:
 			return new DamageReduction(0, 0, true);
-		case 3:
-			return new ForceFieldReflection(0, 0);
 		default:
 			return new SpeedBoost(0, 0, true);
-
 		}
 	}
 	

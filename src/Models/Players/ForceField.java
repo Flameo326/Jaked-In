@@ -37,9 +37,9 @@ public class ForceField extends Entity{
 		setYPos(c.getYPos());
 		if(GameController.getTimer() >= expirationTime){
 			entities.remove(this);
-			if(c.getForceFieldLength() == expirationTime){
+//			if(c.getForceFieldLength() == expirationTime){
 				c.setForceFieldLength(0);
-			}
+//			}
 		}
 	}
 	

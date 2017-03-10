@@ -44,13 +44,14 @@ public abstract class Projectile extends Attack{
 		} else { return; }
 		
 		String[] tagElements = collider.getTag().split("-");
-		
+		//Wall-ForceField-Human-1
 		switch(tagElements[0]){
 		case "Wall":
-			if(tagElements.length > 2 && tagElements[1].equals("ForceField") 
-					&& tagElements[2].equals(getOwnedEntity().getTag())){
-				// collided against own forcefield
-				break;
+			if(tagElements.length > 3 && tagElements[1].equals("ForceField")){
+				String id = tagElements[2] + "-" + tagElements[3];
+				if(id.equals(getOwnedEntity().getTag())){
+					break;
+				}
 			}
 			bounces++;
 			if(c.xPenDepth < c.yPenDepth){

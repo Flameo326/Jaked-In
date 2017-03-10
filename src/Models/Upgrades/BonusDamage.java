@@ -36,12 +36,12 @@ public class BonusDamage extends Upgrade{
 		isCollected = true;
 	}
 
-	@Override
-	public void reverseEffect() {
-		getPlayerAffected().setBonusDamage(getPlayerAffected().getBonusDamage() - getBonus());
-		if(getPlayerAffected().getBonusDamageLength() == getBoostExpiration()){
-			getPlayerAffected().setBonusDamageLength(0);
-		}
-	}
+//	@Override
+//	public void reverseEffect() {
+//		getPlayerAffected().setBonusDamage(getPlayerAffected().getBonusDamage() - getBonus());
+//		if(getPlayerAffected().getBonusDamageLength() == getBoostExpiration()){
+//			getPlayerAffected().setBonusDamageLength(0);
+//		}
+//	}
 
 }

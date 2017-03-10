@@ -3,6 +3,7 @@ package Models.Players;
 import java.util.ArrayList;
 
 import Controller.CollisionSystem;
+import Controller.GameController;
 import Interfaces.Attackable;
 import Interfaces.Damageable;
 import Interfaces.Dodgeable;
@@ -56,6 +57,7 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 			if(!entities.contains(equippedWeapon)) { entities.add(equippedWeapon); }
 			weaponHasChanged = false;
 		}
+		checkBonuses();
 	}
 	
 	@Override
@@ -135,6 +137,21 @@ public abstract class PlayableCharacter extends Entity implements Attackable, Do
 		currentHealth += i;
 		if(currentHealth > maxHealth){
 			currentHealth = maxHealth;
+		}
+	}
+	
+	public void checkBonuses(){
+		if(GameController.getTimer() >= bonusSpeedLength){
+			bonusSpeed = 0;
+			bonusSpeedLength = 0;
+		}
+		if(GameController.getTimer() >= bonusDamageLength){
+			bonusDamage = 0;
+			bonusDamageLength = 0;
+		}
+		if(GameController.getTimer() >= bonusReductionLength){
+			bonusReduction = 0;
+			bonusReductionLength = 0;
 		}
 	}
 	

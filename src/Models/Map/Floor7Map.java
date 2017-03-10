@@ -17,10 +17,12 @@ public class Floor7Map extends Floor1Map{
 	private ArrayList<Entity> rooms;
 	private ArrayList<Entity> upgrades;
 	private StoryController controller;
+	private Entity watson;
 
-	public Floor7Map(StoryController controller, int width, int height) {
+	public Floor7Map(StoryController controller, int width, int height, Entity watson) {
 		super(controller, width, height);
 		this.controller = controller;
+		this.watson = watson;
 	}
 
 	@Override
@@ -34,10 +36,12 @@ public class Floor7Map extends Floor1Map{
 	@Override
 	public void populateLevelSpecificEntities() {
 
-//		Entity lastRoom = rooms.get(rooms.size() - 1);
-//		int x = rand.nextInt(lastRoom.getWidth() - 30) + lastRoom.getShape().getMinX() + 15;
-//		int y = rand.nextInt(lastRoom.getHeight() - 30) + lastRoom.getShape().getMinY() + 15;
-//		getMapObjects().add();
+		Entity lastRoom = rooms.get(rooms.size() - 1);
+		int x = rand.nextInt(lastRoom.getWidth() - 30) + lastRoom.getShape().getMinX() + 15;
+		int y = rand.nextInt(lastRoom.getHeight() - 30) + lastRoom.getShape().getMinY() + 15;
+		watson.setXPos(x);
+		watson.setYPos(y);
+		getMapObjects().add(watson);
 	}
 
 	@Override

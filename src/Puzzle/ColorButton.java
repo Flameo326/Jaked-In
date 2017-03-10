@@ -14,13 +14,12 @@ public class ColorButton extends Button {
 	private CombinedColor solution;
 
 	public ColorButton(int x, int y, ButtonColors buttonColor, boolean isIncrementer, CombinedColor b) {
-
 		super(SpriteSheet.getColorButtonImage(buttonColor, isIncrementer), x, y);
 
 		this.buttonColor = buttonColor;
 		this.isIncrementer = isIncrementer;
 		solution = b;
-		setImage(SpriteSheet.getBorderedBlock(30, 30, getColor(), 2, getColor()));
+//		setImage(SpriteSheet.getBorderedBlock(30, 30, getColor(), 2, getColor()));
 		setDisplayLayer(6);
 	}
 
