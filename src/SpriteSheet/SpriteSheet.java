@@ -240,7 +240,14 @@ public final class SpriteSheet {
 	public static Image getPhaseBlasterPickup(){
 		return phaseBlasterPickup;
 	}
-	
+
+//	public static Image getMeleeWeapon() {
+//		return SpriteSheet.getBorderedBlock(20, 20, Color.WHITE, 3);
+//	}
+
+	public static Image getAlly() {
+		return SpriteSheet.getBorderedBlock(30, 30, Color.TURQUOISE, 3);
+	}
 	// Works for Players and Enemies
 	
 	public static Image getRandomPlayer(){
