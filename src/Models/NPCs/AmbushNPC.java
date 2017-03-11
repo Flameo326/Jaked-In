@@ -51,6 +51,7 @@ public class AmbushNPC extends PlayableCharacter implements Interactable {
 			for(Entity i : p.getDisplayableEntities()){
 				entities.add(i);
 			}
+			p.setEnemys(PlayableCharacter.getFriendlies());
 			PlayableCharacter.getEnemies().add(p);
 			entities.remove(this);
 			// make sure we add weapon and health bar

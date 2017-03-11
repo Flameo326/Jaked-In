@@ -152,19 +152,19 @@ public class ComputerPlayer extends PlayableCharacter{
 							}
 						}
 					} else {
-						for(int i = 0; i < 8; i++){
-							setCurrDir(Direction.values()[i >= 4 ? i+1 : i]);
-							Pulsar p = new Pulsar(this);
-							if(!p.killOff(entities, false).isEmpty()){
-//								new Pulsar(this).killOff(entities, true);
-								
-								Attack h = attack();
-								if(h != null){
-									entities.add(h);
-								}
-								break;
-							}
-						}	
+//						for(int i = 0; i < 8; i++){
+//							setCurrDir(Direction.values()[i >= 4 ? i+1 : i]);
+//							Pulsar p = new Pulsar(this);
+//							if(!p.killOff(entities, false).isEmpty()){
+////								new Pulsar(this).killOff(entities, true);
+//								
+//								Attack h = attack();
+//								if(h != null){
+//									entities.add(h);
+//								}
+//								break;
+//							}
+//						}	
 					}
 					setCurrDir(currDir);
 				}

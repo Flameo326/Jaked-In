@@ -75,6 +75,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		generateLevels();	
 		lives = 5;
 		player1 = new HumanPlayer(SpriteSheet.getRandomPlayer(), 0, 0);
+		PlayableCharacter.getFriendlies().add(player1);
 		
 		createGameController();
 	}
@@ -87,6 +88,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 		generateLevels();	
 		lives = 5;
 		player1 = new HumanPlayer(SpriteSheet.getRandomPlayer(), 0, 0);
+		PlayableCharacter.getFriendlies().add(player1);
 		
 		
 		createGameController();
@@ -192,6 +194,8 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 			enemyTime = GameController.getTimer()+ 20000000000l/(currentLevel/2+1);
 			PlayableCharacter enemy = levels[currentLevel].generateRandomEnemy();
 			if(enemy != null) { 
+				PlayableCharacter.getEnemies().add(enemy);
+				enemy.setEnemys(PlayableCharacter.getFriendlies());
 				levels[currentLevel].addEntity(enemy.getDisplayableEntities());
 				gc.addEntity(enemy.getDisplayableEntities()); 
 			}
@@ -202,6 +206,7 @@ public class StoryController implements Initializable, Subscribable<PlayableChar
 				System.out.println("Live lost"); 
 				if(--lives <= 0){
 					// displayLoss();
+//					PlayableCharacter.getFriendlies().remove(player1);
 					displayGameOver();
 					gc.stop();
 				} else {
